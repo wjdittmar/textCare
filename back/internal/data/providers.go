@@ -27,12 +27,15 @@ var ErrDuplicateProviderName = errors.New("duplicate provider name")
 // Insert adds a new provider record to the database.
 func (m ProviderModel) Insert(provider *Provider) error {
 	query := `
-INSERT INTO providers (id, name, specialization, education, description, location, created_at, updated_at)
-VALUES ($1, $2, $3, $4, $5, $6, DEFAULT, DEFAULT)
+INSERT INTO providers (name, specialization, education, description, location)
+VALUES ($1, $2, $3, $4, $5)
 RETURNING created_at, updated_at`
 	args := []interface{}{
-		provider.ID, provider.Name, provider.Specialization,
-		provider.Education, provider.Description, provider.Location,
+		provider.Name,
+		provider.Specialization,
+		provider.Education,
+		provider.Description,
+		provider.Location,
 	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)

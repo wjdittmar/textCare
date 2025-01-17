@@ -29,6 +29,7 @@ func (app *application) createProviderHandler(w http.ResponseWriter, r *http.Req
 		Description:    input.Description,
 		Location:       input.Location,
 	}
+
 	// could perform validation here
 
 	v := validator.New()
