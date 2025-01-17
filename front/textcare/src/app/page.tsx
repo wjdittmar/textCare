@@ -1,6 +1,6 @@
 "use client";
 
-//import styles from "./globals.css";
+import styles from "./globals.css";
 
 import React from "react";
 import {
@@ -8,6 +8,8 @@ import {
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
+
+import { ProgressTracker } from "./components/ProgressTracker";
 
 const queryClient = new QueryClient();
 
@@ -38,13 +40,17 @@ function ProvidersList() {
     queryFn: fetchProviders,
   });
 
+  const steps = [
+    "Step 1: Choose Doctor",
+    "Step 2: Medical Info",
+    "Step 3: Confirmation",
+  ];
+
   // Render the providers list
   return (
     <>
       <div className="providerBox">
-        <div className="progress">
-          <hr />
-        </div>
+        <ProgressTracker steps={steps} currentStepIndex={0} />
         <h3>Choose your doctor</h3>
         <p>
           Your doctor will lead your care team and be your go-to care provider.
