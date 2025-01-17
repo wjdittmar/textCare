@@ -105,7 +105,6 @@ button {
   padding: 12px 24px 12px 24px;
   gap: 10px;
   border-radius: 24px;
-  opacity: 0px;
   background: #ffdecc;
   border: 1px solid #f5b38e;
   display: flex;
@@ -114,8 +113,8 @@ button {
 }
 
 div.progress > hr {
-  border: none; /* Remove the default border */
-  border-top: 2px solid #6079a1; /* Create a colored line */
-  margin: 20px 0; /* Add spacing above and below */
-  width: 100%; /* Set the width (optional) */
+  border: none;
+  border-top: 2px solid #6079a1;
+  margin: 20px 0;
+  width: 100%;
 }
