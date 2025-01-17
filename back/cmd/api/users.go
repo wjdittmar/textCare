@@ -2,8 +2,8 @@ package main
 
 import (
 	"errors"
-	"github.com/wjdittmar/textCare/internal/data"
-	"github.com/wjdittmar/textCare/internal/validator"
+	"github.com/wjdittmar/textCare/back/internal/data"
+	"github.com/wjdittmar/textCare/back/internal/validator"
 	"net/http"
 )
 

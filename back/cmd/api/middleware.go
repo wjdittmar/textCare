@@ -3,8 +3,8 @@ package main
 import (
 	"errors"
 	"fmt"
-	"github.com/wjdittmar/textCare/internal/data"
-	"github.com/wjdittmar/textCare/internal/validator"
+	"github.com/wjdittmar/textCare/back/internal/data"
+	"github.com/wjdittmar/textCare/back/internal/validator"
 	"golang.org/x/time/rate"
 	"net"
 	"net/http"

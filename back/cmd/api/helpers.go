@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/julienschmidt/httprouter"
-	"github.com/wjdittmar/textCare/internal/validator"
+	"github.com/wjdittmar/textCare/back/internal/validator"
 	"io"
 	"net/http"
 	"net/url"

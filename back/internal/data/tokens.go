@@ -6,7 +6,7 @@ import (
 	"crypto/sha256"
 	"database/sql"
 	"encoding/base32"
-	"github.com/wjdittmar/textCare/internal/validator"
+	"github.com/wjdittmar/textCare/back/internal/validator"
 	"time"
 )
 

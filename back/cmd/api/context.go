@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	"github.com/wjdittmar/textCare/internal/data"
+	"github.com/wjdittmar/textCare/back/internal/data"
 	"net/http"
 )
 
