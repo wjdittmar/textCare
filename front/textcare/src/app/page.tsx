@@ -1,6 +1,6 @@
 "use client";
 
-import styles from "./globals.css";
+//import styles from "./globals.css";
 
 import React from "react";
 import {
