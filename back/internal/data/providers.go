@@ -98,3 +98,35 @@ RETURNING updated_at`
 	}
 	return nil
 }
+
+func (m ProviderModel) GetAll(location string) ([]*Provider, error) {
+	// can add additional search params
+	query := `
+SELECT id, name, specialization, education, description, location FROM providers
+WHERE (LOWER(location) = LOWER($1) OR $1 = '')
+ORDER BY id`
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	rows, err := m.DB.QueryContext(ctx, query, location)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	providers := []*Provider{}
+	for rows.Next() {
+		var provider Provider
+		err := rows.Scan(
+			&provider.ID,
+			&provider.Name, &provider.Specialization, &provider.Education, &provider.Description, &provider.Location,
+		)
+		if err != nil {
+			return nil, err
+		}
+		providers = append(providers, &provider)
+	}
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+	return providers, nil
+}

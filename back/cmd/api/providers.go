@@ -146,3 +146,26 @@ func (app *application) updateProviderHandler(w http.ResponseWriter, r *http.Req
 		app.serverErrorResponse(w, r, err)
 	}
 }
+
+func (app *application) listProvidersHandler(w http.ResponseWriter, r *http.Request) {
+	var input struct {
+		Location string
+	}
+
+	qs := r.URL.Query()
+
+	input.Location = app.readString(qs, "location", "")
+
+	providers, err := app.models.Providers.GetAll(input.Location)
+
+	if err != nil {
+		app.serverErrorResponse(w, r, err)
+		return
+	}
+
+	err = app.writeJSON(w, http.StatusOK, envelope{"providers": providers}, nil)
+	if err != nil {
+		app.serverErrorResponse(w, r, err)
+	}
+
+}
