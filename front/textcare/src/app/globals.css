@@ -148,3 +148,11 @@ a.buttonLink {
   left: 8px;
   top: 12px;
 }
+
+.sectionHeader {
+  margin: 10px 0px;
+}
+
+.sectionHeader > p {
+  padding: 10px 0px;
+}

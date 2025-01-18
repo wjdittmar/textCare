@@ -1,0 +1,28 @@
+"use client";
+
+import Link from "next/link";
+import Image from "next/image";
+
+export default function InfoPage() {
+  return (
+    <div>
+      <div className="sectionHeader">
+        <h3>Meet the team behind your care</h3>
+        <p>
+          Your care team includes different healthcare providers, and a doctor
+          dedicated to YOU who will follow your health journey.
+        </p>
+      </div>
+      {/* in production would use CDN / image optimization/
+          would also get a cropped version of the image to avoid negative offset
+          /*/}
+      <img
+        src={`/providers_info.png`}
+        alt="provider info"
+        height="424"
+        width="375"
+        style={{ marginLeft: "-20px" }}
+      />
+    </div>
+  );
+}

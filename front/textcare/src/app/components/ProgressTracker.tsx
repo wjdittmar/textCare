@@ -12,10 +12,8 @@ export const ProgressTracker = ({ steps, currentStepIndex }) => {
       }}
     >
       {steps.map((step, index) => (
-        <React.Fragment key={step.id}>
+        <React.Fragment key={step}>
           <span id="checkmark"></span>
-
-          {/* Line */}
           {index < steps.length - 1 && (
             <div
               style={{

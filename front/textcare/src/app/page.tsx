@@ -10,7 +10,6 @@ export default function Home() {
     client.prefetchQuery({
       queryKey: ["providers"],
       queryFn: fetchProviders,
-      staleTime: 1000 * 60 * 5,
     });
   }, []);
 

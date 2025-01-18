@@ -33,6 +33,9 @@ export const ProvidersProvider = ({
   const { data, error, isLoading, isFetching } = useQuery({
     queryKey: ["providers"],
     queryFn: fetchProviders,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    staleTime: 120000,
   });
 
   const [providers, setProviders] = useState([]);
