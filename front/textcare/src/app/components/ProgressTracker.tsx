@@ -6,42 +6,25 @@ export const ProgressTracker = ({ steps, currentStepIndex }) => {
       style={{
         display: "flex",
         alignItems: "center",
-        gap: "8px",
-        justifyContent: "space-evenly",
-        marginTop: "15px",
+        //gap: "8px",
+        justifyContent: "space-between",
         padding: "10px 0px",
       }}
     >
       {steps.map((step, index) => (
         <React.Fragment key={step.id}>
-          {/* Checkmark */}
-          <div
-            style={{
-              width: "24px",
-              height: "24px",
-              borderRadius: "50%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-around",
-              backgroundColor:
-                index <= currentStepIndex ? "#4CAF50" : "#e0e0e0",
-              color: index <= currentStepIndex ? "#fff" : "#000",
-              fontWeight: "bold",
-            }}
-          >
-            ✓
-          </div>
+          <span id="checkmark"></span>
 
           {/* Line */}
           {index < steps.length - 1 && (
             <div
               style={{
-                height: "4px",
-                width: "40px",
+                height: "2px",
+                width: "80px",
                 background: `linear-gradient(
-                  to right,
-                  ${index < currentStepIndex ? "#4CAF50" : "#e0e0e0"} 50%,
-                  ${index === currentStepIndex ? "#4CAF50" : "#e0e0e0"} 50%
+                  to left,
+                  ${index < currentStepIndex ? "#6079A1" : "#e0e0e0"} 50%,
+                  ${index === currentStepIndex ? "#6079A1" : "#e0e0e0"} 50%
                 )`,
               }}
             ></div>

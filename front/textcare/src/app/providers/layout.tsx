@@ -13,6 +13,7 @@ export default function ProvidersLayout({
     "Step 1: Choose Doctor",
     "Step 2: Medical Info",
     "Step 3: Confirmation",
+    "Step 4: Filler",
   ];
 
   return (

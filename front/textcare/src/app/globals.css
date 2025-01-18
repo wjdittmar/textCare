@@ -63,6 +63,7 @@ ul.provider {
   height: 100%;
   display: flex;
   flex-direction: column;
+  padding: 25px 0px;
 }
 
 h3 {
@@ -113,4 +114,37 @@ a.buttonLink {
   align-items: center;
   font-size: 16px;
   font-weight: 700;
+}
+
+/* https://stackoverflow.com/questions/21968531/how-to-draw-a-checkmark-tick-using-css */
+
+#checkmark {
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  background: #6079a1;
+  border-radius: 50%;
+  -ms-transform: rotate(45deg); /* IE 9 */
+  -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
+  transform: rotate(45deg);
+}
+
+#checkmark:before {
+  content: "";
+  position: absolute;
+  width: 3px;
+  height: 9px;
+  background-color: #fff;
+  left: 11px;
+  top: 6px;
+}
+
+#checkmark:after {
+  content: "";
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background-color: #fff;
+  left: 8px;
+  top: 12px;
 }

@@ -38,9 +38,10 @@ export const ProvidersProvider = ({
 
   const [providers, setProviders] = useState([]);
 
+  // TODO on backend add limit on query
   useEffect(() => {
     if (data?.providers) {
-      setProviders(data.providers);
+      setProviders(data.providers.slice(0, -1));
     }
   }, [data]);
 
