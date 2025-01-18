@@ -4,18 +4,15 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 export const fetchProviders = async () => {
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
-  console.log(apiUrl);
-  const response = await fetch(
-    "http://localhost:4000/v1/providers?location=San Rafael, California",
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer PTGBFCQDCVTZBLIQNFRTCCSE4Q`,
-      },
+  const baseApiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+  const apiUrl = baseApiUrl + "/v1/providers?location=San Rafael, California";
+  const response = await fetch(apiUrl, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer PTGBFCQDCVTZBLIQNFRTCCSE4Q`,
     },
-  );
+  });
 
   if (!response.ok) {
     throw new Error("Failed to fetch providers");
