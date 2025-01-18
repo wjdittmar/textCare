@@ -20,6 +20,7 @@ import {
 const queryClient = new QueryClient();
 
 const fetchProviders = async () => {
+  // Manually set the auth token (replace this with dynamic retrieval later)
   const response = await fetch(
     "http://localhost:4000/v1/providers?location=San Rafael, California",
     {
@@ -38,9 +39,6 @@ const fetchProviders = async () => {
   return response.json();
 };
 function ProvidersList() {
-  // Manually set the auth token (replace this with dynamic retrieval later)
-
-  // Use React Query's useQuery to fetch providers
   const { isPending, error, data, isFetching } = useQuery({
     queryKey: ["todos"],
     queryFn: fetchProviders,
@@ -62,7 +60,7 @@ function ProvidersList() {
         <h3>Choose your doctor</h3>
         <p>
           Your doctor will lead your care team and be your go-to care provider.
-          Choose yours from the options below.{" "}
+          Choose yours from the options below.
         </p>
         <Link className="buttonLink" href="/providers/confirm">
           Choose a Doctor for me

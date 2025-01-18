@@ -1,11 +1,9 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { useQuery, QueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
-const ProvidersContext = createContext(null);
-
-const fetchProviders = async () => {
+export const fetchProviders = async () => {
   const response = await fetch(
     "http://localhost:4000/v1/providers?location=San Rafael, California",
     {
@@ -24,7 +22,7 @@ const fetchProviders = async () => {
   return response.json();
 };
 
-const queryClient = new QueryClient();
+const ProvidersContext = createContext(null);
 
 export const ProvidersProvider = ({
   children,
@@ -33,13 +31,13 @@ export const ProvidersProvider = ({
 }) => {
   const [selectedProvider, setSelectedProvider] = useState(null);
 
-  // Use React Query to fetch providers
-  const { isPending, error, data, isFetching } = useQuery({
-    queryKey: ["todos"],
+  const { data, error, isLoading, isFetching } = useQuery({
+    queryKey: ["providers"],
     queryFn: fetchProviders,
   });
-  // Store providers in state after fetching
+
   const [providers, setProviders] = useState([]);
+
   useEffect(() => {
     if (data?.providers) {
       setProviders(data.providers);
@@ -53,6 +51,7 @@ export const ProvidersProvider = ({
         selectedProvider,
         setSelectedProvider,
         error,
+        isLoading,
         isFetching,
       }}
     >

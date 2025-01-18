@@ -24,18 +24,13 @@ export default function ConfirmPage() {
 
   return (
     <div>
-      {/* Back Button */}
       <Link href="/providers/choose" style={backButtonStyle}>
         <span style={arrowStyle}>&lt;</span>
       </Link>
 
       {selectedProvider ? (
         <div>
-          <h3>
-            {" "}
-            Great! Dr. {selectedProvider.name} will now be your provider.{" "}
-          </h3>
-
+          <h3>Great! Dr. {selectedProvider.name} will now be your provider.</h3>
           <p>Specialty: {selectedProvider.specialization}</p>
           <p>Education: {selectedProvider.education}</p>
         </div>

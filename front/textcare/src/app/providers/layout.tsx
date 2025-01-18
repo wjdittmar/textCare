@@ -1,12 +1,8 @@
 "use client";
 
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ProvidersProvider } from "../context/ProvidersContext";
 import { ProgressTracker } from "../components/ProgressTracker";
 import React from "react";
-
-// Create a QueryClient instance
-const queryClient = new QueryClient();
 
 export default function ProvidersLayout({
   children,
@@ -20,17 +16,15 @@ export default function ProvidersLayout({
   ];
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <ProvidersProvider>
-        <div className="page-container">
-          <div className="centered-div">
-            <div className="providerBox">
-              <ProgressTracker steps={steps} currentStepIndex={0} />
-              {children}
-            </div>
+    <ProvidersProvider>
+      <div className="page-container">
+        <div className="centered-div">
+          <div className="providerBox">
+            <ProgressTracker steps={steps} currentStepIndex={0} />
+            {children}
           </div>
         </div>
-      </ProvidersProvider>
-    </QueryClientProvider>
+      </div>
+    </ProvidersProvider>
   );
 }

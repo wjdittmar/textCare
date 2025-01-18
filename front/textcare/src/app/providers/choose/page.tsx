@@ -1,7 +1,6 @@
 "use client";
 
 import { useProvidersContext } from "../../context/ProvidersContext";
-
 import { Card } from "../../components/Card";
 import Link from "next/link";
 
