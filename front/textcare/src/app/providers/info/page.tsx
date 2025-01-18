@@ -1,11 +1,11 @@
 "use client";
 
-import Link from "next/link";
-import Image from "next/image";
-
+import { Button } from "@/app/components/Button";
+import { Header } from "@/app/components/Header";
 export default function InfoPage() {
   return (
     <div>
+      <Header />
       <div className="sectionHeader">
         <h3>Meet the team behind your care</h3>
         <p>
@@ -23,6 +23,9 @@ export default function InfoPage() {
         width="375"
         style={{ marginLeft: "-20px" }}
       />
+      <Button href="/providers/choose" variant="secondary">
+        Next
+      </Button>
     </div>
   );
 }

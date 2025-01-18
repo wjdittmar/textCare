@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useProvidersContext } from "../../context/ProvidersContext";
-
+import { Header } from "@/app/components/Header";
 export default function ConfirmPage() {
   const { selectedProvider } = useProvidersContext();
 
@@ -23,16 +23,18 @@ export default function ConfirmPage() {
   };
 
   return (
-    <div>
-      <Link href="/providers/choose" style={backButtonStyle}>
-        <span style={arrowStyle}>&lt;</span>
-      </Link>
+    <div style={{ display: "flex", flex: 1, flexDirection: "column" }}>
+      <Header includeBack={true} backHref="/providers/choose" />
 
       {selectedProvider ? (
         <div>
           <h3>Great! Dr. {selectedProvider.name} will now be your provider.</h3>
-          <p>Specialty: {selectedProvider.specialization}</p>
-          <p>Education: {selectedProvider.education}</p>
+          <div>
+            <img src="/placeholder_selected_provider.png" />
+            <p> Dr. {selectedProvider.name} </p>
+            <p>Specialty: {selectedProvider.specialization}</p>
+            <p>Education: {selectedProvider.education}</p>
+          </div>
         </div>
       ) : (
         <p>No provider selected. Go back and choose one.</p>

@@ -3,6 +3,7 @@
 import { useProvidersContext } from "../../context/ProvidersContext";
 import { Card } from "../../components/Card";
 import { Button } from "../../components/Button";
+import { Header } from "../../components/Header";
 import Link from "next/link";
 
 export default function ChooseProviderPage() {
@@ -14,6 +15,7 @@ export default function ChooseProviderPage() {
 
   return (
     <>
+      <Header includeBack={true} backHref="/providers/info" />
       <div className="sectionHeader">
         <h3>Choose your doctor</h3>
         <p>

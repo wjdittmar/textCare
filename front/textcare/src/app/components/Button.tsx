@@ -12,7 +12,7 @@ export const Button = ({
     padding: " 12px 24px 12px 24px",
     gap: "10px",
     borderRadius: "24px",
-    background: "#ffdecc",
+    //background: "#ffdecc",
     border: "1px solid #f5b38e",
     display: "flex",
     justifyContent: "center",
@@ -28,10 +28,12 @@ export const Button = ({
     primary: {
       backgroundColor: "#F5B38E",
       color: "#433534",
+      background: "#FFDECC",
     },
     secondary: {
-      backgroundColor: "#FF594D",
+      backgroundColor: "#FFDECC",
       color: "#F5F5F5",
+      background: "#FF594D",
     },
   };
 

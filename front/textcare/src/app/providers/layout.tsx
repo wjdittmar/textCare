@@ -21,7 +21,7 @@ export default function ProvidersLayout({
       <div className="page-container">
         <div className="centered-div">
           <div className="providerBox">
-            <ProgressTracker steps={steps} currentStepIndex={0} />
+            {/* <ProgressTracker steps={steps} currentStepIndex={0} /> */}
             {children}
           </div>
         </div>
