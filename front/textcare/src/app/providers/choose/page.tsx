@@ -2,6 +2,7 @@
 
 import { useProvidersContext } from "../../context/ProvidersContext";
 import { Card } from "../../components/Card";
+import { Button } from "../../components/Button";
 import Link from "next/link";
 
 export default function ChooseProviderPage() {
@@ -13,25 +14,16 @@ export default function ChooseProviderPage() {
 
   return (
     <>
-      <h3>Choose your doctor</h3>
-      <p style={{ padding: "10px 0px" }}>
-        Your doctor will lead your care team and be your go-to care provider.
-        Choose yours from the options below.
-      </p>
-      <div style={{ minHeight: "44px" }}>
-        {
-          <Link
-            className="buttonLink"
-            href="/providers/confirm"
-            style={{
-              backgroundColor: "#F5B38E",
-              color: "#433534",
-            }}
-          >
-            Choose a Doctor for Me
-          </Link>
-        }
+      <div className="sectionHeader">
+        <h3>Choose your doctor</h3>
+        <p>
+          Your doctor will lead your care team and be your go-to care provider.
+          Choose yours from the options below.
+        </p>
       </div>
+      <Button href="/providers/confirm" variant="primary">
+        Choose a Doctor for Me
+      </Button>
       <ul className="provider">
         {providers.map((provider) => (
           <Card
@@ -50,16 +42,9 @@ export default function ChooseProviderPage() {
       </ul>
       <div style={{ minHeight: "44px" }}>
         {selectedProvider && (
-          <Link
-            className="buttonLink"
-            href="/providers/confirm"
-            style={{
-              backgroundColor: "#FF594D",
-              color: "#F5F5F5",
-            }}
-          >
+          <Button href="/providers/confirm" variant="secondary">
             Choose this Doctor
-          </Link>
+          </Button>
         )}
       </div>
     </>
