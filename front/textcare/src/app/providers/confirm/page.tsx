@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useProvidersContext } from "../../context/ProvidersContext";
 import { Header } from "@/app/components/Header";
 export default function ConfirmPage() {
@@ -29,9 +28,12 @@ export default function ConfirmPage() {
       {selectedProvider ? (
         <div>
           <h3>Great! Dr. {selectedProvider.name} will now be your provider.</h3>
-          <div>
+          <div style={{ padding: "150px 0px", margin: "auto", width: "58%" }}>
             <img src="/placeholder_selected_provider.png" />
-            <p> Dr. {selectedProvider.name} </p>
+            <h4 style={{ textAlign: "center" }}>
+              {" "}
+              Dr. {selectedProvider.name}{" "}
+            </h4>
             <p>Specialty: {selectedProvider.specialization}</p>
             <p>Education: {selectedProvider.education}</p>
           </div>
