@@ -4,11 +4,21 @@ import { useProvidersContext } from "../../context/ProvidersContext";
 import { Card } from "../../components/Card";
 import { Button } from "../../components/Button";
 import { Header } from "../../components/Header";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function ChooseProviderPage() {
   const { providers, selectedProvider, setSelectedProvider, isLoading, error } =
     useProvidersContext();
+  const router = useRouter();
+
+  const chooseRandomProvider = () => {
+    if (providers.length > 0) {
+      const randomProvider =
+        providers[Math.floor(Math.random() * providers.length)];
+      setSelectedProvider(randomProvider);
+      router.push("/providers/confirm");
+    }
+  };
 
   if (isLoading) return <p>Loading providers...</p>;
   if (error) return <p>Failed to load providers: {error.message}</p>;
@@ -23,7 +33,7 @@ export default function ChooseProviderPage() {
           Choose yours from the options below.
         </p>
       </div>
-      <Button href="/providers/confirm" variant="primary">
+      <Button variant="primary" onClick={chooseRandomProvider}>
         Choose a Doctor for Me
       </Button>
       <ul className="provider">
