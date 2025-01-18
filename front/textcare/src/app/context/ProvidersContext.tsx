@@ -4,6 +4,8 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 export const fetchProviders = async () => {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+  console.log(apiUrl);
   const response = await fetch(
     "http://localhost:4000/v1/providers?location=San Rafael, California",
     {
