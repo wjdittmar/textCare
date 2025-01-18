@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 export const fetchProviders = async () => {
   const baseApiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
   const apiUrl = baseApiUrl + "/v1/providers?location=San Rafael, California";
+  // TODO get auth token based on logged in user
   const response = await fetch(apiUrl, {
     method: "GET",
     headers: {

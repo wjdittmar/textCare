@@ -6,7 +6,6 @@ export const ProgressTracker = ({ steps, currentStepIndex }) => {
       style={{
         display: "flex",
         alignItems: "center",
-        //gap: "8px",
         justifyContent: "space-between",
         padding: "10px 0px",
       }}
