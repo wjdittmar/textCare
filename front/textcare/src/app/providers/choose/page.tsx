@@ -38,7 +38,13 @@ export default function ChooseProviderPage() {
             key={provider.id}
             provider={provider}
             isSelected={selectedProvider?.id === provider.id}
-            onSelect={() => setSelectedProvider(provider)}
+            onSelect={() => {
+              if (selectedProvider?.id !== provider.id) {
+                setSelectedProvider(provider);
+              } else {
+                setSelectedProvider(null);
+              }
+            }}
           />
         ))}
       </ul>
