@@ -6,6 +6,7 @@ export const Card = ({ provider, isSelected, onSelect }) => {
       style={{
         border: isSelected ? "1px solid #F5B38E" : "1px solid gray",
         cursor: "pointer",
+        display: "flex",
       }}
     >
       <li key={provider.id}>
@@ -15,6 +16,10 @@ export const Card = ({ provider, isSelected, onSelect }) => {
         {/* placeholder */}
         <a style={{ color: "#FF594D", fontWeight: "bold" }}> More about me </a>
       </li>
+      <span
+        id="checkmark"
+        className={`${isSelected ? "selected" : "notSelected"}`}
+      />
     </div>
   );
 };

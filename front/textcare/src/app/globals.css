@@ -128,6 +128,12 @@ a.buttonLink {
   -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
   transform: rotate(45deg);
 }
+#checkmark.selected {
+  background: #4ead85;
+}
+#checkmark.notSelected {
+  background: #dbe1ec;
+}
 
 #checkmark:before {
   content: "";
