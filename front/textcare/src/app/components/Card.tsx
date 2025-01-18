@@ -4,7 +4,7 @@ export const Card = ({ provider, isSelected, onSelect }) => {
       className={`card ${isSelected ? "selected" : ""}`}
       onClick={onSelect}
       style={{
-        border: isSelected ? "2px solid blue" : "1px solid gray",
+        border: isSelected ? "1px solid #F5B38E" : "1px solid gray",
         cursor: "pointer",
       }}
     >
