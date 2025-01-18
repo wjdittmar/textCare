@@ -24,17 +24,20 @@ export default function ChooseProviderPage() {
           />
         ))}
       </ul>
-      {selectedProvider && (
-        <Link
-          className="buttonLink"
-          href="/providers/confirm"
-          style={{
-            backgroundColor: "#FF594D",
-          }}
-        >
-          Choose this Doctor
-        </Link>
-      )}
+      <div style={{ minHeight: "75px" }}>
+        {selectedProvider && (
+          <Link
+            className="buttonLink"
+            href="/providers/confirm"
+            style={{
+              backgroundColor: "#FF594D",
+              color: "#F5F5F5",
+            }}
+          >
+            Choose this Doctor
+          </Link>
+        )}
+      </div>
     </>
   );
 }

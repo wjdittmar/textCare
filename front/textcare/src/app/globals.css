@@ -103,8 +103,6 @@ p.small {
 
 button,
 a.buttonLink {
-  margin-top: 15px;
-  margin-bottom: 15px;
   padding: 12px 24px 12px 24px;
   gap: 10px;
   border-radius: 24px;
