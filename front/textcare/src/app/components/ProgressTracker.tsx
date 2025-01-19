@@ -19,10 +19,10 @@ export const ProgressTracker = ({ steps, currentStepIndex }) => {
                 height: "2px",
                 width: "80px",
                 background: `linear-gradient(
-                  to left,
-                  ${index < currentStepIndex ? "#6079A1" : "#e0e0e0"} 50%,
-                  ${index === currentStepIndex ? "#6079A1" : "#e0e0e0"} 50%
-                )`,
+            to left,
+            ${index < currentStepIndex ? "#6079A1" : "#e0e0e0"} 50%,
+            ${index <= currentStepIndex ? "#6079A1" : "#e0e0e0"} 50%
+          )`,
               }}
             ></div>
           )}
