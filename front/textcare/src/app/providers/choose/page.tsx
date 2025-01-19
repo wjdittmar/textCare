@@ -5,16 +5,21 @@ import { Card } from "../../components/Card";
 import { Button } from "../../components/Button";
 import { Header } from "../../components/Header";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function ChooseProviderPage() {
   const { providers, selectedProvider, setSelectedProvider, isLoading, error } =
     useProvidersContext();
   const router = useRouter();
+  // so that the screen doesn't blink and we update
+  // the UI after navigating to the following page
+  const [isChoosing, setIsChoosing] = useState(false);
 
   const chooseRandomProvider = () => {
     if (providers.length > 0) {
       const randomProvider =
         providers[Math.floor(Math.random() * providers.length)];
+      setIsChoosing(true);
       setSelectedProvider(randomProvider);
       router.push("/providers/confirm");
     }
@@ -41,7 +46,7 @@ export default function ChooseProviderPage() {
           <Card
             key={provider.id}
             provider={provider}
-            isSelected={selectedProvider?.id === provider.id}
+            isSelected={!isChoosing && selectedProvider?.id === provider.id} // Suppress updates during selection
             onSelect={() => {
               if (selectedProvider?.id !== provider.id) {
                 setSelectedProvider(provider);
@@ -53,7 +58,7 @@ export default function ChooseProviderPage() {
         ))}
       </ul>
       <div style={{ minHeight: "44px" }}>
-        {selectedProvider && (
+        {selectedProvider && !isChoosing && (
           <Button href="/providers/confirm" variant="secondary">
             Choose this Doctor
           </Button>
