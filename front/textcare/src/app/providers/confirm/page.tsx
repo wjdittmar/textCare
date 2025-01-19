@@ -4,11 +4,11 @@ import { useProvidersContext } from "../../context/ProvidersContext";
 import { Header } from "@/app/components/Header";
 import { getPicturePath } from "@/lib/stringUtils";
 import { useEffect, useState } from "react";
+import { Button } from "@/app/components/Button";
 
 export default function ConfirmPage() {
   const { selectedProvider, setSelectedProvider } = useProvidersContext();
   const [isLoading, setIsLoading] = useState(true);
-
   useEffect(() => {
     if (!selectedProvider) {
       const savedProvider = localStorage.getItem("selectedProvider");
@@ -27,6 +27,7 @@ export default function ConfirmPage() {
 
   return (
     <div style={{ display: "flex", flex: 1, flexDirection: "column" }}>
+      {/* do we want to support a back button here? assuming we do, so won't persist selected pcp until they select next */}
       <Header includeBack={true} backHref="/providers/choose" />
 
       {selectedProvider ? (
@@ -48,6 +49,9 @@ export default function ConfirmPage() {
       ) : (
         <p>No provider selected. Go back and choose one.</p>
       )}
+      <Button href="" variant="secondary">
+        Next
+      </Button>
     </div>
   );
 }
