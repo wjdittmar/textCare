@@ -34,7 +34,7 @@ export const Header = ({ includeBack = false, backHref = "" }) => {
           <span style={arrowStyle}>&lt;</span>
         </span>
       )}
-      <ProgressTracker steps={steps} currentStepIndex={0} />
+      <ProgressTracker steps={steps} currentStepIndex={1} />
     </>
   );
 };

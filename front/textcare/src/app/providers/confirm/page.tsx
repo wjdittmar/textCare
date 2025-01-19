@@ -2,6 +2,7 @@
 
 import { useProvidersContext } from "../../context/ProvidersContext";
 import { Header } from "@/app/components/Header";
+import { getPicturePath } from "@/lib/stringUtils";
 export default function ConfirmPage() {
   const { selectedProvider } = useProvidersContext();
 
@@ -21,8 +22,7 @@ export default function ConfirmPage() {
     marginRight: "0.5rem",
   };
 
-    // need to call the API to update the member's PCP
-
+  // need to call the API to update the member's PCP
 
   return (
     <div style={{ display: "flex", flex: 1, flexDirection: "column" }}>
@@ -32,7 +32,7 @@ export default function ConfirmPage() {
         <div>
           <h3>Great! Dr. {selectedProvider.name} will now be your provider.</h3>
           <div style={{ padding: "150px 0px", margin: "auto", width: "58%" }}>
-            <img src="/placeholder_selected_provider.png" />
+            <img src={getPicturePath(selectedProvider.name, "large")} />
             <h4 style={{ textAlign: "center" }}>
               {" "}
               Dr. {selectedProvider.name}{" "}
