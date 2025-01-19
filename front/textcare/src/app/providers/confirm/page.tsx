@@ -3,26 +3,27 @@
 import { useProvidersContext } from "../../context/ProvidersContext";
 import { Header } from "@/app/components/Header";
 import { getPicturePath } from "@/lib/stringUtils";
+import { useEffect, useState } from "react";
+
 export default function ConfirmPage() {
-  const { selectedProvider } = useProvidersContext();
+  const { selectedProvider, setSelectedProvider } = useProvidersContext();
+  const [isLoading, setIsLoading] = useState(true);
 
-  const backButtonStyle = {
-    display: "inline-flex",
-    alignItems: "center",
-    fontSize: "1.5rem",
-    color: "#333",
-    textDecoration: "none",
-    margin: "20px 0px",
-    cursor: "pointer",
-    transition: "color 0.2s ease",
-  };
+  useEffect(() => {
+    if (!selectedProvider) {
+      const savedProvider = localStorage.getItem("selectedProvider");
+      if (savedProvider) {
+        setSelectedProvider(JSON.parse(savedProvider)); // Update context with persisted provider
+      }
+    }
+    setIsLoading(false);
+  }, [selectedProvider, setSelectedProvider]);
 
-  const arrowStyle = {
-    fontWeight: "bold",
-    marginRight: "0.5rem",
-  };
-
-  // need to call the API to update the member's PCP
+  // TODO improve performance of reloading from local storage, it takes too long right now
+  if (isLoading) {
+    return <p>Loading provider...</p>;
+  }
+  // TODO persist the selected provider
 
   return (
     <div style={{ display: "flex", flex: 1, flexDirection: "column" }}>
@@ -32,7 +33,10 @@ export default function ConfirmPage() {
         <div>
           <h3>Great! Dr. {selectedProvider.name} will now be your provider.</h3>
           <div style={{ padding: "150px 0px", margin: "auto", width: "58%" }}>
-            <img src={getPicturePath(selectedProvider.name, "large")} />
+            <img
+              src={getPicturePath(selectedProvider.name, "large")}
+              alt={`Dr. ${selectedProvider.name}`}
+            />
             <h4 style={{ textAlign: "center" }}>
               {" "}
               Dr. {selectedProvider.name}{" "}

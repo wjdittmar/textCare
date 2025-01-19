@@ -5,15 +5,30 @@ import { Card } from "../../components/Card";
 import { Button } from "../../components/Button";
 import { Header } from "../../components/Header";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function ChooseProviderPage() {
   const { providers, selectedProvider, setSelectedProvider, isLoading, error } =
     useProvidersContext();
   const router = useRouter();
-  // so that the screen doesn't blink and we update
-  // the UI after navigating to the following page
-  const [isChoosing, setIsChoosing] = useState(false);
+  const [isChoosing, setIsChoosing] = useState(false); // don't update UI if they select choose for me
+
+  // save to local storage to reload it if user refreshes
+  useEffect(() => {
+    if (selectedProvider) {
+      localStorage.setItem(
+        "selectedProvider",
+        JSON.stringify(selectedProvider),
+      );
+    }
+  }, [selectedProvider]);
+
+  useEffect(() => {
+    const savedProvider = localStorage.getItem("selectedProvider");
+    if (savedProvider) {
+      setSelectedProvider(JSON.parse(savedProvider));
+    }
+  }, [setSelectedProvider]);
 
   const chooseRandomProvider = () => {
     if (providers.length > 0) {
