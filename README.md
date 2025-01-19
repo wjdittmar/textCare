@@ -12,3 +12,18 @@ Live site is at https://textcare.onrender.com/
 
 ## Frontend Notes
 - React / Next.js
+
+### TODO
+
+#### common
+- user login / use appropriate token for submitting requests-
+
+#### provider selection step
+- move doctor selection step layout to a parent component onboarding so we can share the layout with the medical condition step
+- persist PCP selection to DB
+
+#### conditions step
+- backend API for ICD10 autocomplete
+- frontend component for autocomplete 
+- multiselect component for conditions step
+- removable components for confirm conditions step
