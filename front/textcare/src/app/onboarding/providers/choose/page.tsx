@@ -1,11 +1,12 @@
 "use client";
 
-import { useProvidersContext } from "../../context/ProvidersContext";
-import { Card } from "../../components/Card";
-import { Button } from "../../components/Button";
-import { Header } from "../../components/Header";
+import { useProvidersContext } from "../../../context/ProvidersContext";
+import { Card } from "../../../components/Card";
+import { Button } from "../../../components/Button";
+import { Header } from "../../../components/Header";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 export default function ChooseProviderPage() {
   const { providers, selectedProvider, setSelectedProvider, isLoading, error } =
@@ -36,7 +37,7 @@ export default function ChooseProviderPage() {
         providers[Math.floor(Math.random() * providers.length)];
       setIsChoosing(true);
       setSelectedProvider(randomProvider);
-      router.push("/providers/confirm");
+      router.push("/onboarding/providers/confirm");
     }
   };
 
@@ -45,7 +46,7 @@ export default function ChooseProviderPage() {
 
   return (
     <>
-      <Header includeBack={true} backHref="/providers/info" />
+      <Header includeBack={true} backHref="/onboarding/providers/info" />
       <div className="sectionHeader">
         <h3>Choose your doctor</h3>
         <p>
@@ -74,7 +75,7 @@ export default function ChooseProviderPage() {
       </ul>
       <div style={{ minHeight: "44px" }}>
         {selectedProvider && !isChoosing && (
-          <Button href="/providers/confirm" variant="secondary">
+          <Button href="/onboarding/providers/confirm" variant="secondary">
             Choose this Doctor
           </Button>
         )}

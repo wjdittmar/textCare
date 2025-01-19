@@ -23,7 +23,7 @@ export default function InfoPage() {
         width="375"
         style={{ marginLeft: "-20px" }}
       />
-      <Button href="/providers/choose" variant="secondary">
+      <Button href="/onboarding/providers/choose" variant="secondary">
         Next
       </Button>
     </div>

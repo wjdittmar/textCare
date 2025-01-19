@@ -1,6 +1,6 @@
 "use client";
 
-import { useProvidersContext } from "../../context/ProvidersContext";
+import { useProvidersContext } from "@/app/context/ProvidersContext";
 import { Header } from "@/app/components/Header";
 import { getPicturePath } from "@/lib/stringUtils";
 import { useEffect, useState } from "react";
@@ -28,7 +28,7 @@ export default function ConfirmPage() {
   return (
     <div style={{ display: "flex", flex: 1, flexDirection: "column" }}>
       {/* do we want to support a back button here? assuming we do, so won't persist selected pcp until they select next */}
-      <Header includeBack={true} backHref="/providers/choose" />
+      <Header includeBack={true} backHref="/onboarding/providers/choose" />
 
       {selectedProvider ? (
         <div>
@@ -49,7 +49,7 @@ export default function ConfirmPage() {
       ) : (
         <p>No provider selected. Go back and choose one.</p>
       )}
-      <Button href="" variant="secondary">
+      <Button href="/onboarding/conditions/aware" variant="secondary">
         Next
       </Button>
     </div>

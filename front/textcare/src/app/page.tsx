@@ -16,8 +16,8 @@ export default function Home() {
   return (
     <div className="page-container">
       <div className="centered-div">
-        <div className="providerBox">
-          <Link className="buttonLink" href="/providers/info">
+        <div className="onboardingBox">
+          <Link className="buttonLink" href="/onboarding/providers/info">
             Start Here
           </Link>
         </div>

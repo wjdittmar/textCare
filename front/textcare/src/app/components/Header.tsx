@@ -1,7 +1,11 @@
 import Link from "next/link";
 import { ProgressTracker } from "./ProgressTracker";
 
-export const Header = ({ includeBack = false, backHref = "" }) => {
+export const Header = ({
+  includeBack = false,
+  backHref = "",
+  currentStep = 1,
+}) => {
   const backButtonStyle = {
     display: "inline-flex",
     alignItems: "center",
@@ -23,6 +27,8 @@ export const Header = ({ includeBack = false, backHref = "" }) => {
     "Step 4: Filler",
   ];
 
+  // TODO update header to bring in step from onboarding context
+
   return (
     <>
       {includeBack ? (
@@ -34,7 +40,7 @@ export const Header = ({ includeBack = false, backHref = "" }) => {
           <span style={arrowStyle}>&lt;</span>
         </span>
       )}
-      <ProgressTracker steps={steps} currentStepIndex={1} />
+      <ProgressTracker steps={steps} currentStepIndex={currentStep} />
     </>
   );
 };
