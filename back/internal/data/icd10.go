@@ -7,7 +7,7 @@ import (
 )
 
 type ICD10 struct {
-	Code string `json:"code"`
+	Code string `json:"-"`
 	Desc string `json:"desc"`
 }
 
