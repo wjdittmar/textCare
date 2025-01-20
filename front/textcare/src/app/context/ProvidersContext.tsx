@@ -11,7 +11,7 @@ export const fetchProviders = async () => {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer OLZEXGBJ7TSXQMXBIYMINFRGLE`,
+      Authorization: `Bearer LDBQTEDKOL5TK44GWFRGROGNDU`,
     },
   });
 
