@@ -21,6 +21,9 @@ func (app *application) routes() http.Handler {
 	router.HandlerFunc(http.MethodPost, "/v1/users", app.registerUserHandler)
 	router.HandlerFunc(http.MethodPost, "/v1/tokens/authentication", app.createAuthenticationTokenHandler)
 
+	router.HandlerFunc(http.MethodGet, "/v1/icd10", app.getIcd10Handler)
+
+
 	// serve the nextjs frontend
 	router.NotFound = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		outDir := "../front/textcare/out"
