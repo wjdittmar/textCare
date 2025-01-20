@@ -23,7 +23,7 @@ Live site is at https://textcare.onrender.com/
 - persist PCP selection to DB
 
 #### conditions step
-- backend API for ICD10 autocomplete
+- backend API for ICD10 autocomplete -- ICD10 codes may not be the best choice here, need to find a dataset that has more patient-friendly terms and less specificity (e.g. probably not important at this stage to have patient differentiate between 10 different types of migraine) -- this is currently implemented as an in-memory map but could transition to something more sophisticated to support additional types of queries 
 - frontend component for autocomplete 
 - multiselect component for conditions step
 - removable components for confirm conditions step
