@@ -16,7 +16,7 @@ Live site is at https://textcare.onrender.com/
 ### TODO
 
 #### common
-- user login / use appropriate token for submitting requests
+- user login / use appropriate token for submitting requests, refresh token
 
 #### provider selection step
 - <s>move doctor selection step layout to a parent component onboarding so we can share the layout with the medical condition step</s>
