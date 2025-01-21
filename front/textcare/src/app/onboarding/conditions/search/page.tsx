@@ -20,8 +20,8 @@ export default function SearchPage() {
 
       <AutoComplete
         apiURL={apiUrl}
-        selectedConditions={selectedConditions} // Pass current selection from context
-        toggleCondition={toggleCondition} // Pass toggle function from context
+        selectedConditions={selectedConditions}
+        toggleCondition={toggleCondition}
       />
 
       <button disabled={selectedConditions.length === 0}>
