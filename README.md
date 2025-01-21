@@ -36,18 +36,6 @@ Go / Postgres / Next.Js
   - Scalable architecture
   - Consistency > availability for medical data
 
-<<<<<<< Updated upstream
-#### provider selection step
-- <s>move doctor selection step layout to a parent component onboarding so we can share the layout with the medical condition step</s>
-- persist PCP selection to DB
-- geospatial searching for providers
-
-#### conditions step
-- <s> backend API for ICD10 autocomplete </s> -- ICD10 codes may not be the best choice here, need to find a dataset that has more patient-friendly terms and less specificity  (e.g. probably not important at this stage to have patient differentiate between 10 different types of migraine)
-- <s>frontend component for autocomplete </s>
-- <s>multiselect component for conditions step </s>
-- removable components for confirm conditions step
-=======
 ## Backend To Do
 
 - <s>Routing </s>
@@ -60,7 +48,7 @@ Go / Postgres / Next.Js
 - ?Prescriptions integration
 - ?Scheduling
 - ? APN / Firebase integration
-- Autocomplete API -- investigate alternatives to ICD 10
+- Autocomplete API -- investigate alternatives to ICD 10 that would have patient-friendly names 
 - Geospatial indexing ? (no, state-level matching for provider for a telemedicine platform should be enough)
 
 ## Frontend To Do
@@ -86,4 +74,3 @@ Go / Postgres / Next.Js
 ## Data To Do
 
 - ETL pipeline to prepare business metrics
->>>>>>> Stashed changes
