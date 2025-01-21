@@ -148,6 +148,7 @@ func (app *application) updateProviderHandler(w http.ResponseWriter, r *http.Req
 }
 
 func (app *application) listProvidersHandler(w http.ResponseWriter, r *http.Request) {
+
 	var input struct {
 		Location string
 	}

@@ -1,12 +1,15 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { SelectableInput } from "./SelectableInput";
 
 interface AutoCompleteProps {
   apiURL: string;
   placeholder?: string;
   queryLimit?: number;
   debounceDuration?: number;
+  selectedConditions: string[]; // New prop: list of selected conditions
+  toggleCondition: (condition: string) => void; // New prop: function to toggle selection
 }
 
 export function AutoComplete({
@@ -14,6 +17,8 @@ export function AutoComplete({
   placeholder = "Search ICD-10 codes...",
   queryLimit = 10,
   debounceDuration = 300,
+  selectedConditions,
+  toggleCondition,
 }: AutoCompleteProps) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<string[]>([]);
@@ -21,7 +26,7 @@ export function AutoComplete({
   const [error, setError] = useState<string | null>(null);
   const [debouncedQuery, setDebouncedQuery] = useState(query);
 
-  // Debounce effect
+  // Debounce the input query
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedQuery(query);
@@ -30,6 +35,7 @@ export function AutoComplete({
     return () => clearTimeout(handler);
   }, [query, debounceDuration]);
 
+  // Fetch data when the debounced query changes
   useEffect(() => {
     if (!debouncedQuery) {
       setResults([]);
@@ -47,13 +53,12 @@ export function AutoComplete({
           throw new Error("Failed to fetch data");
         }
         const data = await response.json();
-        console.log(data);
         if (data.icd10codes) {
           setResults(data.icd10codes.map((item: any) => item.desc));
         } else {
           setResults([]);
         }
-      } catch (err) {
+      } catch (err: any) {
         setError(err.message);
       } finally {
         setIsLoading(false);
@@ -76,10 +81,13 @@ export function AutoComplete({
       {error && <div className="autocomplete-error">{error}</div>}
       {results.length > 0 && (
         <ul className="autocomplete-results">
-          {results.map((desc, index) => (
-            <li key={index} className="autocomplete-result-item">
-              {desc}
-            </li>
+          {results.map((desc) => (
+            <SelectableInput
+              key={desc}
+              text={desc}
+              isSelected={selectedConditions.includes(desc)}
+              onSelect={() => toggleCondition(desc)}
+            />
           ))}
         </ul>
       )}
