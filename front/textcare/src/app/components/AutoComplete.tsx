@@ -8,8 +8,8 @@ interface AutoCompleteProps {
   placeholder?: string;
   queryLimit?: number;
   debounceDuration?: number;
-  selectedConditions: string[]; // New prop: list of selected conditions
-  toggleCondition: (condition: string) => void; // New prop: function to toggle selection
+  selectedConditions: string[];
+  toggleCondition: (condition: string) => void;
 }
 
 export function AutoComplete({
@@ -26,7 +26,6 @@ export function AutoComplete({
   const [error, setError] = useState<string | null>(null);
   const [debouncedQuery, setDebouncedQuery] = useState(query);
 
-  // Debounce the input query
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedQuery(query);
@@ -35,7 +34,6 @@ export function AutoComplete({
     return () => clearTimeout(handler);
   }, [query, debounceDuration]);
 
-  // Fetch data when the debounced query changes
   useEffect(() => {
     if (!debouncedQuery) {
       setResults([]);

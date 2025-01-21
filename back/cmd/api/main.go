@@ -44,7 +44,6 @@ func main() {
 	flag.StringVar(&cfg.env, "env", "development", "Environment (development|staging|production)")
 
 	cfg.db.dsn = os.Getenv("DB_DSN")
-	cfg.db.dsn = "postgresql://textcare_user:eIOARiDfog3S86jtxT5Js7rdg3rorK5k@dpg-cu58on3v2p9s73bqehkg-a.oregon-postgres.render.com/textcare"
 
 	flag.IntVar(&cfg.db.maxOpenConns, "db-max-open-conns", 25, "PostgreSQL max open connections")
 	flag.IntVar(&cfg.db.maxIdleConns, "db-max-idle-conns", 25, "PostgreSQL max idle connections")
