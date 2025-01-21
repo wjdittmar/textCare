@@ -3,14 +3,12 @@
 import { Button } from "@/app/components/Button";
 import { Header } from "@/app/components/Header";
 import { ChipList } from "@/app/components/ChipList";
-import { useConditions } from "@/app/context/ConditionsContext"; // Import the context hook
+import { useConditions } from "@/app/context/ConditionsContext";
 
 export default function ConfirmPage() {
-  // Access the selected conditions and the setConditions function
   const { selectedConditions, setConditions } = useConditions();
 
   const handleChipsChange = (updatedChips) => {
-    // Directly set the conditions in the context
     setConditions(updatedChips);
   };
 
@@ -21,8 +19,8 @@ export default function ConfirmPage() {
         <h3>Confirm your medical conditions</h3>
       </div>
       <ChipList
-        initialChips={selectedConditions} // Populate ChipList from context
-        onChipsChange={handleChipsChange} // Sync ChipList changes with context
+        initialChips={selectedConditions}
+        onChipsChange={handleChipsChange}
       />
       <Button href="/onboarding/conditions/search" variant="primary">
         + Medical Conditions
