@@ -12,7 +12,6 @@ export const Button = ({
     padding: " 12px 24px 12px 24px",
     gap: "10px",
     borderRadius: "24px",
-    //background: "#ffdecc",
     border: "1px solid #f5b38e",
     display: "flex",
     justifyContent: "center",
