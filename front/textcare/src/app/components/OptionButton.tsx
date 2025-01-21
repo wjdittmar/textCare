@@ -24,12 +24,22 @@ export const OptionButton = ({ label, isSelected, onSelect }) => {
 
   return (
     <div style={divStyle}>
-      <img
-        height="24px"
-        width="24px"
-        src="/enabled_selected.png"
-        alt="selected"
-      />
+      {isSelected && (
+        <img
+          height="24px"
+          width="24px"
+          src="/enabled_selected.png"
+          alt="selected"
+        />
+      )}
+      {!isSelected && (
+        <img
+          height="24px"
+          width="24px"
+          src="/enabled_unselected.png"
+          alt="selected"
+        />
+      )}
       <button style={buttonStyle} onClick={() => onSelect(label)}>
         {label}
       </button>
