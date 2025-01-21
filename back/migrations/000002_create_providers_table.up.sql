@@ -1,5 +1,5 @@
 CREATE TABLE providers (
-id bigserial PRIMARY KEY,
+    id bigserial PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     specialization VARCHAR(255),
     education VARCHAR(255),
