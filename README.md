@@ -45,7 +45,7 @@ Go / Postgres / Next.Js
 - <s>Patient / provider editing end points </s>
 - Seed fake data
 - ?Payments integration
-- ?Prescriptions integration
+- ?Prescriptions integration (photon health?)
 - ?Scheduling
 - ? APN / Firebase integration
 - Autocomplete API -- investigate alternatives to ICD 10 that would have patient-friendly names 
