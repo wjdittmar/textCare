@@ -164,3 +164,9 @@ a.buttonLink {
 .sectionHeader > p {
   padding: 10px 0px;
 }
+
+label {
+  font-size: 12px;
+  font-weight: 700;
+  margin: 10px 0px;
+}
