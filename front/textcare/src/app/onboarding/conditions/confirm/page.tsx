@@ -25,7 +25,7 @@ export default function ConfirmPage() {
       <Button href="/onboarding/conditions/search" variant="primary">
         + Medical Conditions
       </Button>
-      <Button href="" variant="secondary">
+      <Button href="" variant="secondary" style={{ marginTop: "auto" }}>
         Next
       </Button>
     </>

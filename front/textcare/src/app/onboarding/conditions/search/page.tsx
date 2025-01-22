@@ -24,7 +24,10 @@ export default function SearchPage() {
         toggleCondition={toggleCondition}
       />
 
-      <button disabled={selectedConditions.length === 0}>
+      <button
+        disabled={selectedConditions.length === 0}
+        style={{ marginTop: "auto" }}
+      >
         Continue ({selectedConditions.length} selected)
       </button>
     </div>

@@ -4,7 +4,7 @@ import { Button } from "@/app/components/Button";
 import { Header } from "@/app/components/Header";
 export default function InfoPage() {
   return (
-    <div>
+    <>
       <Header />
       <div className="sectionHeader">
         <h3>Meet the team behind your care</h3>
@@ -23,9 +23,13 @@ export default function InfoPage() {
         width="375"
         style={{ marginLeft: "-20px" }}
       />
-      <Button href="/onboarding/providers/choose" variant="secondary">
+      <Button
+        href="/onboarding/providers/choose"
+        variant="secondary"
+        style={{ marginTop: "auto" }}
+      >
         Next
       </Button>
-    </div>
+    </>
   );
 }

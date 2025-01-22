@@ -49,7 +49,11 @@ export default function ConfirmPage() {
       ) : (
         <p>No provider selected. Go back and choose one.</p>
       )}
-      <Button href="/onboarding/conditions/aware" variant="secondary">
+      <Button
+        href="/onboarding/conditions/aware"
+        variant="secondary"
+        style={{ marginTop: "auto" }}
+      >
         Next
       </Button>
     </div>
