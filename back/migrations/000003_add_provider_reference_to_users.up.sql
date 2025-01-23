@@ -1,2 +1,3 @@
 ALTER TABLE users
-ADD COLUMN provider_id bigserial REFERENCES providers(id);
+
+ADD COLUMN provider_id BIGINT REFERENCES providers(id) ON DELETE SET NULL;
