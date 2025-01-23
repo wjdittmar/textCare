@@ -2,14 +2,14 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
     output: "export",
+    // Change links `/me` -> `/me/` and emit `/me.html` -> `/me/index.html`
+    trailingSlash: true,
+    // allow project to build in production with ESLint errors
     eslint: {
-        // Warning: This allows production builds to successfully complete even if
-        // your project has ESLint errors.
         ignoreDuringBuilds: true,
     },
+    // allow project to build in production with ESLint errors
     typescript: {
-        // Warning: This allows production builds to successfully complete even if
-        // your project has type errors.
         ignoreBuildErrors: true,
     },
 };
