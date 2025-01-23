@@ -3,6 +3,8 @@
 import React, { useState, useEffect } from "react";
 import { SelectableInput } from "./SelectableInput";
 
+import { Input } from "./Input";
+
 interface AutoCompleteProps {
   apiURL: string;
   placeholder?: string;
@@ -68,7 +70,8 @@ export function AutoComplete({
 
   return (
     <div className="autocomplete-container">
-      <input
+      <Input
+
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}

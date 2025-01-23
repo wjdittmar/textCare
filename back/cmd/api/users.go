@@ -2,9 +2,11 @@ package main
 
 import (
 	"errors"
+
+	"net/http"
+
 	"github.com/wjdittmar/textCare/back/internal/data"
 	"github.com/wjdittmar/textCare/back/internal/validator"
-	"net/http"
 )
 
 func (app *application) registerUserHandler(w http.ResponseWriter, r *http.Request) {
@@ -31,7 +33,7 @@ func (app *application) registerUserHandler(w http.ResponseWriter, r *http.Reque
 	}
 	v := validator.New()
 
-	if data.ValidateUser(v, user); !v.Valid() {
+	if data.ValidateRegisterUser(v, user); !v.Valid() {
 		app.failedValidationResponse(w, r, v.Errors)
 		return
 	}
@@ -58,5 +60,48 @@ func (app *application) registerUserHandler(w http.ResponseWriter, r *http.Reque
 	err = app.writeJSON(w, http.StatusAccepted, envelope{"user": user}, nil)
 	if err != nil {
 		app.serverErrorResponse(w, r, err)
+	}
+}
+
+func (app *application) updateProviderForUser(w http.ResponseWriter, r *http.Request) {
+	userContext := app.contextGetUser(r)
+
+	user, err := app.models.Users.Get(userContext.ID)
+
+	if err != nil {
+		app.serverErrorResponse(w, r, err)
+	}
+
+	var input struct {
+		Name       *string `json:"name"`
+		Email      *string `json:"email"`
+		ProviderID *int64  `json:"provider_id"`
+	}
+
+	err = app.readJSON(w, r, &input)
+	if err != nil {
+		app.badRequestResponse(w, r, err)
+		return
+	}
+
+	if input.Name != nil {
+		user.Name = *input.Name
+	}
+	if input.Email != nil {
+		user.Email = *input.Email
+	}
+	if input.ProviderID != nil {
+		user.ProviderID = *input.ProviderID
+	}
+
+	v := validator.New()
+	if data.ValidateReturnUser(v, user); !v.Valid() {
+		app.failedValidationResponse(w, r, v.Errors)
+		return
+	}
+	err = app.models.Users.Update(user)
+	if err != nil {
+		app.serverErrorResponse(w, r, err)
+		return
 	}
 }

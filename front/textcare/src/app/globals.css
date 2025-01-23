@@ -42,6 +42,8 @@ ul {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   justify-content: center;
   display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 
 .card {
@@ -161,4 +163,10 @@ a.buttonLink {
 
 .sectionHeader > p {
   padding: 10px 0px;
+}
+
+label {
+  font-size: 12px;
+  font-weight: 700;
+  margin: 10px 0px;
 }

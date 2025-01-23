@@ -22,10 +22,14 @@ export default function ConfirmPage() {
         initialChips={selectedConditions}
         onChipsChange={handleChipsChange}
       />
-      <Button href="/onboarding/conditions/search" variant="primary">
+      <Button
+        href="/onboarding/conditions/search"
+        variant="primary"
+        style={{ marginBottom: "10px" }}
+      >
         + Medical Conditions
       </Button>
-      <Button href="" variant="secondary">
+      <Button href="" variant="secondary" style={{ marginTop: "auto" }}>
         Next
       </Button>
     </>
