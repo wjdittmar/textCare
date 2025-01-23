@@ -34,8 +34,8 @@ func (app *application) routes() http.Handler {
 			http.ServeFile(w, r, requestedPath)
 			return
 		}
-		// Otherwise serve index.html
-		http.ServeFile(w, r, filepath.Join(outDir, "index.html"))
+		// serve index.html if the route is a directory
+		http.ServeFile(w, r, filepath.Join(requestedPath, "index.html"))
 	})
 	return app.recoverPanic(app.enableCORS(app.rateLimit(app.authenticate(router))))
 }
