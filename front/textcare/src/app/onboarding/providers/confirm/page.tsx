@@ -6,15 +6,14 @@ import { getPicturePath } from "@/lib/stringUtils";
 import { useEffect, useState } from "react";
 import { Button } from "@/app/components/Button";
 import { useRouter } from "next/navigation";
+import { baseApiUrl } from "@/lib/apiConfig";
 
 export default function ConfirmPage() {
   const { selectedProvider, setSelectedProvider } = useProvidersContext();
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
-  const apiBaseUrl =
-    process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:4000";
-  const endpoint = `${apiBaseUrl}/v1/users/me/pcp`;
+  const endpoint = `${baseApiUrl}/v1/users/me/pcp`;
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
