@@ -5,10 +5,20 @@ import { Header } from "@/app/components/Header";
 import { getPicturePath } from "@/lib/stringUtils";
 import { useEffect, useState } from "react";
 import { Button } from "@/app/components/Button";
+import { useRouter } from "next/navigation";
 
 export default function ConfirmPage() {
   const { selectedProvider, setSelectedProvider } = useProvidersContext();
   const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
+
+  const apiBaseUrl =
+    process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:4000";
+  const endpoint = `${apiBaseUrl}/v1/users/me/pcp`;
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
   useEffect(() => {
     if (!selectedProvider) {
       const savedProvider = localStorage.getItem("selectedProvider");
@@ -23,7 +33,40 @@ export default function ConfirmPage() {
   if (isLoading) {
     return <p>Loading provider...</p>;
   }
-  // TODO persist the selected provider
+
+  const handleNextClick = async () => {
+    if (!selectedProvider) {
+      setError("No provider selected.");
+      return;
+    }
+
+    setIsSubmitting(true);
+    setError(null);
+
+    try {
+      const response = await fetch(endpoint, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer LDBQTEDKOL5TK44GWFRGROGNDU`,
+        },
+
+        body: JSON.stringify({ provider_id: Number(selectedProvider.id) }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to update PCP.");
+      }
+
+      router.push("/onboarding/conditions/aware");
+    } catch (err: any) {
+      console.error(err);
+      setError(err.message || "An unexpected error occurred.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div style={{ display: "flex", flex: 1, flexDirection: "column" }}>
@@ -50,7 +93,7 @@ export default function ConfirmPage() {
         <p>No provider selected. Go back and choose one.</p>
       )}
       <Button
-        href="/onboarding/conditions/aware"
+        onClick={handleNextClick}
         variant="secondary"
         style={{ marginTop: "auto" }}
       >
