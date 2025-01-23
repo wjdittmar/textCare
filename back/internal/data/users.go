@@ -16,12 +16,13 @@ var (
 var AnonymousUser = &User{}
 
 type User struct {
-	ID        int64
-	CreatedAt time.Time `json:"id"`
-	Name      string    `json:"name"`
-	Email     string    `json:"email"`
-	Password  password  `json:"-"`
-	Version   int       `json:"-"`
+	ID         int64
+	CreatedAt  time.Time `json:"id"`
+	Name       string    `json:"name"`
+	Email      string    `json:"email"`
+	Password   password  `json:"-"`
+	Version    int       `json:"-"`
+	ProviderID int64     `json:"provider_id"`
 }
 
 type password struct {
@@ -67,9 +68,13 @@ func ValidatePasswordPlaintext(v *validator.Validator, password string) {
 	v.Check(len(password) <= 72, "password", "must not be more than 72 bytes long")
 }
 
-func ValidateUser(v *validator.Validator, user *User) {
-	v.Check(user.Name != "", "name", "must be provided")
-	v.Check(len(user.Name) <= 500, "name", "must not be more than 500 bytes long")
+func ValidateName(v *validator.Validator, name string) {
+	v.Check(name != "", "name", "must be provided")
+	v.Check(len(name) <= 500, "name", "must not be more than 500 bytes long")
+}
+
+func ValidateRegisterUser(v *validator.Validator, user *User) {
+	ValidateName(v, user.Name)
 	ValidateEmail(v, user.Email)
 	if user.Password.plaintext != nil {
 		ValidatePasswordPlaintext(v, *user.Password.plaintext)
@@ -77,6 +82,12 @@ func ValidateUser(v *validator.Validator, user *User) {
 	if user.Password.hash == nil {
 		panic("missing password hash for user")
 	}
+
+}
+
+func ValidateReturnUser(v *validator.Validator, user *User) {
+	ValidateName(v, user.Name)
+	ValidateEmail(v, user.Email)
 }
 
 type UserModel struct {
@@ -122,14 +133,39 @@ WHERE email = $1`
 	return &user, nil
 }
 
-func (m UserModel) Update(user *User) error {
-	// notice that it is checking for version to prevent race conditions during updating
-	query := ` UPDATE users
-SET name = $1, email = $2, password_hash = $3, version = version + 1 WHERE id = $5 AND version = $6
-RETURNING version`
-	args := []interface{}{user.Name,
-		user.Email, user.Password.hash, user.ID, user.Version,
+func (m UserModel) Get(id int64) (*User, error) {
+	if id < 1 {
+		return nil, ErrRecordNotFound
 	}
+	query := `
+SELECT users.id, users.created_at, users.name, users.email, users.version FROM users LEFT JOIN providers ON users.provider_id = providers.id
+WHERE users.id = $1`
+	var user User
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	err := m.DB.QueryRowContext(ctx, query, id).Scan(&user.ID,
+		&user.CreatedAt, &user.Name, &user.Email, &user.Version)
+
+	if err != nil {
+		switch {
+		case errors.Is(err, sql.ErrNoRows):
+			return nil, ErrRecordNotFound
+		default:
+			return nil, err
+		}
+	}
+	return &user, nil
+}
+
+func (m UserModel) Update(user *User) error {
+	query := `
+        UPDATE users
+        SET name = $1, email = $2, provider_id = $3, version = version + 1
+        WHERE id = $4 AND version = $5
+        RETURNING version
+    `
+	args := []interface{}{user.Name, user.Email, user.ProviderID, user.ID, user.Version}
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 	err := m.DB.QueryRowContext(ctx, query, args...).Scan(&user.Version)
