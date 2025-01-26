@@ -48,12 +48,18 @@ Go / Postgres / Next.Js
 - ?Prescriptions integration (photon health?)
 - ?Scheduling
 - ? APN / Firebase integration
-- Autocomplete API -- investigate alternatives to ICD 10 that would have patient-friendly names 
+- Autocomplete API 
+    - <s> in-memory implementation using ICD 10 codes and Go "contains" function</s>
+    - investigate use of Soundex algorithm rather than string matching
+    - investigate alternatives to ICD 10 (SNOMED?) that would have patient-friendly names 
+    - investigate use of elastic search for fuzzy matching
+    - generalize search service to support autocomplete for medications as well
 - Geospatial indexing ? (no, state-level matching for provider for a telemedicine platform should be enough)
 
 ## Frontend To Do
 
 - Match Figma design (in progress)
+- Form validation (React Hook Form + Zod?)
 - Modular, well-organized, hierarchical code
 - Automated testing
 - Performance metrics
