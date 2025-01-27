@@ -154,9 +154,27 @@ func (app *application) requirePermission(code string, next http.HandlerFunc) ht
 
 func (app *application) enableCORS(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Access-Control-Allow-Origin", "*")
-		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
-		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PATCH, PUT, DELETE, OPTIONS")
+		w.Header().Add("Vary", "Origin")
+
+		w.Header().Add("Vary", "Access-Control-Request-Method")
+		origin := r.Header.Get("Origin")
+
+		app.logger.PrintInfo(origin, nil)
+		if origin != "" && len(app.config.CORSAllowedOrigins) != 0 {
+			for i := range app.config.CORSAllowedOrigins {
+				if origin == app.config.CORSAllowedOrigins[i] {
+					w.Header().Set("Access-Control-Allow-Origin", origin)
+					// this is a preflight header
+					if r.Method == http.MethodOptions && r.Header.Get("Access-Control-Request-Method") != "" {
+						// don't need to continue through middleware
+						w.Header().Set("Access-Control-Allow-Methods", "OPTIONS, PUT, PATCH, DELETE")
+						w.Header().Set("Access-Control-Allow-Headers", "Authorization, Content-Type")
+						w.WriteHeader(http.StatusOK)
+						return
+					}
+				}
+			}
+		}
 		next.ServeHTTP(w, r)
 	})
 }
