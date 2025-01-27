@@ -15,7 +15,7 @@ import (
 func (app *application) serve() error {
 
 	srv := &http.Server{
-		Addr:         fmt.Sprintf(":%d", app.config.port),
+		Addr:         fmt.Sprintf(":%d", app.config.Port),
 		Handler:      app.routes(),
 		ErrorLog:     log.New(app.logger, "", 0), // port the error messages from stderr to our logger
 		IdleTimeout:  time.Minute,
@@ -61,7 +61,7 @@ func (app *application) serve() error {
 		}
 	}()
 
-	app.logger.PrintInfo("starting server", map[string]string{"cfg": app.config.env, "addr": srv.Addr})
+	app.logger.PrintInfo("starting server", map[string]string{"cfg": app.config.Env, "addr": srv.Addr})
 
 	err := srv.ListenAndServe()
 	// we expected ErrServerClosed if the shutdown call is successful
