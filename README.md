@@ -1,82 +1,104 @@
 # textCare
+*Telemedicine system design prototype*
 
-Telemedicine system design problem. Work in progress.
+**Live Demo**: https://textcare.onrender.com/  
+**Tech Stack**: Go • PostgreSQL • Next.js
 
-Live site is at https://textcare.onrender.com/
+## Development Setup
 
-Go / Postgres / Next.Js 
+### Prerequisites
+- Go 1.20+
+- Node.js 18+
+- PostgreSQL 15+
+- Make (optional)
+
+### Environment Variables
+
+| Variable               | Description                                  | Example Value                          |
+|------------------------|----------------------------------------------|----------------------------------------|
+| `NEXT_PUBLIC_API_URL`  | API base URL (client-accessible)            | `http://localhost:4000`                |
+| `DB_DSN`               | PostgreSQL connection string                | `postgres://user:pass@localhost:5432/textcare` |
+| `CORS_ALLOWED_ORIGINS` | Allowed origins for CORS                    | `http://localhost:3000`                |
 
 ## Base Functional Requirements
-- As a user, I can:
+- **As a user**, I can:
   - Select a doctor that practices in my state
   - Add medical conditions using autocomplete
-- As an admin, I can
+- **As an admin**, I can:
   - Add additional providers
 
 ## Possible Additional Functional Requirements
-- As a user, I can:
+- **As a user**, I can:
   - Pay for a subscription service
   - Receive text/email notifications
   - Receive medications that have been prescribed to me
   - See a record of care that I have received
   - Message with my provider on web and mobile
   - Schedule appointments
-- As a provider I can
+- **As a provider**, I can:
   - See current and past appointments
   - Provide my availability / schedule appointments
   - Message with patients
   - Prescribe medications to patients
   - Have pre-populated workflows for common clinical problems (UTI, PNA, etc)
-- As an admin I can
-  - See important business-level metrics -- user retention, new signups, no-shows, provider efficiency, staffing changes, operational statistics
+- **As an admin**, I can:
+  - See important business-level metrics (user retention, new signups, no-shows, provider efficiency)
 
 ## Non-Functional Requirements
-  - Data is secure and HIPAA compliant
-  - Minimal friction signup 
-  - Scalable architecture
-  - Consistency > availability for medical data
+- Data is secure and HIPAA compliant
+- Minimal friction signup
+- Scalable architecture
+- Consistency > availability for medical data
 
 ## Backend To Do
 
-- <s>Routing </s>
-- <s>Logging </s>
-- <s>Graceful shutdown </s>
-- <s>Authentication / access control </s>
-- <s>Patient / provider editing end points </s>
+- <s>Routing</s>
+- <s>Logging</s>
+- <s>Graceful shutdown</s>
+- <s>Authentication/access control</s>
+- <s>Patient/provider endpoints</s>
 - Seed fake data
 - ?Payments integration
-- ?Prescriptions integration (photon health?)
+- ?Prescriptions integration
 - ?Scheduling
-- ? APN / Firebase integration
-- Autocomplete API 
-    - <s> in-memory implementation using ICD 10 codes and Go "contains" function</s>
-    - investigate use of Soundex algorithm rather than string matching
-    - investigate alternatives to ICD 10 (SNOMED?) that would have patient-friendly names 
-    - investigate use of elastic search for fuzzy matching
-    - generalize search service to support autocomplete for medications as well
-- Geospatial indexing ? (no, state-level matching for provider for a telemedicine platform should be enough)
+- ?APN/Firebase integration
+- **Autocomplete API**:
+  - <s>In-memory ICD-10 implementation</s>
+  - Investigate Soundex algorithm
+  - Evaluate SNOMED alternatives
+  - Explore Elasticsearch integration
+  - Expand to medication search
 
 ## Frontend To Do
 
 - Match Figma design (in progress)
-- Form validation (React Hook Form + Zod?)
-- Modular, well-organized, hierarchical code
+- Form validation (React Hook Form + Zod)
+- Modular component architecture
 - Automated testing
-- Performance metrics
+- Performance optimization
 
 ## Infra To Do
 
-- DB backups / maintenance
-- Alerts
-- Auto-scale architecture
+- DB backups/maintenance
+- Alerting system
+- Auto-scaling configuration
+- Dockerization
 - Microservices?
-- Dockerize?
 
 ## ML To Do
 
-- NLP to infer chief complaint
-- LLM to triage complaint
+- NLP symptom analysis
+- LLM triage system
+- Predictive no-show modeling
+- Treatment recommendation engine
 
 ## Data To Do
 
-- ETL pipeline to prepare business metrics
+- ETL pipeline for metrics
+- Anonymized data exports
+- Audit logging system
+- Compliance reporting
+
+---
+
+*Project status: Active development - architecture subject to change*
