@@ -29,6 +29,11 @@ func main() {
 	logger := jsonlog.New(os.Stdout, jsonlog.LevelInfo)
 
 	cfg, err = config.LoadConfig()
+
+	if err != nil {
+		logger.PrintFatal(err, nil)
+	}
+
 	db, err := openDB(*cfg)
 
 	if err != nil {

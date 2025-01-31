@@ -118,6 +118,8 @@ func (app *application) readInt(qs url.Values, key string, defaultValue int, v *
 	return defaultValue
 }
 
+// example usage
+// app.background(func() {fmt.Println("OK")} )
 func (app *application) background(fn func()) {
 	app.wg.Add(1)
 
