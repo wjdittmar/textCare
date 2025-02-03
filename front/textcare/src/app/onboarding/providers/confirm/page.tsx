@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/app/components/Button";
 import { useRouter } from "next/navigation";
 import { baseApiUrl } from "@/lib/apiConfig";
+import { apiClient } from "@/lib/api";
 
 export default function ConfirmPage() {
   const { selectedProvider, setSelectedProvider } = useProvidersContext();
@@ -34,23 +35,10 @@ export default function ConfirmPage() {
   }
 
   const handleNextClick = async () => {
-    if (!selectedProvider) {
-      setError("No provider selected.");
-      return;
-    }
-
-    setIsSubmitting(true);
-    setError(null);
-
     try {
-      const response = await fetch(endpoint, {
+      const response = await apiClient(endpoint, {
         method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer LDBQTEDKOL5TK44GWFRGROGNDU`,
-        },
-
-        body: JSON.stringify({ provider_id: Number(selectedProvider.id) }),
+        body: JSON.stringify({ provider_id: Number(selectedProvider?.id) }),
       });
 
       if (!response.ok) {
@@ -62,8 +50,6 @@ export default function ConfirmPage() {
     } catch (err: any) {
       console.error(err);
       setError(err.message || "An unexpected error occurred.");
-    } finally {
-      setIsSubmitting(false);
     }
   };
 

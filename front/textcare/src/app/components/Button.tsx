@@ -7,6 +7,7 @@ export const Button = ({
   disabled,
   style,
   variant,
+  type,
 }) => {
   const baseStyles = {
     padding: " 12px 24px 12px 24px",
@@ -46,7 +47,12 @@ export const Button = ({
       {children}
     </Link>
   ) : (
-    <button onClick={onClick} style={appliedStyles} disabled={disabled}>
+    <button
+      onClick={onClick}
+      style={appliedStyles}
+      disabled={disabled}
+      {...(type ? { type } : {})}
+    >
       {children}
     </button>
   );

@@ -8,10 +8,8 @@ export default function OnboardingLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="page-container">
-      <div className="centered-div">
-        <div className="onboardingBox">{children}</div>
-      </div>
+    <div className="centered-div">
+      <div className="onboardingBox">{children}</div>
     </div>
   );
 }

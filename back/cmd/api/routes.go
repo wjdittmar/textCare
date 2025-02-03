@@ -21,7 +21,7 @@ func (app *application) routes() http.Handler {
 	router.HandlerFunc(http.MethodPost, "/v1/users", app.registerUserHandler)
 	router.HandlerFunc(http.MethodPatch, "/v1/users/me/pcp", app.updateProviderForUser)
 	router.HandlerFunc(http.MethodPost, "/v1/tokens/authentication", app.createAuthenticationTokenHandler)
-
+	router.HandlerFunc(http.MethodPost, "/v1/tokens/refresh", app.refreshAuthenticationTokenHandler)
 	router.HandlerFunc(http.MethodGet, "/v1/icd10", app.getIcd10Handler)
 
 	// serve the nextjs frontend

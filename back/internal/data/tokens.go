@@ -6,12 +6,14 @@ import (
 	"crypto/sha256"
 	"database/sql"
 	"encoding/base32"
+	"errors"
 	"github.com/wjdittmar/textCare/back/internal/validator"
 	"time"
 )
 
 const (
 	ScopeAuthentication = "authentication"
+	ScopeRefresh        = "refresh"
 )
 
 type Token struct {
@@ -54,6 +56,41 @@ func generateToken(userID int64, ttl time.Duration, scope string) (*Token, error
 	hash := sha256.Sum256([]byte(token.Plaintext))
 	token.Hash = hash[:]
 	return token, nil
+}
+
+func (m TokenModel) GetForToken(plaintext string) (*Token, error) {
+	// Hash the plaintext token to compare with stored hash
+	tokenHash := sha256.Sum256([]byte(plaintext))
+
+	query := `
+		SELECT user_id, expiry, scope
+		FROM tokens
+		WHERE hash = $1
+	`
+
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	var token Token
+	token.Plaintext = plaintext
+	token.Hash = tokenHash[:]
+
+	err := m.DB.QueryRowContext(ctx, query, tokenHash[:]).Scan(
+		&token.UserID,
+		&token.Expiry,
+		&token.Scope,
+	)
+
+	if err != nil {
+		switch {
+		case errors.Is(err, sql.ErrNoRows):
+			return nil, ErrRecordNotFound
+		default:
+			return nil, err
+		}
+	}
+
+	return &token, nil
 }
 
 func (m TokenModel) Insert(token *Token) error {
