@@ -163,6 +163,7 @@ func (app *application) enableCORS(next http.Handler) http.Handler {
 			for i := range app.config.CORSAllowedOrigins {
 				if origin == app.config.CORSAllowedOrigins[i] {
 					w.Header().Set("Access-Control-Allow-Origin", origin)
+					w.Header().Set("Access-Control-Allow-Credentials", "true")
 					// this is a preflight header
 					if r.Method == http.MethodOptions && r.Header.Get("Access-Control-Request-Method") != "" {
 						// don't need to continue through middleware
