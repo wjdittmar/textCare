@@ -1,11 +1,9 @@
 package main
 
 import (
-	"github.com/wjdittmar/textCare/back/internal/validator"
+	"github.com/wjdittmar/textCare/cmd/api/client"
 	"net/http"
 )
-
-const maxQueryResults = 10
 
 func (app *application) getIcd10Handler(w http.ResponseWriter, r *http.Request) {
 	var input struct {
@@ -27,11 +25,16 @@ func (app *application) getIcd10Handler(w http.ResponseWriter, r *http.Request) 
 		input.Limit = 10
 	}
 
-	codes := app.models.ICD10.SearchByDescription(input.QueryString, input.Limit)
+	terminologyClient := client.NewTerminologyClient(app.config.TerminologyServiceURL)
 
-	err := app.writeJSON(w, http.StatusOK, envelope{"icd10codes": codes}, nil)
+	codes, err := terminologyClient.Search(r.Context(), "ICD10", input.QueryString, input.Limit)
+	if err != nil {
+		app.serverErrorResponse(w, r, err)
+		return
+	}
+
+	err = app.writeJSON(w, http.StatusOK, envelope{"icd10codes": codes}, nil)
 	if err != nil {
 		app.serverErrorResponse(w, r, err)
 	}
-
 }
