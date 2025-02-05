@@ -14,6 +14,7 @@ export const Header = ({
     textDecoration: "none",
     cursor: includeBack ? "pointer" : "not-allowed",
     transition: "color 0.2s ease",
+    marginLeft: "-6px", // to account for the width of the button and align it to the left
   };
 
   const arrowStyle = {
@@ -32,9 +33,22 @@ export const Header = ({
   return (
     <>
       {includeBack ? (
-        <Link href={backHref} style={backButtonStyle}>
-          <span style={arrowStyle}>&lt;</span>
-        </Link>
+        <div>
+          <Link href={backHref} style={backButtonStyle}>
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="var(--primary)"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="m15 18-6-6 6-6" stroke="#0d5e52"></path>
+            </svg>
+          </Link>
+        </div>
       ) : (
         <span style={backButtonStyle}>
           <span style={arrowStyle}>&lt;</span>
