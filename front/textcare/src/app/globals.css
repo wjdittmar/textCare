@@ -29,6 +29,7 @@ a {
   height: 100vh;
   background-color: #fef3ea;
   margin: 0;
+  flex-direction: column;
 }
 
 ul {
