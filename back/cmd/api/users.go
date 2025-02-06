@@ -105,3 +105,26 @@ func (app *application) updateProviderForUser(w http.ResponseWriter, r *http.Req
 		return
 	}
 }
+
+func (app *application) checkUserExistsHandler(w http.ResponseWriter, r *http.Request) {
+
+	email := r.URL.Query().Get("email")
+	if email == "" {
+		app.badRequestResponse(w, r, errors.New("missing email query parameter"))
+		return
+	}
+
+	// Check if the user exists using a method on your Users model.
+	exists, err := app.models.Users.ExistsByEmail(email)
+	if err != nil {
+		app.serverErrorResponse(w, r, err)
+		return
+	}
+
+
+
+	if err := app.writeJSON(w, http.StatusOK, envelope{"exists":exists}, nil); err != nil {
+		app.serverErrorResponse(w, r, err)
+		return
+	}
+}

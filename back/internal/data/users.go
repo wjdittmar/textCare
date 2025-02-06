@@ -209,3 +209,13 @@ AND tokens.expiry > $3`
 	}
 	return &user, nil
 }
+
+func (m *UserModel) ExistsByEmail(email string) (bool, error) {
+	query := `SELECT EXISTS(SELECT 1 FROM users WHERE email = $1)`
+	var exists bool
+	err := m.DB.QueryRow(query, email).Scan(&exists)
+	if err != nil {
+		return false, err
+	}
+	return exists, nil
+}
