@@ -1,52 +1,81 @@
 "use client";
 
-import { useFormContext } from "@/app/context/FormContext";
+import React from "react";
 import { useForm } from "react-hook-form";
-import { Header } from "@/app/components/Header";
 import { useRouter } from "next/navigation";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import { useFormContext } from "@/app/context/FormContext";
+import { Header } from "@/app/components/Header";
 import { LabeledInput } from "@/app/components/LabeledInput";
 import { Select } from "@/app/components/Select";
 import { Label } from "@/app/components/Label";
-export default function accountPage() {
+import { Button } from "@/app/components/Button";
+
+const step1Schema = z.object({
+  firstName: z.string().min(1, "Legal first name is required"),
+  lastName: z.string().min(1, "Legal last name is required"),
+  birthday: z.string().min(1, "Birthday is required"),
+  state: z.string().min(1, "State is required"),
+});
+
+type Step1Data = z.infer<typeof step1Schema>;
+
+export default function AccountPage() {
   const { updateFormData, formData } = useFormContext();
   const router = useRouter();
 
-  const onSubmit = (data: Step1Data) => {
-    updateFormData(data);
-    router.push("/step2");
-  };
-  const { register, handleSubmit } = useForm<Step1Data>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Step1Data>({
+    resolver: zodResolver(step1Schema),
     defaultValues: {
       firstName: formData.firstName || "",
       lastName: formData.lastName || "",
       birthday: formData.birthday || "",
+      state: formData.state || "",
     },
   });
+
+  const onSubmit = (data: Step1Data) => {
+    updateFormData(data);
+    router.push("/sign-up/password");
+  };
 
   return (
     <>
       <Header currentStep={1} includeBack={true} backHref="/welcome" />
-      <h2> Welcome to TextCare </h2>
+      <h2>Welcome to TextCare</h2>
       <p>
         Please fill out the information below as it would appear on an official
-        ID
+        ID.
       </p>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <LabeledInput
-          label="Legal first name"
-          {...register("firstName", { required: true })}
-        />
-        <LabeledInput
-          label="Legal last name"
-          {...register("lastName", { required: true })}
-        />
+        <LabeledInput label="Legal first name" {...register("firstName")} />
+        {errors.firstName && (
+          <p style={{ color: "red" }}>{errors.firstName.message}</p>
+        )}
+
+        <LabeledInput label="Legal last name" {...register("lastName")} />
+        {errors.lastName && (
+          <p style={{ color: "red" }}>{errors.lastName.message}</p>
+        )}
+
         <LabeledInput
           label="Birthday - MM/DD/YYYY"
           type="date"
-          {...register("birthday", { required: true })}
+          {...register("birthday")}
         />
-        <Label> State </Label>
-        <Select {...register("state", { required: true })}>
+        {errors.birthday && (
+          <p style={{ color: "red" }}>{errors.birthday.message}</p>
+        )}
+
+        <Label>State</Label>
+        <Select {...register("state")}>
+          <option value="">Select a state</option>
           <option value="AL">Alabama</option>
           <option value="AK">Alaska</option>
           <option value="AZ">Arizona</option>
@@ -99,7 +128,9 @@ export default function accountPage() {
           <option value="WI">Wisconsin</option>
           <option value="WY">Wyoming</option>
         </Select>
-        <button type="submit">Next</button>
+        {errors.state && <p style={{ color: "red" }}>{errors.state.message}</p>}
+
+        <Button type="submit">Next</Button>
       </form>
     </>
   );
