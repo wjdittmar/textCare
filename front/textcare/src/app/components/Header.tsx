@@ -7,18 +7,18 @@ export const Header = ({
   currentStep = 1,
 }) => {
   const backButtonStyle = {
-    display: "inline-flex",
+    display: "block",
     alignItems: "center",
-    fontSize: "1.5rem",
-    color: includeBack ? "#333" : "#ccc",
     textDecoration: "none",
     cursor: includeBack ? "pointer" : "not-allowed",
+    pointerEvents: includeBack ? "auto" : "none",
+    opacity: includeBack ? 1 : 0.5,
     transition: "color 0.2s ease",
+    marginLeft: "-6px", // to align flush with left
+    marginBottom: "10px",
   };
 
-  const arrowStyle = {
-    marginRight: "0.5rem",
-  };
+  const arrowColor = includeBack ? "#0d5e52" : "#ccc";
 
   const steps = [
     "Step 1: Choose Doctor",
@@ -27,20 +27,40 @@ export const Header = ({
     "Step 4: Filler",
   ];
 
-  // TODO update header to bring in step from onboarding context
-
   return (
-    <>
+    <div style={{ marginBottom: "7px" }}>
       {includeBack ? (
         <Link href={backHref} style={backButtonStyle}>
-          <span style={arrowStyle}>&lt;</span>
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke={"#0d5e52"}
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="m15 18-6-6 6-6" stroke={arrowColor} />
+          </svg>
         </Link>
       ) : (
-        <span style={backButtonStyle}>
-          <span style={arrowStyle}>&lt;</span>
-        </span>
+        <div style={backButtonStyle}>
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke={"#0d5e52"}
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="m15 18-6-6 6-6" stroke={arrowColor} />
+          </svg>
+        </div>
       )}
       <ProgressTracker steps={steps} currentStepIndex={currentStep} />
-    </>
+    </div>
   );
 };
