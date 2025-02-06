@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"log"
 	"os"
 	"sync"
 	"time"
@@ -26,8 +27,15 @@ type application struct {
 func main() {
 	var cfg *config.Config
 	var err error
-	logger := jsonlog.New(os.Stdout, jsonlog.LevelInfo)
 
+	mainLogFile, err := os.OpenFile("main.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer mainLogFile.Close()
+	logger := jsonlog.New(mainLogFile, jsonlog.LevelInfo)
 	cfg, err = config.LoadConfig()
 
 	if err != nil {
@@ -58,9 +66,11 @@ func main() {
 	}
 
 	err = app.serve()
+
 	if err != nil {
 		logger.PrintFatal(err, nil)
 	}
+
 }
 
 func openDB(cfg config.Config) (*sql.DB, error) {
