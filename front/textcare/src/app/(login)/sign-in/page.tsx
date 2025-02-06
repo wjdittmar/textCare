@@ -50,14 +50,21 @@ export default function SignInPage() {
             window.alert(
               "Login failed! Please check your username and password and try again.",
             );
+
+            throw new Error("Login failed");
           });
         }
         return response.json();
       })
       .then((data) => {
-        const { access_token } = data;
-        localStorage.setItem("access_token", access_token);
-        router.push("/onboarding/providers/info");
+
+        if (data.access_token) {
+          localStorage.setItem("access_token", data.access_token);
+          router.push("/onboarding/providers/info");
+        }
+      })
+      .catch((error) => {
+        console.error("Error during login:", error);
       });
   };
 
