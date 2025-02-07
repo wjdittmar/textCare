@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/wjdittmar/textCare/back/internal/data"
 	"github.com/wjdittmar/textCare/back/internal/validator"
+	"github.com/wjdittmar/textCare/back/internal/web"
 	"net/http"
 )
 
@@ -16,9 +17,9 @@ func (app *application) createProviderHandler(w http.ResponseWriter, r *http.Req
 		Location       string `json:"location"`
 	}
 
-	err := app.readJSON(w, r, &input)
+	err := web.ReadJSON(w, r, &input)
 	if err != nil {
-		app.badRequestResponse(w, r, err)
+		app.errorHandler.BadRequestResponse(w, r, err)
 		return
 	}
 
@@ -39,25 +40,25 @@ func (app *application) createProviderHandler(w http.ResponseWriter, r *http.Req
 		switch {
 		case errors.Is(err, data.ErrDuplicateProviderName):
 			v.AddError("name", "a provider with this name already exists")
-			app.failedValidationResponse(w, r, v.Errors)
+			app.errorHandler.FailedValidationResponse(w, r, v.Errors)
 		default:
-			app.serverErrorResponse(w, r, err)
+			app.errorHandler.ServerErrorResponse(w, r, err)
 		}
 		return
 	}
 
-	err = app.writeJSON(w, http.StatusCreated, envelope{"provider": provider}, nil)
+	err = web.WriteJSON(w, http.StatusCreated, web.Envelope{"provider": provider}, nil)
 	if err != nil {
-		app.serverErrorResponse(w, r, err)
+		app.errorHandler.ServerErrorResponse(w, r, err)
 	}
 }
 
 func (app *application) getProviderHandler(w http.ResponseWriter, r *http.Request) {
 
-	id, err := app.readIDParam(r)
+	id, err := web.ReadIDParam(r)
 
 	if err != nil {
-		app.notFoundResponse(w, r)
+		app.errorHandler.NotFoundResponse(w, r)
 		return
 	}
 
@@ -65,25 +66,25 @@ func (app *application) getProviderHandler(w http.ResponseWriter, r *http.Reques
 	if err != nil {
 		switch {
 		case errors.Is(err, data.ErrRecordNotFound):
-			app.notFoundResponse(w, r)
+			app.errorHandler.NotFoundResponse(w, r)
 		default:
-			app.serverErrorResponse(w, r, err)
+			app.errorHandler.ServerErrorResponse(w, r, err)
 		}
 		return
 	}
 
-	err = app.writeJSON(w, http.StatusOK, envelope{"provider": provider}, nil)
+	err = web.WriteJSON(w, http.StatusOK, web.Envelope{"provider": provider}, nil)
 	if err != nil {
-		app.serverErrorResponse(w, r, err)
+		app.errorHandler.ServerErrorResponse(w, r, err)
 	}
 }
 
 func (app *application) updateProviderHandler(w http.ResponseWriter, r *http.Request) {
 
-	id, err := app.readIDParam(r)
+	id, err := web.ReadIDParam(r)
 
 	if err != nil {
-		app.notFoundResponse(w, r)
+		app.errorHandler.NotFoundResponse(w, r)
 		return
 	}
 
@@ -91,9 +92,9 @@ func (app *application) updateProviderHandler(w http.ResponseWriter, r *http.Req
 	if err != nil {
 		switch {
 		case errors.Is(err, data.ErrRecordNotFound):
-			app.notFoundResponse(w, r)
+			app.errorHandler.NotFoundResponse(w, r)
 		default:
-			app.serverErrorResponse(w, r, err)
+			app.errorHandler.ServerErrorResponse(w, r, err)
 		}
 		return
 	}
@@ -106,9 +107,9 @@ func (app *application) updateProviderHandler(w http.ResponseWriter, r *http.Req
 		Location       *string `json:"location"`
 	}
 
-	err = app.readJSON(w, r, &input)
+	err = web.ReadJSON(w, r, &input)
 	if err != nil {
-		app.badRequestResponse(w, r, err)
+		app.errorHandler.BadRequestResponse(w, r, err)
 		return
 	}
 
@@ -134,16 +135,16 @@ func (app *application) updateProviderHandler(w http.ResponseWriter, r *http.Req
 	if err != nil {
 		switch {
 		case errors.Is(err, data.ErrEditConflict):
-			app.editConflictResponse(w, r)
+			app.errorHandler.EditConflictResponse(w, r)
 		default:
-			app.serverErrorResponse(w, r, err)
+			app.errorHandler.ServerErrorResponse(w, r, err)
 		}
 		return
 	}
 
-	err = app.writeJSON(w, http.StatusOK, envelope{"provider": existingProvider}, nil)
+	err = web.WriteJSON(w, http.StatusOK, web.Envelope{"provider": existingProvider}, nil)
 	if err != nil {
-		app.serverErrorResponse(w, r, err)
+		app.errorHandler.ServerErrorResponse(w, r, err)
 	}
 }
 
@@ -155,18 +156,18 @@ func (app *application) listProvidersHandler(w http.ResponseWriter, r *http.Requ
 
 	qs := r.URL.Query()
 
-	input.Location = app.readString(qs, "location", "")
+	input.Location = web.ReadString(qs, "location", "")
 
 	providers, err := app.models.Providers.GetAll(input.Location)
 
 	if err != nil {
-		app.serverErrorResponse(w, r, err)
+		app.errorHandler.ServerErrorResponse(w, r, err)
 		return
 	}
 
-	err = app.writeJSON(w, http.StatusOK, envelope{"providers": providers}, nil)
+	err = web.WriteJSON(w, http.StatusOK, web.Envelope{"providers": providers}, nil)
 	if err != nil {
-		app.serverErrorResponse(w, r, err)
+		app.errorHandler.ServerErrorResponse(w, r, err)
 	}
 
 }

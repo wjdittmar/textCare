@@ -1,4 +1,4 @@
-package main
+package web
 
 import (
 	"encoding/json"
@@ -13,9 +13,9 @@ import (
 	"strings"
 )
 
-type envelope map[string]interface{}
+type Envelope map[string]interface{}
 
-func (app *application) readIDParam(r *http.Request) (int64, error) {
+func ReadIDParam(r *http.Request) (int64, error) {
 	params := httprouter.ParamsFromContext(r.Context())
 
 	id, err := strconv.ParseInt(params.ByName("id"), 10, 64)
@@ -25,7 +25,7 @@ func (app *application) readIDParam(r *http.Request) (int64, error) {
 	return id, nil
 }
 
-func (app *application) readJSON(w http.ResponseWriter, r *http.Request, dst interface{}) error {
+func ReadJSON(w http.ResponseWriter, r *http.Request, dst interface{}) error {
 	maxBytes := 1_048_576
 	r.Body = http.MaxBytesReader(w, r.Body, int64(maxBytes))
 	dec := json.NewDecoder(r.Body)
@@ -78,7 +78,7 @@ func (app *application) readJSON(w http.ResponseWriter, r *http.Request, dst int
 	return nil
 }
 
-func (app *application) writeJSON(w http.ResponseWriter, status int, data envelope, headers http.Header) error {
+func WriteJSON(w http.ResponseWriter, status int, data Envelope, headers http.Header) error {
 	//js, err := json.Marshal(data) // prints everything on one line rather than new lines with tabs
 	js, err := json.MarshalIndent(data, "", "\t")
 	if err != nil {
@@ -97,7 +97,7 @@ func (app *application) writeJSON(w http.ResponseWriter, status int, data envelo
 
 }
 
-func (app *application) readString(qs url.Values, key string, defaultValue string) string {
+func ReadString(qs url.Values, key string, defaultValue string) string {
 
 	val := qs.Get(key)
 	if val != "" {
@@ -106,7 +106,7 @@ func (app *application) readString(qs url.Values, key string, defaultValue strin
 	return defaultValue
 }
 
-func (app *application) readInt(qs url.Values, key string, defaultValue int, v *validator.Validator) int {
+func ReadInt(qs url.Values, key string, defaultValue int, v *validator.Validator) int {
 	val := qs.Get(key)
 	if val != "" {
 		ival, err := strconv.Atoi(val)
@@ -116,22 +116,4 @@ func (app *application) readInt(qs url.Values, key string, defaultValue int, v *
 		return ival
 	}
 	return defaultValue
-}
-
-// example usage
-// app.background(func() {fmt.Println("OK")} )
-func (app *application) background(fn func()) {
-	app.wg.Add(1)
-
-	go func() {
-		defer app.wg.Done()
-		defer func() {
-			if err := recover(); err != nil {
-				app.logger.PrintError(fmt.Errorf("%s", err), nil)
-			}
-
-		}()
-		fn()
-	}()
-
 }

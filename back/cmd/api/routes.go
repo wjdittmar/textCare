@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/julienschmidt/httprouter"
+	"github.com/wjdittmar/textCare/back/internal/middleware"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -9,8 +10,8 @@ import (
 
 func (app *application) routes() http.Handler {
 	router := httprouter.New()
-	router.NotFound = http.HandlerFunc(app.notFoundResponse)
-	router.MethodNotAllowed = http.HandlerFunc(app.methodNotAllowedResponse)
+	router.NotFound = http.HandlerFunc(app.errorHandler.NotFoundResponse)
+	router.MethodNotAllowed = http.HandlerFunc(app.errorHandler.MethodNotAllowedResponse)
 
 	router.HandlerFunc(http.MethodGet, "/v1/healthcheck", app.healthcheckHandler)
 
@@ -38,5 +39,17 @@ func (app *application) routes() http.Handler {
 		// serve index.html if the route is a directory
 		http.ServeFile(w, r, filepath.Join(requestedPath, "index.html"))
 	})
-	return app.recoverPanic(app.enableCORS(app.rateLimit(app.authenticate(router))))
+
+	rl := middleware.NewRateLimiter(
+		app.config.Limiter.RPS,
+		app.config.Limiter.Burst,
+		app.config.Limiter.Enabled,
+	)
+	return middleware.RecoverPanic(app.logger)(
+		middleware.CORS(app.config.CORSAllowedOrigins)(
+			rl.Limit(
+				app.authenticate(router),
+			),
+		),
+	)
 }
