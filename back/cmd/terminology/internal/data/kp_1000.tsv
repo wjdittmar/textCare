@@ -1,0 +1,100 @@
+Clinician_Friendly_Name	Patient_Friendly_Name	ICD_10_CM	SCTID	Fully_Specified_Name	Module
+1Q21.1 microdeletion syndromes	1Q21.1 microdeletion syndrome	Q93.88	699305004	1q21.1 microdeletion syndrome (disorder)	SNOMED CT core
+1st trimester screen positive for Down syndrome	1st trimester screen positive for Down syndrome	O28.5	94821000119104	First trimester Down screening blood test abnormal (finding)	SNOMED CT core
+21-hydroxylase deficiency, simple virilizing	Adrenal hyperplasia, congenital, simple virilizing	E25.0	52604008	Steroid 21-monooxygenase deficiency, simple virilizing type (disorder)	SNOMED CT core
+21-hydroxylase deficiency, virilizing, salt losing	Congenital adrenal hyperplasia	E25.0	250591000119109	Salt-losing congenital adrenal hyperplasia with virilism (disorder)	SNOMED CT core
+3 beta-hydroxysteroid dehydrogenase deficiency	Undervirilized XY, 3-beta hydroxysteroid deficiency	E25.0	54470008	3 beta-Hydroxysteroid dehydrogenase deficiency (disorder)	SNOMED CT core
+3-methylcrotonyl glycinuria	Glycinuria, 3 methylcrotonyl	E72.09	13144005	Methylcrotonyl-coenzyme A carboxylase deficiency (disorder)	SNOMED CT core
+3-methylglutaconic aciduria	Aciduria, 3 methylgluaconic	E71.111	237950009	3-Methylglutaconic aciduria (disorder)	SNOMED CT core
+46, XX true hermaphrodite	46, XX true hermaphrodite	Q99.1	1234906009	46,XX ovotesticular disorder of sex development (disorder)	SNOMED CT core
+AA amyloidosis	AA amyloidosis	E85.89	274945004	Amyloid A amyloidosis (disorder)	SNOMED CT core
+Abacavir hypersensitivity	Abacavir (HIV medicine) hypersensitivity	T37.5X5A	114931000119103	Hypersensitivity to abacavir (finding)	SNOMED CT core
+Abdomen injury	Abdomen injury	S39.91XA	128069005	Injury of abdomen (disorder)	SNOMED CT core
+Abdominal actinomycosis	Actinomycosis infection of abdomen	A42.1	43894001	Abdominal actinomycosis (disorder)	SNOMED CT core
+Abdominal aorta complete transection	Abdominal aorta complete transection	S35.02XA	11798831000119108	Complete transection of abdominal aorta (disorder)	SNOMED CT core
+Abdominal aorta injury	Abdominal aorta injury	S35.00XA	10392004	Injury of abdominal aorta (disorder)	SNOMED CT core
+Abdominal aortic aneurysm, unspecified part	Abdominal aortic aneurysm	I71.40	233985008	Abdominal aortic aneurysm (disorder)	SNOMED CT core
+Abdominal aortic dissection	Abdominal aortic dissection	I71.02	408666009	Dissection of abdominal aorta (disorder)	SNOMED CT core
+Abdominal aortic ectasia	Abdominal aortic ectasia	I77.811	142121000119101	Abdominal aortic ectasia (disorder)	SNOMED CT core
+Abdominal aortic intramural hematoma	Abdominal aortic intramural hematoma	I71.02	16624151000119101	Intramural hematoma of abdominal aorta (disorder)	SNOMED CT core
+Abdominal bloating	Abdominal bloating	R14.0	116289008	Abdominal bloating (finding)	SNOMED CT core
+Abdominal blood vessel injury	Abdominal blood vessel injury	S35.90XA	1269057003	Injury of blood vessel of abdomen (disorder)	SNOMED CT core
+Abdominal bruit	Abdominal bruit (abnormal sound)	R09.89	249590007	Abdominal bruit (finding)	SNOMED CT core
+Abdominal cancer	Cancer of the abdomen	C76.2	148911000119107	Primary malignant neoplasm of abdomen (disorder)	SNOMED CT core
+Abdominal colic	Abdominal colic	R10.83	9991008	Abdominal colic (finding)	SNOMED CT core
+Abdominal colic child = < 12 months old	Abdominal colic child = < 12 months old	R10.83	9991008	Abdominal colic (finding)	SNOMED CT core
+Abdominal colic, adult or child > 12 months old	Abdominal colic, adult or child > 12 months old	R10.83	9991008	Abdominal colic (finding)	SNOMED CT core
+Abdominal cutaneous nerve entrapment syndrome	Abdominal cutaneous nerve entrapment syndrome	G58.8	230648001	Abdominal cutaneous nerve entrapment syndrome (disorder)	SNOMED CT core
+Abdominal endometriosis, unspecified	Abdominal endometriosis	N80.C0	782036441000119100	Endometriosis of abdomen (disorder)	SNOMED CT core
+Abdominal hernia	Abdominal hernia	K46.9	52515009	Hernia of abdominal cavity (disorder)	SNOMED CT core
+Abdominal hernia w gangrene	Abdominal hernia with gangrene	K46.1	79990007	Hernia, with gangrene (disorder)	SNOMED CT core
+Abdominal hernia w obstruction	Abdominal hernia with obstruction	K46.0	414923000	Obstructed hernia of anterior abdominal wall (disorder)	SNOMED CT core
+Abdominal mass of unspecified site	Abdominal mass of unspecified site	R19.00	271860004	Abdominal mass (finding)	SNOMED CT core
+Abdominal migraine	Migraine, abdominal	G43.D0	75879005	Abdominal migraine (disorder)	SNOMED CT core
+Abdominal migraine, intractable	Abdominal migraine intractable	G43.D1	122141000119109	Refractory abdominal migraine (disorder)	US National Library of Medicine maintained module
+Abdominal muscle injury	Abdominal muscle injury	S39.001A	737252002	Injury of muscle of abdomen (disorder)	SNOMED CT core
+Abdominal muscle laceration	Abdominal muscle laceration	S39.021A	724896006	Laceration of muscle of abdomen (disorder)	SNOMED CT core
+Abdominal muscle pain	Abdominal muscle pain	M79.18	28221000119103	Abdominal muscle pain (finding)	SNOMED CT core
+Abdominal muscle strain	Abdominal muscle strain	S39.011A	285348005	Strain of abdominal muscle (disorder)	SNOMED CT core
+Abdominal pain	Abdominal pain	R10.9	21522001	Abdominal pain (finding)	SNOMED CT core
+Abdominal pregnancy	Abdominal pregnancy (not in uterus)	O00.00	82661006	Abdominal pregnancy (disorder)	SNOMED CT core
+Abdominal rigidity	Abdominal rigidity	R19.30	72300008	Abdominal rigidity (finding)	SNOMED CT core
+Abdominal swelling	Abdominal swelling	R19.00	60728008	Swollen abdomen (finding)	SNOMED CT core
+Abdominal tenderness	Abdominal tenderness	R10.819	43478001	Abdominal tenderness (finding)	SNOMED CT core
+Abdominal wall abrasion	Abdominal wall abrasion	S30.811A	1287626002	Abrasion of skin of anterior abdominal wall (disorder)	SNOMED CT core
+Abdominal wall abrasion, w infection	Abdominal wall abrasion	S30.811A/L08.9	211057007	Infected abrasion of skin of anterior abdominal wall (disorder)	SNOMED CT core
+Abdominal wall abscess	Abscess of abdominal wall	L02.211	80437003	Abscess of abdominal wall (disorder)	SNOMED CT core
+Abdominal wall acute lymphangitis	Abdominal wall acute lymphangitis	L03.321	26466000	Acute lymphangitis of abdominal wall (disorder)	SNOMED CT core
+Abdominal wall blister	Abdominal wall blister	S30.821A	271120002	Traumatic blister of abdominal wall (disorder)	SNOMED CT core
+Abdominal wall blister, w infection	Abdominal wall blister	S30.821A/L08.9	271135001	Traumatic blister of abdominal wall, infected (disorder)	SNOMED CT core
+Abdominal wall carbuncle	Abdominal wall carbuncle	L02.231	29989001	Carbuncle of abdominal wall (disorder)	SNOMED CT core
+Abdominal wall cellulitis	Abdominal wall cellulitis	L03.311	59883002	Cellulitis of abdominal wall (disorder)	SNOMED CT core
+Abdominal wall contusion	Abdominal wall contusion (bruise)	S30.1XXA	211486004	Contusion of anterior abdominal wall (disorder)	SNOMED CT core
+Abdominal wall furuncle	Furuncle of abdominal wall	L02.221	91221002	Furuncle of abdominal wall (disorder)	SNOMED CT core
+Abdominal wall laceration	Abdominal wall laceration	S31.119A	10904991000119107	Laceration of abdominal wall (disorder)	SNOMED CT core
+Abdominal wall mass	Abdominal wall mass	R22.2	314603004	Anterior abdominal wall mass (finding)	SNOMED CT core
+Abdominal wall pain	Abdominal wall pain	R10.9	162042000	Abdominal wall pain (finding)	SNOMED CT core
+Abdominopelvic abscess	Abscess, abdominal- pelvic	K65.1	33781009	Abdominopelvic abscess (disorder)	SNOMED CT core
+Abducens Neuropathy	Abducens neuropathy	H49.20	398925009	Abducens nerve disorder (disorder)	SNOMED CT core
+Abductor spasmodic dysphonia	Abductor spasmodic dysphonia	J38.3	31283000	Abductor spastic dysphonia (disorder)	SNOMED CT core
+Aberrant left subclavian artery	Aberrant left subclavian artery	Q27.8	448096002	Aberrant origin of left subclavian artery (disorder)	SNOMED CT core
+Abetalipoproteinemia	Abetalipoproteinemia	E78.6	190787008	Abetalipoproteinemia (disorder)	SNOMED CT core
+Abnl abdominal CT scan	Abnormal abdominal CT scan	R93.5	15634181000119107	Computed tomography of abdomen abnormal (finding)	SNOMED CT core
+Abnl abdominal imaging	Abnormal abdominal imaging	R93.5	441988000	Imaging of abdomen abnormal (finding)	SNOMED CT core
+Abnl abdominal MRI	Abnormal abdominal MRI	R93.5	416200006	Magnetic resonance imaging of abdomen abnormal (finding)	SNOMED CT core
+Abnl abdominal ultrasound	Abnormal abdominal ultrasound	R93.5	15633921000119109	Ultrasonography of abdomen abnormal (finding)	SNOMED CT core
+Abnl amniotic fluid finding	ABNORMAL FINDING, AMNIOTIC FLUID	R89.8	42170009	Amniotic fluid abnormal (finding)	SNOMED CT core
+Abnl anal Pap	Abnormal anal Pap	R85.619	439855007	Abnormal anal Papanicolaou smear (finding)	SNOMED CT core
+Abnl anal Pap AGC (atypical glandular cells)	Pap smear of anus with abnormal glandular cells	R85.619	126311000119109	Atypical glandular cells on anal Papanicolaou smear (finding)	SNOMED CT core
+Abnl anal Pap ASC-H (atypical squamous cells cannot exclude high grade)	Atypical squamous cells cannot exclude HGSIL anus	R85.611	441114008	Atypical squamous cells on anal Papanicolaou smear cannot exclude high grade squamous intraepithelial lesion (finding)	SNOMED CT core
+Abnl anal Pap ASCUS (atypical squamous cells undetermined significance)	Pap smear of anus with atypical squamous cells	R85.610	441086003	Atypical squamous cells of undetermined significance on anal Papanicolaou smear (finding)	SNOMED CT core
+Abnl anal Pap HGSIL (high grade squamous intraepithelial lesion)	High grade squamous intraepithelial lesion anus	R85.613	126291000119105	High grade squamous intraepithelial lesion on anal Papanicolaou smear (finding)	SNOMED CT core
+Abnl anal Pap LGSIL (low grade squamous intraepithelial lesion)	Low grade squamous intraepithelial lesion anus	R85.612	126301000119106	Low grade squamous intraepithelial lesion on anal Papanicolaou smear (finding)	SNOMED CT core
+Abnl anal Pap W cytologic evidence of malignancy	Pap smear with cytologic evidence of malignancy, anus	R85.614	126361000119107	Cytological evidence of malignancy on anal Papanicolaou smear (finding)	SNOMED CT core
+Abnl antenatal ultrasound	Abnormal ultrasound scan	O28.3	169665005	Antenatal ultrasound scan abnormal (finding)	SNOMED CT core
+Abnl auditory function study	Abnormal auditory function study	R94.120	41671000119105	Abnormal finding on auditory function study (finding)	SNOMED CT core
+Abnl barium enema	Abnormal barium enema	R93.3	168840001	Barium enema abnormal (finding)	SNOMED CT core
+Abnl biliary tract imaging	Abnormal biliary tract imaging	R93.2	442717005	Imaging of biliary tract abnormal (finding)	SNOMED CT core
+Abnl biliary tract ultrasound	Abnormal biliary tract ultrasound	R93.2	16898991000119100	Ultrasonography of biliary tract abnormal (finding)	SNOMED CT core
+Abnl biochemical finding on antenatal screening	Abnormal biochemical finding on antenatal (before birth) screening	O28.1	199734003	Abnormal biochemical finding on antenatal screening of mother (finding)	SNOMED CT core
+Abnl bladder ultrasound	Abnormal bladder ultrasound	R93.41	15634041000119101	Ultrasonography of urinary bladder abnormal (finding)	SNOMED CT core
+Abnl blood chemistry	Abnormal blood chemistry result	R79.9	166318006	Blood chemistry outside reference range (finding)	SNOMED CT core
+Abnl blood gas	Abnormal blood gas measurement	R79.81	312391003	Blood gases outside reference range (finding)	SNOMED CT core
+Abnl blood test	Abnormal blood test measurement	R68.89	151271000119102	Abnormal blood test (finding)	SNOMED CT core
+Abnl bowel sounds	Abnormal bowel sounds	R19.15	60612008	Abnormal bowel sounds (finding)	SNOMED CT core
+Abnl brain MRI	Abnormal brain MRI	R90.89	407669000	Magnetic resonance imaging of brain abnormal (finding)	SNOMED CT core
+Abnl brain scan	Abnormal brain scan	R94.02	442731005	Imaging of brain abnormal (finding)	SNOMED CT core
+Abnl brain ultrasound	Abnormal brain ultrasound	R90.89	15634001000119103	Ultrasonography of brain abnormal (finding)	SNOMED CT core
+Abnl breast imaging	Abnormal breast imaging	R92.8	274530001	Abnormal findings on diagnostic imaging of breast (finding)	SNOMED CT core
+Abnl breast MRI	Abnormal breast MRI	R92.8	15633801000119105	Magnetic resonance imaging of breast abnormal (finding)	SNOMED CT core
+Abnl breast ultrasound	Abnormal breast ultrasound	R92.8	15633961000119104	Ultrasonography of breast abnormal (finding)	SNOMED CT core
+Abnl cardiovascular function	Abnormal cardiovascular function	R94.30	111970001	Abnormal cardiovascular function (finding)	SNOMED CT core
+Abnl cardiovascular stress test	Abnormal cardiovascular stress test	R94.39	439590007	Cardiovascular stress test abnormal (finding)	SNOMED CT core
+Abnl CBC	Abnormal complete blood count (cbc) result	R68.89	165408006	Full blood count outside reference range (finding)	SNOMED CT core
+Abnl cerebrospinal analysis finding	Abnormal cerebrospinal analysis finding	R83.9	167704008	Cerebrospinal fluid examination abnormal (finding)	SNOMED CT core
+Abnl cervical Pap	Abnormal cervical Pap	R87.619	439888000	Abnormal cervical Papanicolaou smear (finding)	SNOMED CT core
+Abnl cervical Pap AGC (atypical glandular cells)	Abnormal cervical Pap atypical glandular cells	R87.619	441219009	Atypical glandular cells on cervical Papanicolaou smear (finding)	SNOMED CT core
+Abnl cervical Pap ASC-H (atypical squamous cells cannot exclude high grade)	Abnormal cervical Pap ASC-H (atypical squamous cells cannot exclude high grade)	R87.611	441088002	Atypical squamous cells on cervical Papanicolaou smear cannot exclude high grade squamous intraepithelial lesion (finding)	SNOMED CT core
+Abnl cervical Pap ASCUS (atypical squamous cells undetermined significance)	Abnormal cervical Pap ASCUS (atypical squamous cells undetermined significance)	R87.610	441087007	Atypical squamous cells of undetermined significance on cervical Papanicolaou smear (finding)	SNOMED CT core
+Abnl cervical Pap HGSIL (high grade squamous intraepithelial lesion)	High grade squamous intraepithelial lesion, Pap smear	R87.613	416033009	Cervicovaginal cytology: High grade squamous intraepithelial lesion or carcinoma (finding)	SNOMED CT core
+Abnl cervical Pap LGSIL (low grade squamous intraepithelial lesion)	Low grade squamous intraepithelial lesion on Pap smear	R87.612	416030007	Cervicovaginal cytology: Low grade squamous intraepithelial lesion (finding)	SNOMED CT core
