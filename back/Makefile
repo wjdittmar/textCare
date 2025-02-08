@@ -9,6 +9,11 @@ help:
 run/api:
 	go run ./cmd/api
 
+## run/term: start the terminology server
+.PHONY: run/terminology
+run/terminology:
+	go run ./cmd/terminology
+
 ## audit: tidy dependencies and format, vet and test all code
 .PHONY: audit
 audit:
