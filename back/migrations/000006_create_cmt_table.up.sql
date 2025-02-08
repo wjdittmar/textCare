@@ -14,3 +14,7 @@ CREATE TABLE cmt_terminology (
 CREATE UNIQUE INDEX idx_cmt_terminology_current
 ON cmt_terminology (sctid, clinician_friendly_name, patient_friendly_name)
 WHERE is_current = TRUE;
+
+CREATE INDEX idx_cmt_patient_name_search ON cmt_terminology
+USING gin(to_tsvector('english', patient_friendly_name))
+WHERE is_current = TRUE;

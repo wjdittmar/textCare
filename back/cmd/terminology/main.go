@@ -8,6 +8,7 @@ import (
 	"github.com/wjdittmar/textCare/back/internal/config"
 	"github.com/wjdittmar/textCare/back/internal/data"
 	"github.com/wjdittmar/textCare/back/internal/jsonlog"
+	"github.com/wjdittmar/textCare/back/internal/web"
 	"log"
 	"os"
 	"sync"
@@ -17,10 +18,11 @@ import (
 const version = "1.0.0"
 
 type application struct {
-	config config.Config
-	logger *jsonlog.Logger
-	models data.TerminologyModels
-	wg     sync.WaitGroup
+	config       config.Config
+	logger       *jsonlog.Logger
+	models       data.TerminologyModels
+	wg           sync.WaitGroup
+	errorHandler *web.ErrorHandler
 }
 
 func main() {
@@ -60,9 +62,10 @@ func main() {
 	logger.PrintInfo("database connection pool established", nil)
 
 	app := &application{
-		config: *cfg,
-		logger: logger,
-		models: data.NewTerminologyModels(db),
+		config:       *cfg,
+		logger:       logger,
+		models:       data.NewTerminologyModels(db),
+		errorHandler: &web.ErrorHandler{Logger: logger},
 	}
 
 	err = app.serve()
