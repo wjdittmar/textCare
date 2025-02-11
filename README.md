@@ -17,7 +17,11 @@
 | Variable               | Description                                  | Example Value                          |
 |------------------------|----------------------------------------------|----------------------------------------|
 | `NEXT_PUBLIC_API_URL`  | API base URL (client-accessible)            | `http://localhost:4000`                |
-| `DB_DSN`               | PostgreSQL connection string                | `postgres://user:pass@localhost:5432/textcare` |
+| `DB_USER`              | PostgreSQL user for connecting to the database | `textcare_user` |
+| `DB_PASSWORD`              | Password for the PostgreSQL user | `password` |
+| `DB_HOST`              | Host where PostgreSQL is running | `localhost` |
+| `DB_PORT`              | Port on which PostgreSQL listens | `5432` |
+| `DB_NAME`              |Database name | `textcare` |
 | `CORS_ALLOWED_ORIGINS` | Allowed origins for CORS                    | `http://localhost:3000`                |
 
 ## Base Functional Requirements
