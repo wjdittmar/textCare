@@ -4,8 +4,6 @@ import (
 	"github.com/julienschmidt/httprouter"
 	"github.com/wjdittmar/textCare/back/internal/middleware"
 	"net/http"
-	"os"
-	"path/filepath"
 )
 
 func (app *application) routes() http.Handler {
@@ -24,21 +22,7 @@ func (app *application) routes() http.Handler {
 	router.HandlerFunc(http.MethodPatch, "/v1/users/me/pcp", app.updateProviderForUser)
 	router.HandlerFunc(http.MethodPost, "/v1/tokens/authentication", app.createAuthenticationTokenHandler)
 	router.HandlerFunc(http.MethodPost, "/v1/tokens/refresh", app.refreshAuthenticationTokenHandler)
-	router.HandlerFunc(http.MethodGet, "/v1/icd10", app.getIcd10Handler)
-
-	// serve the nextjs frontend
-	router.NotFound = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		outDir := "../front/textcare/out"
-		requestedPath := filepath.Join(outDir, r.URL.Path)
-
-		info, err := os.Stat(requestedPath)
-		if err == nil && !info.IsDir() {
-			http.ServeFile(w, r, requestedPath)
-			return
-		}
-		// serve index.html if the route is a directory
-		http.ServeFile(w, r, filepath.Join(requestedPath, "index.html"))
-	})
+	router.HandlerFunc(http.MethodGet, "/v1/cmt/search", app.getCMTHandler)
 
 	rl := middleware.NewRateLimiter(
 		app.config.Limiter.RPS,
