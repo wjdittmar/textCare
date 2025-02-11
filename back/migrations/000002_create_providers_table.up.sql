@@ -1,3 +1,4 @@
+-- +goose Up
 CREATE TABLE providers (
     id bigserial PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -8,3 +9,5 @@ CREATE TABLE providers (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
+-- +goose Down
+DROP TABLE providers;

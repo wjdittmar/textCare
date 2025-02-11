@@ -1,3 +1,4 @@
+-- +goose Up
 CREATE TABLE IF NOT EXISTS permissions ( id bigserial PRIMARY KEY,
 code text NOT NULL
 );
@@ -11,3 +12,8 @@ PRIMARY KEY (user_id, permission_id)
 INSERT INTO permissions (code) VALUES
 
 ('providers:read'), ('providers:write');
+
+-- +goose Down
+
+DROP TABLE users_permissions;
+DROP TABLE permissions;

@@ -1,3 +1,4 @@
+-- +goose Up
 CREATE TABLE cmt_terminology (
     id SERIAL PRIMARY KEY,
     clinician_friendly_name VARCHAR(255) NOT NULL,
@@ -18,3 +19,9 @@ WHERE is_current = TRUE;
 CREATE INDEX idx_cmt_patient_name_search ON cmt_terminology
 USING gin(to_tsvector('english', patient_friendly_name))
 WHERE is_current = TRUE;
+
+CREATE EXTENSION IF NOT EXISTS pg_trgm;
+CREATE INDEX trgm_idx ON cmt_terminology USING gin (patient_friendly_name gin_trgm_ops);
+
+-- +goose Down
+DROP TABLE cmt_terminology;
