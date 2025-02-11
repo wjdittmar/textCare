@@ -4,16 +4,14 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"log"
-	"os"
-	"sync"
-	"time"
-
 	_ "github.com/lib/pq"
 	"github.com/wjdittmar/textCare/back/internal/config"
 	"github.com/wjdittmar/textCare/back/internal/data"
 	"github.com/wjdittmar/textCare/back/internal/jsonlog"
 	"github.com/wjdittmar/textCare/back/internal/web"
+	"os"
+	"sync"
+	"time"
 )
 
 const version = "1.0.0"
@@ -30,22 +28,14 @@ func main() {
 	var cfg *config.Config
 	var err error
 
-	mainLogFile, err := os.OpenFile("main.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	defer mainLogFile.Close()
-	logger := jsonlog.New(mainLogFile, jsonlog.LevelInfo)
-	cfg, err = config.LoadConfig()
+	logger := jsonlog.New(os.Stdout, jsonlog.LevelInfo)
+	cfg, err = config.LoadConfig("api")
 
 	if err != nil {
 		logger.PrintFatal(err, nil)
 	}
 
 	db, err := openDB(*cfg)
-
 	if err != nil {
 		logger.PrintFatal(err, nil)
 	}
