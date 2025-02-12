@@ -1,0 +1,87 @@
+services:
+  postgres:
+    image: postgres:16.6
+    ports:
+      - "5432:5432"
+    restart: always
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: textcare
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/seed_data:/seed_data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  frontend:
+    build:
+      context: ../front
+      dockerfile: Dockerfile
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - "80:80"
+    environment:
+      - NEXT_PUBLIC_API_URL=/api
+
+  api:
+    build:
+      context: .
+      dockerfile: docker/api/Dockerfile
+    ports:
+      - "4000:4000"
+    environment:
+      - SERVICE_NAME=api
+      - DB_DSN=postgres://${DB_USER}:${DB_PASSWORD}@postgres:${DB_PORT}/${DB_NAME}?sslmode=disable
+      - CORS_ALLOWED_ORIGINS=http://localhost
+      - ENV=development
+      - TERMINOLOGY_SERVICE_URL=http://terminology:4001
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "wget -q --spider http://localhost:4000/v1/healthcheck || exit 1",
+        ]
+      interval: 5s
+      retries: 5
+      timeout: 5s
+
+  terminology:
+    build:
+      context: .
+      dockerfile: docker/terminology/Dockerfile
+    ports:
+      - "4001:4001"
+    environment:
+      - SERVICE_NAME=terminology
+      - DB_DSN=postgres://${DB_USER}:${DB_PASSWORD}@postgres:${DB_PORT}/${DB_NAME}?sslmode=disable
+      - TERMINOLOGY_PORT=4001
+      - CORS_ALLOWED_ORIGINS=http://api:4000
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  migrator:
+    image: golang:1.21-alpine
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: >
+      sh -c "go install github.com/pressly/goose/v3/cmd/goose@latest &&
+      goose -dir ./migrations postgres 'host=postgres user=${DB_USER} password=${DB_PASSWORD} dbname=${DB_NAME} sslmode=disable' up"
+
+volumes:
+  postgres_data:
