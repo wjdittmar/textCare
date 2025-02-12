@@ -9,9 +9,9 @@ permission_id bigint NOT NULL REFERENCES permissions ON DELETE CASCADE,
 PRIMARY KEY (user_id, permission_id)
 );
 -- Add the two permissions to the table.
-INSERT INTO permissions (code) VALUES
+--INSERT INTO permissions (code) VALUES
 
-('providers:read'), ('providers:write');
+--('providers:read'), ('providers:write');
 
 -- +goose Down
 
