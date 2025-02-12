@@ -7,9 +7,9 @@ import (
 	_ "github.com/lib/pq"
 	"github.com/wjdittmar/textCare/back/internal/config"
 
+	"github.com/wjdittmar/textCare/back/cmd/terminology/internal/data"
 	"github.com/wjdittmar/textCare/back/internal/jsonlog"
 	"github.com/wjdittmar/textCare/back/internal/web"
-	"github.com/wjdittmar/textcare/back/cmd/terminology/internal/data"
 	"os"
 	"sync"
 	"time"
