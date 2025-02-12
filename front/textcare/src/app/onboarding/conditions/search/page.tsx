@@ -8,7 +8,7 @@ import { Button } from "@/app/components/Button";
 import { baseApiUrl } from "@/lib/apiConfig";
 
 export default function SearchPage() {
-  const apiUrl = baseApiUrl + "/v1/icd10";
+  const apiUrl = baseApiUrl + "/v1/cmt/search";
 
   const { selectedConditions, toggleCondition } = useConditions();
 

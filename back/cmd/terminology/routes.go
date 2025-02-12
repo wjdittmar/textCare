@@ -10,9 +10,6 @@ func (app *application) routes() http.Handler {
 	router := httprouter.New()
 
 	router.HandlerFunc(http.MethodGet, "/v1/terminology/cmt/search", app.searchPatientFriendlyNameHandler)
-	//router.HandlerFunc(http.MethodGet, "/v1/terminology/loinc", app.searchLOINCHandler)
-	//return router
-	//
 
 	rl := middleware.NewRateLimiter(
 		app.config.Limiter.RPS,

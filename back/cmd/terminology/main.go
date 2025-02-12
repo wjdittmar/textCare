@@ -6,10 +6,10 @@ import (
 	"fmt"
 	_ "github.com/lib/pq"
 	"github.com/wjdittmar/textCare/back/internal/config"
-	"github.com/wjdittmar/textCare/back/internal/data"
+
 	"github.com/wjdittmar/textCare/back/internal/jsonlog"
 	"github.com/wjdittmar/textCare/back/internal/web"
-	"log"
+	"github.com/wjdittmar/textcare/back/cmd/terminology/internal/data"
 	"os"
 	"sync"
 	"time"
@@ -29,16 +29,9 @@ func main() {
 	var cfg *config.Config
 	var err error
 
-	termLogFile, err := os.OpenFile("term.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-	if err != nil {
-		log.Fatal(err)
-	}
+	logger := jsonlog.New(os.Stdout, jsonlog.LevelInfo)
 
-	defer termLogFile.Close()
-
-	logger := jsonlog.New(termLogFile, jsonlog.LevelInfo)
-
-	cfg, err = config.LoadConfig()
+	cfg, err = config.LoadConfig("terminology")
 
 	if err != nil {
 		logger.PrintFatal(err, nil)

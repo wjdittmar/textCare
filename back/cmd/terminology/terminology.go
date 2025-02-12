@@ -12,11 +12,12 @@ func (app *application) searchPatientFriendlyNameHandler(w http.ResponseWriter, 
 	if limit <= 0 || limit > 100 {
 		limit = 10
 	}
+
 	codes, err := app.models.CMT.SearchPatientFriendlyNames(query, limit)
 	if err != nil {
 		app.errorHandler.ServerErrorResponse(w, r, err)
 		return
 	}
 
-	web.WriteJSON(w, http.StatusOK, web.Envelope{"icd10": codes}, nil)
+	web.WriteJSON(w, http.StatusOK, web.Envelope{"cmtCodes": codes}, nil)
 }

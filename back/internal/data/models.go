@@ -15,7 +15,6 @@ type Models struct {
 	Tokens      TokenModel
 	Permissions PermissionModel
 	Providers   ProviderModel
-	ICD10       ICD10Model
 }
 
 func NewModels(db *sql.DB) Models {
@@ -24,6 +23,5 @@ func NewModels(db *sql.DB) Models {
 		Users:       UserModel{DB: db},
 		Permissions: PermissionModel{DB: db},
 		Providers:   ProviderModel{DB: db},
-		ICD10:       NewICD10Model(),
 	}
 }
