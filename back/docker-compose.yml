@@ -37,10 +37,11 @@ services:
       dockerfile: docker/api/Dockerfile
     ports:
       - "4000:4000"
+    env_file:
+      - .env
     environment:
       - SERVICE_NAME=api
       - DB_DSN=postgres://${DB_USER}:${DB_PASSWORD}@postgres:${DB_PORT}/${DB_NAME}?sslmode=disable
-      - CORS_ALLOWED_ORIGINS=http://localhost
       - ENV=development
       - TERMINOLOGY_SERVICE_URL=http://terminology:4001
     depends_on:
@@ -62,6 +63,8 @@ services:
       dockerfile: docker/terminology/Dockerfile
     ports:
       - "4001:4001"
+    env_file:
+      - .env
     environment:
       - SERVICE_NAME=terminology
       - DB_DSN=postgres://${DB_USER}:${DB_PASSWORD}@postgres:${DB_PORT}/${DB_NAME}?sslmode=disable
