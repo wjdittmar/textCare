@@ -7,11 +7,14 @@ import (
 )
 
 type Config struct {
-	Port               int
-	Env                string
-	DB                 DBConfig
-	Limiter            LimiterConfig
-	CORSAllowedOrigins []string
+	Port                  int
+	Env                   string
+	DB                    DBConfig
+	Limiter               LimiterConfig
+	CORSAllowedOrigins    []string
+	ServiceName           string
+	APIServiceURL         string
+	TerminologyServiceURL string
 }
 
 type DBConfig struct {
@@ -27,10 +30,26 @@ type LimiterConfig struct {
 	Enabled bool
 }
 
-func LoadConfig() (*Config, error) {
-	cfg := &Config{}
+func LoadConfig(serviceName string) (*Config, error) {
+	cfg := &Config{ServiceName: serviceName}
 
-	portStr := os.Getenv("PORT")
+	portVar := "PORT"
+	if serviceName == "terminology" {
+		portVar = "TERMINOLOGY_PORT"
+	} else if serviceName == "api" {
+		portVar = "API_PORT"
+
+	}
+
+	cfg.APIServiceURL = os.Getenv("API_SERVICE_URL")
+	cfg.TerminologyServiceURL = os.Getenv("TERMINOLOGY_SERVICE_URL")
+
+	if serviceName == "api" && cfg.TerminologyServiceURL == "" {
+		return nil, fmt.Errorf("TERMINOLOGY_SERVICE_URL environment variable must be set")
+	}
+
+	portStr := os.Getenv(portVar)
+
 	if portStr == "" {
 		cfg.Port = 4000
 	} else {

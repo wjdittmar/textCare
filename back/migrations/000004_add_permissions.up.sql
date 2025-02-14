@@ -1,3 +1,4 @@
+-- +goose Up
 CREATE TABLE IF NOT EXISTS permissions ( id bigserial PRIMARY KEY,
 code text NOT NULL
 );
@@ -8,6 +9,11 @@ permission_id bigint NOT NULL REFERENCES permissions ON DELETE CASCADE,
 PRIMARY KEY (user_id, permission_id)
 );
 -- Add the two permissions to the table.
-INSERT INTO permissions (code) VALUES
+--INSERT INTO permissions (code) VALUES
 
-('providers:read'), ('providers:write');
+--('providers:read'), ('providers:write');
+
+-- +goose Down
+
+DROP TABLE users_permissions;
+DROP TABLE permissions;

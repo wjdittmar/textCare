@@ -2,75 +2,11 @@ package main
 
 import (
 	"errors"
-	"fmt"
 	"github.com/wjdittmar/textCare/back/internal/data"
 	"github.com/wjdittmar/textCare/back/internal/validator"
-	"golang.org/x/time/rate"
-	"net"
 	"net/http"
 	"strings"
-	"sync"
-	"time"
 )
-
-func (app *application) recoverPanic(next http.Handler) http.Handler {
-	// code here only runs once i.e. during initialization
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// Create a deferred function (which will always be run in the event of a panic
-		// as Go unwinds the stack)
-		defer func() {
-			if err := recover(); err != nil {
-				w.Header().Set("Connection", "close")
-				app.serverErrorResponse(w, r, fmt.Errorf("%s", err))
-			}
-		}()
-		next.ServeHTTP(w, r)
-	})
-}
-
-func (app *application) rateLimit(next http.Handler) http.Handler {
-
-	type client struct {
-		limiter  *rate.Limiter
-		lastSeen time.Time
-	}
-
-	// it is necessary to lock the map even though they won't be accessing the same key
-	// as Go will throw an error if two routines try to access the same map at the same time
-	var (
-		mu sync.Mutex
-		// Update the map so the values are pointers to a client struct.
-		clients = make(map[string]*client)
-	)
-
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if app.config.Limiter.Enabled {
-			ip, _, err := net.SplitHostPort(r.RemoteAddr)
-			if err != nil {
-				app.serverErrorResponse(w, r, err)
-				return
-			}
-
-			mu.Lock()
-			// two requests per second, total size of bucket is 4
-			if _, found := clients[ip]; !found {
-				clients[ip] = &client{limiter: rate.NewLimiter(rate.Limit(app.config.Limiter.RPS), app.config.Limiter.Burst)}
-			}
-			clients[ip].lastSeen = time.Now()
-
-			if !clients[ip].limiter.Allow() {
-				mu.Unlock()
-				app.rateLimitExceededResponse(w, r)
-				return
-			}
-			// Notice that we DON'T use defer to unlock the mutex, as that would mean
-			// that the mutex isn't unlocked until all the handlers downstream of this
-			// middleware have also returned.
-			mu.Unlock()
-		}
-		next.ServeHTTP(w, r)
-	})
-}
 
 func (app *application) authenticate(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -85,7 +21,7 @@ func (app *application) authenticate(next http.Handler) http.Handler {
 
 		headerParts := strings.Split(authorizationHeader, " ")
 		if len(headerParts) != 2 || headerParts[0] != "Bearer" {
-			app.invalidAuthenticationTokenResponse(w, r)
+			app.errorHandler.InvalidAuthenticationTokenResponse(w, r)
 			return
 		}
 
@@ -95,7 +31,8 @@ func (app *application) authenticate(next http.Handler) http.Handler {
 		// Validate the token to make sure it is in a sensible format.
 		v := validator.New()
 		if data.ValidateTokenPlaintext(v, token); !v.Valid() {
-			app.invalidAuthenticationTokenResponse(w, r)
+			app.errorHandler.InvalidAuthenticationTokenResponse(w, r)
+
 			return
 		}
 
@@ -105,9 +42,10 @@ func (app *application) authenticate(next http.Handler) http.Handler {
 		if err != nil {
 			switch {
 			case errors.Is(err, data.ErrRecordNotFound):
-				app.invalidAuthenticationTokenResponse(w, r)
+				app.errorHandler.InvalidAuthenticationTokenResponse(w, r)
+
 			default:
-				app.serverErrorResponse(w, r, err)
+				app.errorHandler.ServerErrorResponse(w, r, err)
 			}
 			return
 		}
@@ -126,7 +64,7 @@ func (app *application) requireAuthenticatedUser(next http.HandlerFunc) http.Han
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		user := app.contextGetUser(r)
 		if user.IsAnonymous() {
-			app.authenticationRequiredResponse(w, r)
+			app.errorHandler.AuthenticationRequiredResponse(w, r)
 			return
 		}
 
@@ -139,42 +77,15 @@ func (app *application) requirePermission(code string, next http.HandlerFunc) ht
 		user := app.contextGetUser(r)
 		permissions, err := app.models.Permissions.GetAllForUser(user.ID)
 		if err != nil {
-			app.serverErrorResponse(w, r, err)
+			app.errorHandler.ServerErrorResponse(w, r, err)
 			return
 		}
 
 		if !permissions.Include(code) {
-			app.notPermittedResponse(w, r)
+			app.errorHandler.NotPermittedResponse(w, r)
 			return
 		}
 		next.ServeHTTP(w, r)
 	}
 	return fn
-}
-
-func (app *application) enableCORS(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Add("Vary", "Origin")
-
-		w.Header().Add("Vary", "Access-Control-Request-Method")
-		origin := r.Header.Get("Origin")
-
-		if origin != "" && len(app.config.CORSAllowedOrigins) != 0 {
-			for i := range app.config.CORSAllowedOrigins {
-				if origin == app.config.CORSAllowedOrigins[i] {
-					w.Header().Set("Access-Control-Allow-Origin", origin)
-					w.Header().Set("Access-Control-Allow-Credentials", "true")
-					// this is a preflight header
-					if r.Method == http.MethodOptions && r.Header.Get("Access-Control-Request-Method") != "" {
-						// don't need to continue through middleware
-						w.Header().Set("Access-Control-Allow-Methods", "OPTIONS, PUT, PATCH, DELETE")
-						w.Header().Set("Access-Control-Allow-Headers", "Authorization, Content-Type")
-						w.WriteHeader(http.StatusOK)
-						return
-					}
-				}
-			}
-		}
-		next.ServeHTTP(w, r)
-	})
 }

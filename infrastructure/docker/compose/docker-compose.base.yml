@@ -1,0 +1,50 @@
+services:
+  frontend:
+    build:
+      context: ../../../front
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: /api
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=/api
+
+  api:
+    build:
+      context: ../../../back
+      dockerfile: docker/api/Dockerfile
+    ports:
+      - "4000:4000"
+    env_file:
+      - .env
+    environment:
+      - SERVICE_NAME=api
+      - ENV=development
+      - TERMINOLOGY_SERVICE_URL=http://terminology:4001
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "wget -q --spider http://localhost:4000/v1/healthcheck || exit 1",
+        ]
+      interval: 5s
+      retries: 5
+      timeout: 5s
+
+  terminology:
+    build:
+      context: ../../../back
+      dockerfile: docker/terminology/Dockerfile
+    ports:
+      - "4001:4001"
+    env_file:
+      - .env
+    environment:
+      - SERVICE_NAME=terminology
+
+      - TERMINOLOGY_PORT=4001
+      - CORS_ALLOWED_ORIGINS=http://api:4000

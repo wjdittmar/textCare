@@ -47,14 +47,19 @@ export function AutoComplete({
       setError(null);
       try {
         const response = await fetch(
-          `${apiURL}/?qs=${debouncedQuery}&limit=${queryLimit}`,
+          `${apiURL}?qs=${debouncedQuery}&limit=${queryLimit}`,
         );
         if (!response.ok) {
           throw new Error("Failed to fetch data");
         }
         const data = await response.json();
-        if (data.icd10codes) {
-          setResults(data.icd10codes.map((item: any) => item.desc));
+        if (data.cmtCodes) {
+          // TODO: better way to avoid hardcoding this?
+          setResults(
+            data.cmtCodes.map((item: any) =>
+              item.patient_friendly_name.toLowerCase(),
+            ),
+          );
         } else {
           setResults([]);
         }
@@ -71,7 +76,6 @@ export function AutoComplete({
   return (
     <div className="autocomplete-container">
       <Input
-
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}

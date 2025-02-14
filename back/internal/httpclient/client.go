@@ -4,61 +4,87 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"io"
 	"net/http"
 	"net/url"
+	"strconv"
 	"time"
 )
 
-type TerminologyClient struct {
-	baseURL    string
-	httpClient *http.Client
+type CMTResult struct {
+	SCTID                 string `json:"sctid"`
+	ClinicianFriendlyName string `json:"clinician_friendly_name"`
+	PatientFriendlyName   string `json:"patient_friendly_name"`
+	ICD10CM               string `json:"icd_10_cm"`
+	FullySpecifiedName    string `json:"fully_specified_name"`
+	Module                string `json:"module"`
 }
 
-func NewTerminologyClient(baseURL string) *TerminologyClient {
-	return &TerminologyClient{
-		baseURL: baseURL,
-		httpClient: &http.Client{
+type Client struct {
+	BaseURL    string
+	HTTPClient *http.Client
+}
+
+func New(baseURL string) *Client {
+	return &Client{
+		BaseURL: baseURL,
+		HTTPClient: &http.Client{
 			Timeout: 10 * time.Second,
 		},
 	}
 }
 
-type ICD10Code struct {
-	Code string `json:"code"`
-	Desc string `json:"desc"`
+func (c *Client) Get(ctx context.Context, path string, result interface{}) error {
+	req, err := http.NewRequestWithContext(ctx, "GET", c.BaseURL+path, nil)
+	if err != nil {
+		return err
+	}
+
+	resp, err := c.HTTPClient.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("unexpected status code: %d", resp.StatusCode)
+	}
+
+	return json.NewDecoder(resp.Body).Decode(result)
 }
 
-func (c *TerminologyClient) SearchICD10(ctx context.Context, query string, limit int) ([]ICD10Code, error) {
-	endpoint := "/v1/terminology/icd10"
+func (c *Client) SearchCMT(ctx context.Context, query string, limit int) ([]CMTResult, error) {
+	u, err := url.Parse(c.BaseURL + "/v1/terminology/cmt/search")
+	if err != nil {
+		return nil, fmt.Errorf("invalid base URL: %w", err)
+	}
 
-	params := url.Values{}
-	params.Add("q", query)
-	params.Add("limit", fmt.Sprintf("%d", limit))
+	q := u.Query()
+	q.Set("q", query)
+	q.Set("limit", strconv.Itoa(limit))
+	u.RawQuery = q.Encode()
 
-	reqURL := fmt.Sprintf("%s%s?%s", c.baseURL, endpoint, params.Encode())
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, reqURL, nil)
+	req, err := http.NewRequestWithContext(ctx, "GET", u.String(), nil)
 	if err != nil {
 		return nil, fmt.Errorf("create request failed: %w", err)
 	}
 
-	resp, err := c.httpClient.Do(req)
+	resp, err := c.HTTPClient.Do(req)
 	if err != nil {
 		return nil, fmt.Errorf("request failed: %w", err)
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		body, _ := io.ReadAll(resp.Body)
-		return nil, fmt.Errorf("unexpected status %d: %s", resp.StatusCode, string(body))
+		return nil, fmt.Errorf("unexpected status code: %d", resp.StatusCode)
 	}
 
 	var response struct {
-		ICD10 []ICD10Code `json:"icd10"`
-	}
-	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
-		return nil, fmt.Errorf("decode response failed: %w", err)
+		CmtCodes []CMTResult `json:"cmtCodes"`
 	}
 
-	return response.ICD10, nil
+	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
+		return nil, fmt.Errorf("failed to decode response: %w", err)
+	}
+
+	return response.CmtCodes, nil
 }
