@@ -3,6 +3,8 @@ services:
     build:
       context: ../front
       dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: /api
     depends_on:
       api:
         condition: service_healthy
@@ -21,7 +23,6 @@ services:
       - .env
     environment:
       - SERVICE_NAME=api
-
       - ENV=development
       - TERMINOLOGY_SERVICE_URL=http://terminology:4001
     healthcheck:

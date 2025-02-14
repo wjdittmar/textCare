@@ -47,7 +47,7 @@ export function AutoComplete({
       setError(null);
       try {
         const response = await fetch(
-          `${apiURL}/?qs=${debouncedQuery}&limit=${queryLimit}`,
+          `${apiURL}?qs=${debouncedQuery}&limit=${queryLimit}`,
         );
         if (!response.ok) {
           throw new Error("Failed to fetch data");
