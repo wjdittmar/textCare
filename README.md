@@ -1,7 +1,7 @@
 # textCare
 *Telemedicine system design prototype*
 
-**Live Demo**: https://textcare.onrender.com/  
+**Live Demo**: https://nexmed.org
 **Tech Stack**: Go • PostgreSQL • Next.js
 
 ## Development Setup
@@ -102,6 +102,11 @@
 - Anonymized data exports
 - Audit logging system
 - Compliance reporting
+
+## Deployment (current setup)
+
+- Install Docker Compose on the host machine
+- Setup HTTPS (sudo certbot certonly --standalone -d <site>.org -d www.<site>.org) 
 
 ---
 
