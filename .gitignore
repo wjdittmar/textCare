@@ -1,5 +1,5 @@
 .dir-locals.el
 bin/
-!.env.local
+.env.local
 !.env.production
 .DS_Store
