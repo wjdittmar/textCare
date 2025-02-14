@@ -2,4 +2,5 @@
 bin/
 .env.local
 .env.production
+.env
 .DS_Store
