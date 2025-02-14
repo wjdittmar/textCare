@@ -34,11 +34,9 @@ export default function Home() {
   };
 
   const handleNextClick = async () => {
-
     setUsername(inputUsername);
 
     try {
-
       const response = await fetch(
         `${endpoint}?email=${encodeURIComponent(inputUsername)}`,
       );
