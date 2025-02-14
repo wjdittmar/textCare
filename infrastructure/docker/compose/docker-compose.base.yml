@@ -1,7 +1,7 @@
 services:
   frontend:
     build:
-      context: ../front
+      context: ../../../front
       dockerfile: Dockerfile
       args:
         NEXT_PUBLIC_API_URL: /api
@@ -15,7 +15,7 @@ services:
 
   api:
     build:
-      context: .
+      context: ../../../back
       dockerfile: docker/api/Dockerfile
     ports:
       - "4000:4000"
@@ -37,7 +37,7 @@ services:
 
   terminology:
     build:
-      context: .
+      context: ../../../back
       dockerfile: docker/terminology/Dockerfile
     ports:
       - "4001:4001"
