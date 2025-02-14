@@ -1,8 +1,34 @@
 # textCare
-*Telemedicine system design prototype*
+*Telemedicine web application prototype*
 
 **Live Demo**: https://nexmed.org
-**Tech Stack**: Go • PostgreSQL • Next.js
+**Tech Stack**: Go • PostgreSQL • Next.js • Docker • AWS 
+```mermaid
+graph TD;
+    subgraph AWS EC2 Instance;
+        subgraph Docker Compose;
+            N(Nginx Proxy:80/443);
+            F(Frontend:3000<br/>Next.js);
+            A(API Service:4000<br>Go);
+            T(Terminology Service:4001<br />Go);
+            R[(Redis<br/>Rate Limiter & Cache)];
+            P[(PostgreSQL<br/>Database)];
+            
+            N -->|Static Assets| F;
+            N -->|/api/* requests| A;
+            A -->|CRUD Operations| P;
+            A -->|Rate Limiting<br />& Cache| R;
+            A -->|Terminology Requests| T;
+
+            T -->|Cache Lookups| R;
+            R -.->|Cache Miss<br/>Fallthrough| P;
+        end;
+        
+        N -.-|SSL Certs| L{{"/etc/letsencrypt"}};
+    end
+    
+    U[Users] --> |HTTPS| N
+```
 
 ## Development Setup
 
@@ -10,7 +36,8 @@
 - Go 1.20+
 - Node.js 18+
 - PostgreSQL 15+
-- Make (optional)
+- Make
+- Docker
 
 ### Environment Variables
 
@@ -34,6 +61,7 @@
 ## Possible Additional Functional Requirements
 - **As a user**, I can:
   - Pay for a subscription service
+  - Add current medications using autocomplete
   - Receive text/email notifications
   - Receive medications that have been prescribed to me
   - See a record of care that I have received
@@ -50,9 +78,8 @@
 
 ## Non-Functional Requirements
 - Data is secure and HIPAA compliant
-- Minimal friction signup
-- Scalable architecture
-- Consistency > availability for medical data
+- Elastic architecture designed for horizontal scaling
+- Consistency > availability 
 
 ## Backend To Do
 
@@ -61,33 +88,35 @@
 - <s>Graceful shutdown</s>
 - <s>Authentication/access control</s>
 - <s>Patient/provider endpoints</s>
+- Create separate payments service and integrate with Stripe payments API
 - Seed fake data
-- ?Payments integration
-- ?Prescriptions integration
+- ?Prescriptions API integration
 - ?Scheduling
 - ?APN/Firebase integration
 - **Autocomplete API**:
   - <s>In-memory ICD-10 implementation</s>
+  - <s> Evaluate SNOMED alternatives for patient-facing autocomplete (CMT) </s>
   - Investigate Soundex algorithm
-  - Evaluate SNOMED alternatives
   - Explore Elasticsearch integration
   - Expand to medication search
+  - Redis caching layer
 
 ## Frontend To Do
 
 - Match Figma design (in progress)
-- Form validation (React Hook Form + Zod)
-- Modular component architecture
+- <s> Form validation (React Hook Form + Zod) </s>
+- <s> Modular component architecture </s>
 - Automated testing
-- Performance optimization
+- <s> Performance metrics / optimization </s>
 
 ## Infra To Do
 
-- DB backups/maintenance
-- Alerting system
-- Auto-scaling configuration
-- Dockerization
-- Microservices?
+- Production-grade logging and alerting
+- <s> Dockerization </s>
+- <s> Service oriented architecture </s>
+- GRPC?
+- Terraform for infrastructure provisioning
+- Redis cache for API rate-limiter
 
 ## ML To Do
 
