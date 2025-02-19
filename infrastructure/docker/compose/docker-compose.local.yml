@@ -8,3 +8,14 @@ services:
     depends_on:
       - frontend
       - api
+
+  frontend:
+    build:
+      context: ../../../front
+      dockerfile: Dockerfile.dev
+    depends_on:
+      api:
+        condition: service_healthy
+    volumes:
+      - ../../../front/textcare:/app
+      - /app/node_modules
