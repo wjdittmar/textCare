@@ -1,6 +1,7 @@
 // apiClient.ts
 let isRefreshing = false;
 let failedQueue: any[] = [];
+import { baseApiUrl } from "./apiConfig";
 
 const processQueue = (error?: Error, token?: string) => {
     failedQueue.forEach((prom) => {
@@ -11,7 +12,7 @@ const processQueue = (error?: Error, token?: string) => {
 };
 
 export const apiClient = async (input: RequestInfo, init?: RequestInit) => {
-    let accessToken = localStorage.getItem("access_token");
+    const accessToken = localStorage.getItem("access_token");
 
     const response = await fetch(input, {
         ...init,
