@@ -1,7 +1,29 @@
-# textCare
+# TextCare
 *Telemedicine web application prototype*
 
 **Live Demo**: https://nexmed.org
+## Roadmap
+
+```mermaid
+gantt
+    dateFormat  YYYY-MM-DD
+    
+    section Immediate
+    Phone and address :active,   task2, 2025-02-20,5d
+    Seed clinician info :active,   task2, 2025-02-20,5d
+    Home page :active,         task3, 2025-02-20,5d
+    
+    section Next
+    Stripe API integration                 :         task4, 2025-02-27,5d
+    Redis for rate limiter + KB               :         task5, 2025-02-27,5d
+    
+    section Future
+    Clinician interface (messaging)       :         task6, 2025-03-06,5d
+    Design  messaging architecture      :         task7, 2025-03-06,5d
+```
+
+## Development Setup
+
 **Tech Stack**: Go • PostgreSQL • Next.js • Docker • AWS 
 ```mermaid
 graph TD;
@@ -30,7 +52,6 @@ graph TD;
     U[Users] --> |HTTPS| N
 ```
 
-## Development Setup
 
 ### Prerequisites
 - Go 1.20+
