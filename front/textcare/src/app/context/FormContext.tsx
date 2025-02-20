@@ -6,7 +6,14 @@ interface FormData {
   firstName?: string;
   lastName?: string;
   birthday?: string;
-  phone?: string;
+  phoneNumber?: string;
+  sex?: string;
+  password: string;
+  addressLineOne?: string;
+  addressLineTwo?: string;
+  city?: string;
+  state?: string;
+  zipCode?: string;
 }
 
 interface FormContextProps {
