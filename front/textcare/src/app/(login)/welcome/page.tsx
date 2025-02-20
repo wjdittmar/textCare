@@ -86,7 +86,6 @@ export default function Home() {
         />
         <Button
           disabled={!inputUsername.trim()}
-          onClick={handleNextClick}
           style={{ marginTop: "auto", width: "100%" }}
           variant="primary"
           type="submit"

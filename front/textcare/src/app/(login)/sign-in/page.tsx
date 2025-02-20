@@ -57,7 +57,6 @@ export default function SignInPage() {
         return response.json();
       })
       .then((data) => {
-
         if (data.access_token) {
           localStorage.setItem("access_token", data.access_token);
           router.push("/onboarding/providers/info");
@@ -81,7 +80,6 @@ export default function SignInPage() {
         />
         <Button
           disabled={!password.trim()}
-          onClick={handleSubmit}
           style={{ marginTop: "auto", width: "100%" }}
           variant="primary"
           type="submit"
