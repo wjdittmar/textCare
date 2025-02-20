@@ -70,7 +70,7 @@ export default function SignInPage() {
   return (
     <div style={styles}>
       <h1>Sign In</h1>
-      <p>Welcome, {username}!</p>
+      <p>Welcome back, {username}!</p>
       <form onSubmit={handleSubmit}>
         <Input
           type="password"
