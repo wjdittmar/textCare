@@ -23,19 +23,26 @@ func (d *Date) UnmarshalJSON(b []byte) error {
 	return nil
 }
 
+func derefString(s *string) string {
+	if s != nil {
+		return *s
+	}
+	return ""
+}
+
 func (app *application) registerUserHandler(w http.ResponseWriter, r *http.Request) {
 
 	var input struct {
-		Name       string `json:"name"`
-		Email      string `json:"email"`
-		SexAtBirth string `json:"sex_at_birth"`
-		Password   string `json:"password"`
+		Name       string  `json:"name"`
+		Email      string  `json:"email"`
+		SexAtBirth *string `json:"sex_at_birth"`
+		Password   string  `json:"password"`
 
-		AddressLineOne string `json:"address_line_one"`
-		AddressLineTwo string `json:"address_line_two"`
-		City           string `json:"city"`
-		State          string `json:"state"`
-		ZipCode        string `json:"zip_code"`
+		AddressLineOne string  `json:"address_line_one"`
+		AddressLineTwo *string `json:"address_line_two,omitempty"`
+		City           string  `json:"city"`
+		State          string  `json:"state"`
+		ZipCode        string  `json:"zip_code"`
 
 		PhoneNumber string `json:"phone_number"`
 
@@ -48,16 +55,21 @@ func (app *application) registerUserHandler(w http.ResponseWriter, r *http.Reque
 		return
 	}
 	user := &data.User{
-		Name:           input.Name,
-		Email:          input.Email,
-		SexAtBirth:     input.SexAtBirth,
+		Name:  input.Name,
+		Email: input.Email,
+		SexAtBirth: sql.NullString{
+			String: derefString(input.SexAtBirth),
+			Valid:  input.SexAtBirth != nil},
 		AddressLineOne: input.AddressLineOne,
-		AddressLineTwo: input.AddressLineTwo,
-		City:           input.City,
-		State:          input.State,
-		ZipCode:        input.ZipCode,
-		PhoneNumber:    input.PhoneNumber,
-		Birthday:       time.Time(input.Birthday),
+		AddressLineTwo: sql.NullString{
+			String: derefString(input.AddressLineTwo),
+			Valid:  input.AddressLineTwo != nil,
+		},
+		City:        input.City,
+		State:       input.State,
+		ZipCode:     input.ZipCode,
+		PhoneNumber: input.PhoneNumber,
+		Birthday:    time.Time(input.Birthday),
 	}
 	err = user.Password.Set(input.Password)
 	if err != nil {

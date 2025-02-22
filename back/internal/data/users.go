@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/sha256"
 	"database/sql"
+	"encoding/json"
 	"errors"
 	"github.com/wjdittmar/textCare/back/internal/validator"
 	"golang.org/x/crypto/bcrypt"
@@ -15,21 +16,39 @@ var (
 )
 var AnonymousUser = &User{}
 
-type User struct {
-	ID         int64     `json:"id"`
-	CreatedAt  time.Time `json:"-"`
-	Name       string    `json:"name"`
-	Email      string    `json:"email"`
-	SexAtBirth string    `json:"sex_at_birth"`
-	Password   password  `json:"-"`
-	Version    int       `json:"-"`
-	ProviderID int64     `json:"-"`
+func (u User) MarshalJSON() ([]byte, error) {
+	type Alias User
+	aux := struct {
+		Alias
+		SexAtBirth     *string `json:"sex_at_birth,omitempty"`
+		AddressLineTwo *string `json:"address_line_two,omitempty"`
+		Birthday       string  `json:"birthday"`
+	}{
+		Alias:    Alias(u),
+		Birthday: u.Birthday.Format("2006-01-02"),
+	}
+	if u.SexAtBirth.Valid {
+		aux.AddressLineTwo = &u.AddressLineTwo.String
+	}
 
-	AddressLineOne string `json:"address_line_one"`
-	AddressLineTwo string `json:"address_line_two"`
-	City           string `json:"city"`
-	State          string `json:"state"`
-	ZipCode        string `json:"zip_code"`
+	return json.Marshal(aux)
+}
+
+type User struct {
+	ID         int64          `json:"id"`
+	CreatedAt  time.Time      `json:"-"`
+	Name       string         `json:"name"`
+	Email      string         `json:"email"`
+	SexAtBirth sql.NullString `json:"sex_at_birth"`
+	Password   password       `json:"-"`
+	Version    int            `json:"-"`
+	ProviderID int64          `json:"-"`
+
+	AddressLineOne string         `json:"address_line_one"`
+	AddressLineTwo sql.NullString `json:"address_line_two"`
+	City           string         `json:"city"`
+	State          string         `json:"state"`
+	ZipCode        string         `json:"zip_code"`
 
 	PhoneNumber string `json:"phone_number"`
 
