@@ -3,19 +3,43 @@ package main
 import (
 	"errors"
 
-	"net/http"
-
 	"github.com/wjdittmar/textCare/back/internal/data"
 	"github.com/wjdittmar/textCare/back/internal/validator"
 	"github.com/wjdittmar/textCare/back/internal/web"
+	"net/http"
+	"strings"
+	"time"
 )
+
+type Date time.Time
+
+func (d *Date) UnmarshalJSON(b []byte) error {
+	s := strings.Trim(string(b), "\"")
+	t, err := time.Parse("2006-01-02", s)
+	if err != nil {
+		return err
+	}
+	*d = Date(t)
+	return nil
+}
 
 func (app *application) registerUserHandler(w http.ResponseWriter, r *http.Request) {
 
 	var input struct {
-		Name     string `json:"name"`
-		Email    string `json:"email"`
-		Password string `json:"password"`
+		Name       string `json:"name"`
+		Email      string `json:"email"`
+		SexAtBirth string `json:"sex_at_birth"`
+		Password   string `json:"password"`
+
+		AddressLineOne string `json:"address_line_one"`
+		AddressLineTwo string `json:"address_line_two"`
+		City           string `json:"city"`
+		State          string `json:"state"`
+		ZipCode        string `json:"zip_code"`
+
+		PhoneNumber string `json:"phone_number"`
+
+		Birthday Date `json:"birthday"`
 	}
 
 	err := web.ReadJSON(w, r, &input)
@@ -24,8 +48,16 @@ func (app *application) registerUserHandler(w http.ResponseWriter, r *http.Reque
 		return
 	}
 	user := &data.User{
-		Name:  input.Name,
-		Email: input.Email,
+		Name:           input.Name,
+		Email:          input.Email,
+		SexAtBirth:     input.SexAtBirth,
+		AddressLineOne: input.AddressLineOne,
+		AddressLineTwo: input.AddressLineTwo,
+		City:           input.City,
+		State:          input.State,
+		ZipCode:        input.ZipCode,
+		PhoneNumber:    input.PhoneNumber,
+		Birthday:       time.Time(input.Birthday),
 	}
 	err = user.Password.Set(input.Password)
 	if err != nil {
@@ -60,6 +92,22 @@ func (app *application) registerUserHandler(w http.ResponseWriter, r *http.Reque
 	}
 
 	err = web.WriteJSON(w, http.StatusAccepted, web.Envelope{"user": user}, nil)
+	if err != nil {
+		app.errorHandler.ServerErrorResponse(w, r, err)
+	}
+}
+
+func (app *application) getCurrentUser(w http.ResponseWriter, r *http.Request) {
+	userContext := app.contextGetUser(r)
+
+	user, err := app.models.Users.Get(userContext.ID)
+
+	if err != nil {
+		app.errorHandler.ServerErrorResponse(w, r, err)
+		return
+	}
+
+	err = web.WriteJSON(w, http.StatusOK, web.Envelope{"user": user}, nil)
 	if err != nil {
 		app.errorHandler.ServerErrorResponse(w, r, err)
 	}
