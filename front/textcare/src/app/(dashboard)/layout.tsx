@@ -19,6 +19,8 @@ export default function DashboardLayout({
     width: "100%",
     maxWidth: "768px",
     flexDirection: "column",
+    height: "100vh",
+    paddingTop: "20px",
   };
 
   const navItems: NavItem[] = [

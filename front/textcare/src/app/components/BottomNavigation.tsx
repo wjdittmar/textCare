@@ -29,6 +29,10 @@ export const BottomNavigation: React.FC<BottomNavProps> = ({ items }) => {
       style={{
         width: "100%",
         display: "flex",
+        position: "fixed",
+        bottom: "0",
+        left: "0",
+        right: "0",
         justifyContent: "space-around",
         background: "#fff",
         borderTop: "1px solid #ddd",

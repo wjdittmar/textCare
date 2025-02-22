@@ -1,5 +1,5 @@
 "use client";
 
 export default function HistoryPage() {
-  return <div> HistoryPage </div>;
+  return <h1> HistoryPage </h1>;
 }

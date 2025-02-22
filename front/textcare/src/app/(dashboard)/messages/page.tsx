@@ -1,5 +1,5 @@
 "use client";
 
 export default function MessagesPage() {
-  return <div> MessagesPage </div>;
+  return <h1> MessagesPage </h1>;
 }
