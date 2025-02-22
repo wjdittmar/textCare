@@ -1,8 +1,8 @@
 package main
 
 import (
+	"database/sql"
 	"errors"
-
 	"github.com/wjdittmar/textCare/back/internal/data"
 	"github.com/wjdittmar/textCare/back/internal/validator"
 	"github.com/wjdittmar/textCare/back/internal/web"
