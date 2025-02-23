@@ -53,6 +53,8 @@ type User struct {
 	PhoneNumber string `json:"phone_number"`
 
 	Birthday time.Time `json:"birthday"`
+
+	HasCompletedOnboarding bool `json:"has_completed_onboarding"`
 }
 
 type password struct {
@@ -183,6 +185,7 @@ SELECT
     users.zip_code,
     users.phone_number,
     users.birthday,
+users.has_completed_onboarding,
     users.version
 FROM users
 LEFT JOIN providers ON users.provider_id = providers.id
@@ -205,6 +208,7 @@ WHERE users.id = $1`
 		&user.ZipCode,
 		&user.PhoneNumber,
 		&user.Birthday,
+		&user.HasCompletedOnboarding,
 		&user.Version,
 	)
 
@@ -279,4 +283,23 @@ func (m *UserModel) ExistsByEmail(email string) (bool, error) {
 		return false, err
 	}
 	return exists, nil
+}
+
+func (m UserModel) MarkOnboardingComplete(userID int64) error {
+	query := `
+        UPDATE users
+        SET has_completed_onboarding = true, version = version + 1
+        WHERE id = $1
+        RETURNING version
+    `
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	var version int
+	err := m.DB.QueryRowContext(ctx, query, userID).Scan(&version)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

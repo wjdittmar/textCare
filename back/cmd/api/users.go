@@ -47,6 +47,8 @@ func (app *application) registerUserHandler(w http.ResponseWriter, r *http.Reque
 		PhoneNumber string `json:"phone_number"`
 
 		Birthday Date `json:"birthday"`
+
+		HasCompletedOnboarding bool `json:"has_completed_onboarding"`
 	}
 
 	err := web.ReadJSON(w, r, &input)
@@ -65,11 +67,12 @@ func (app *application) registerUserHandler(w http.ResponseWriter, r *http.Reque
 			String: derefString(input.AddressLineTwo),
 			Valid:  input.AddressLineTwo != nil,
 		},
-		City:        input.City,
-		State:       input.State,
-		ZipCode:     input.ZipCode,
-		PhoneNumber: input.PhoneNumber,
-		Birthday:    time.Time(input.Birthday),
+		City:                   input.City,
+		State:                  input.State,
+		ZipCode:                input.ZipCode,
+		PhoneNumber:            input.PhoneNumber,
+		Birthday:               time.Time(input.Birthday),
+		HasCompletedOnboarding: input.HasCompletedOnboarding,
 	}
 	err = user.Password.Set(input.Password)
 	if err != nil {
@@ -184,6 +187,21 @@ func (app *application) checkUserExistsHandler(w http.ResponseWriter, r *http.Re
 	}
 
 	if err := web.WriteJSON(w, http.StatusOK, web.Envelope{"exists": exists}, nil); err != nil {
+		app.errorHandler.ServerErrorResponse(w, r, err)
+		return
+	}
+}
+
+func (app *application) completeOnboarding(w http.ResponseWriter, r *http.Request) {
+	userContext := app.contextGetUser(r)
+
+	err := app.models.Users.MarkOnboardingComplete(userContext.ID)
+	if err != nil {
+		app.errorHandler.ServerErrorResponse(w, r, err)
+		return
+	}
+
+	if err = web.WriteJSON(w, http.StatusOK, map[string]interface{}{"status": "success"}, nil); err != nil {
 		app.errorHandler.ServerErrorResponse(w, r, err)
 		return
 	}

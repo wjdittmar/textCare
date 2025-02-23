@@ -20,6 +20,7 @@ func (app *application) routes() http.Handler {
 	router.HandlerFunc(http.MethodPost, "/v1/users", app.registerUserHandler)
 	router.HandlerFunc(http.MethodGet, "/v1/users/exists", app.checkUserExistsHandler)
 	router.HandlerFunc(http.MethodPatch, "/v1/users/me/pcp", app.updateProviderForUser)
+	router.HandlerFunc(http.MethodPost, "/v1/users/me/complete-onboarding", app.completeOnboarding)
 	router.HandlerFunc(http.MethodGet, "/v1/users/me", app.getCurrentUser)
 	router.HandlerFunc(http.MethodPost, "/v1/tokens/authentication", app.createAuthenticationTokenHandler)
 	router.HandlerFunc(http.MethodPost, "/v1/tokens/refresh", app.refreshAuthenticationTokenHandler)

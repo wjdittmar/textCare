@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { OnboardingProvider } from "@/app/context/OnboardingContext";
 
 export default function OnboardingLayout({
   children,
@@ -8,8 +9,10 @@ export default function OnboardingLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="centered-div">
-      <div className="onboardingBox">{children}</div>
-    </div>
+    <OnboardingProvider>
+      <div className="centered-div">
+        <div className="onboardingBox">{children}</div>
+      </div>
+    </OnboardingProvider>
   );
 }

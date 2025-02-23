@@ -20,3 +20,6 @@ ALTER TABLE users
 
 ALTER TABLE users
     ADD COLUMN birthday DATE;
+
+ALTER TABLE users
+ADD COLUMN has_completed_onboarding BOOLEAN NOT NULL DEFAULT false;
