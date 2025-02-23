@@ -4,18 +4,11 @@ import { Header } from "@/app/components/Header";
 import { getPicturePath } from "@/lib/stringUtils";
 import { useEffect, useState } from "react";
 import { Button } from "@/app/components/Button";
-import { useRouter } from "next/navigation";
-import { baseApiUrl } from "@/lib/apiConfig";
-import { apiClient } from "@/lib/api";
 import { useOnboarding } from "@/app/context/OnboardingContext";
 
 export default function ConfirmPage() {
   const { selectedProvider, setSelectedProvider } = useOnboarding();
   const [isLoading, setIsLoading] = useState(true);
-  const router = useRouter();
-
-  const endpoint = `${baseApiUrl}/v1/users/me/pcp`;
-  const onboardingEndpoint = `${baseApiUrl}/v1/users/me/complete-onboarding`;
 
   useEffect(() => {
     if (!selectedProvider) {
@@ -31,33 +24,6 @@ export default function ConfirmPage() {
   if (isLoading) {
     return <p>Loading provider...</p>;
   }
-
-  const handleNextClick = async () => {
-    try {
-      const response = await apiClient(endpoint, {
-        method: "PATCH",
-        body: JSON.stringify({ provider_id: Number(selectedProvider.id) }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Failed to update PCP.");
-      }
-
-      const responseTwo = await apiClient(onboardingEndpoint, {
-        method: "POST",
-      });
-
-      if (!responseTwo.ok) {
-        const errorData = await responseTwo.json();
-        throw new Error(errorData.error || "Failed to complete onboarding.");
-      }
-
-      router.push("/onboarding/conditions/aware");
-    } catch (err: any) {
-      console.error(err);
-    }
-  };
 
   return (
     <div style={{ display: "flex", flex: 1, flexDirection: "column" }}>
@@ -84,7 +50,7 @@ export default function ConfirmPage() {
         <p>No provider selected. Go back and choose one.</p>
       )}
       <Button
-        onClick={handleNextClick}
+        href="/onboarding/conditions/aware"
         variant="secondary"
         style={{ marginTop: "auto" }}
       >

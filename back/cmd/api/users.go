@@ -192,6 +192,74 @@ func (app *application) checkUserExistsHandler(w http.ResponseWriter, r *http.Re
 	}
 }
 
+func (app *application) completeProfileAndOnboarding(w http.ResponseWriter, r *http.Request) {
+
+	userContext := app.contextGetUser(r)
+
+	user, err := app.models.Users.Get(userContext.ID)
+
+	if err != nil {
+		app.errorHandler.ServerErrorResponse(w, r, err)
+	}
+
+	var input struct {
+		Name       *string `json:"name"`
+		Email      *string `json:"email"`
+		ProviderID *int64  `json:"provider_id"`
+	}
+
+	err = web.ReadJSON(w, r, &input)
+	if err != nil {
+		app.errorHandler.BadRequestResponse(w, r, err)
+		return
+	}
+
+	if input.Name != nil {
+		user.Name = *input.Name
+	}
+	if input.Email != nil {
+		user.Email = *input.Email
+	}
+	if input.ProviderID != nil {
+		user.ProviderID = *input.ProviderID
+	}
+
+	v := validator.New()
+	if data.ValidateReturnUser(v, user); !v.Valid() {
+		app.errorHandler.FailedValidationResponse(w, r, v.Errors)
+		return
+	}
+	err = app.models.Users.Update(user)
+	if err != nil {
+		app.errorHandler.ServerErrorResponse(w, r, err)
+		return
+	}
+
+	tx, err := app.models.Users.DB.Begin()
+	if err != nil {
+		app.errorHandler.ServerErrorResponse(w, r, err)
+		return
+	}
+	defer tx.Rollback()
+
+	err = app.models.Users.MarkOnboardingComplete(userContext.ID)
+	if err != nil {
+		app.errorHandler.ServerErrorResponse(w, r, err)
+		return
+	}
+
+	if err := tx.Commit(); err != nil {
+		app.errorHandler.ServerErrorResponse(w, r, err)
+		return
+	}
+
+	if err = web.WriteJSON(w, http.StatusOK, map[string]interface{}{"status": "success"}, nil); err != nil {
+		app.errorHandler.ServerErrorResponse(w, r, err)
+		return
+	}
+
+}
+
 func (app *application) completeOnboarding(w http.ResponseWriter, r *http.Request) {
 	userContext := app.contextGetUser(r)
 

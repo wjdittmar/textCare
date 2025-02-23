@@ -1,11 +1,9 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { client } from "@/lib/queryClient";
-import { fetchProviders } from "@/app/context/ProvidersContext";
 import { Input } from "@/app/components/Input";
 import { useRouter } from "next/navigation";
 import { Button } from "@/app/components/Button";
@@ -19,13 +17,6 @@ const emailSchema = z.object({
 type EmailFormData = z.infer<typeof emailSchema>;
 
 export default function Home() {
-  useEffect(() => {
-    client.prefetchQuery({
-      queryKey: ["providers"],
-      queryFn: fetchProviders,
-    });
-  }, []);
-
   const { setUsername } = useAuth();
   const router = useRouter();
   const endpoint = `${baseApiUrl}/v1/users/exists`;

@@ -1,16 +1,25 @@
 "use client";
-
 import { Button } from "@/app/components/Button";
 import { Header } from "@/app/components/Header";
 import { MultipleChoice } from "@/app/components/MultipleChoice";
 import { AnchorLink } from "@/app/components/AnchorLink";
+import { useState } from "react";
 
 export default function InfoPage() {
+  const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const styles = {
     display: "flex",
     flexDirection: "column",
     flex: "1",
   };
+
+  const getButtonHref = () => {
+    if (selectedOption === "No") {
+      return "/onboarding/conditions/confirm";
+    }
+    return "/onboarding/conditions/search";
+  };
+
   return (
     <div style={styles}>
       <Header
@@ -23,15 +32,15 @@ export default function InfoPage() {
         <AnchorLink> Why are we asking this? </AnchorLink>
       </div>
       <div>
-        <MultipleChoice />
+        <MultipleChoice onSelect={setSelectedOption} />
       </div>
-      {/*         TODO is this the right way to get the button at the bottom?*/}
       <Button
-        href="/onboarding/conditions/search"
+        href={getButtonHref()}
         variant="secondary"
         style={{ marginTop: "auto" }}
+        disabled={!selectedOption}
       >
-        + Medical Conditions
+        {selectedOption === "No" ? "Continue" : "+ Medical Conditions"}
       </Button>
     </div>
   );
