@@ -32,6 +32,7 @@ audit:
 docker/local:
 	docker compose \
 		-f infrastructure/docker/compose/docker-compose.base.yml \
+		-f infrastructure/docker/compose/docker-compose.local.yml \
 		up --build
 
 ## docker/up/production: run the production docker compose application

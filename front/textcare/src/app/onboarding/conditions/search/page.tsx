@@ -3,14 +3,14 @@
 import React from "react";
 import { AutoComplete } from "@/app/components/AutoComplete";
 import { Header } from "@/app/components/Header";
-import { useConditions } from "@/app/context/ConditionsContext";
+import { useOnboarding } from "@/app/context/OnboardingContext";
 import { Button } from "@/app/components/Button";
 import { baseApiUrl } from "@/lib/apiConfig";
 
 export default function SearchPage() {
   const apiUrl = baseApiUrl + "/v1/cmt/search";
 
-  const { selectedConditions, toggleCondition } = useConditions();
+  const { selectedConditions, toggleCondition } = useOnboarding();
 
   return (
     <>

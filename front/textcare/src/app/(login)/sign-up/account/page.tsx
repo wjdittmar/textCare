@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,15 +9,26 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useFormContext } from "@/app/context/FormContext";
 import { Header } from "@/app/components/Header";
 import { LabeledInput } from "@/app/components/LabeledInput";
-import { Select } from "@/app/components/Select";
-import { Label } from "@/app/components/Label";
 import { Button } from "@/app/components/Button";
+import { LabeledPhoneInput } from "@/app/components/LabeledPhoneInput";
+import { Select } from "@/app/components/Select";
 
 const step1Schema = z.object({
   firstName: z.string().min(1, "Legal first name is required"),
   lastName: z.string().min(1, "Legal last name is required"),
-  birthday: z.string().min(1, "Birthday is required"),
-  state: z.string().min(1, "State is required"),
+  birthday: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "Invalid date format")
+    .refine((val) => {
+      const date = new Date(val);
+      return (
+        !isNaN(date.getTime()) &&
+        date <= new Date() &&
+        date >= new Date("1900-01-01")
+      );
+    }, "Must be between 1900-01-01 and today"),
+  phoneNumber: z.string().min(10, "Phone number is required"),
+  sex: z.string().optional(),
 });
 
 type Step1Data = z.infer<typeof step1Schema>;
@@ -27,6 +38,7 @@ export default function AccountPage() {
   const router = useRouter();
 
   const {
+    control,
     register,
     handleSubmit,
     formState: { errors },
@@ -36,13 +48,13 @@ export default function AccountPage() {
       firstName: formData.firstName || "",
       lastName: formData.lastName || "",
       birthday: formData.birthday || "",
-      state: formData.state || "",
+      phoneNumber: formData.phoneNumber || "",
     },
   });
 
   const onSubmit = (data: Step1Data) => {
     updateFormData(data);
-    router.push("/sign-up/password");
+    router.push("/sign-up/profile");
   };
 
   return (
@@ -72,63 +84,23 @@ export default function AccountPage() {
         {errors.birthday && (
           <p style={{ color: "red" }}>{errors.birthday.message}</p>
         )}
-
-        <Label>State</Label>
-        <Select {...register("state")}>
-          <option value="">Select a state</option>
-          <option value="AL">Alabama</option>
-          <option value="AK">Alaska</option>
-          <option value="AZ">Arizona</option>
-          <option value="AR">Arkansas</option>
-          <option value="CA">California</option>
-          <option value="CO">Colorado</option>
-          <option value="CT">Connecticut</option>
-          <option value="DE">Delaware</option>
-          <option value="DC">District Of Columbia</option>
-          <option value="FL">Florida</option>
-          <option value="GA">Georgia</option>
-          <option value="HI">Hawaii</option>
-          <option value="ID">Idaho</option>
-          <option value="IL">Illinois</option>
-          <option value="IN">Indiana</option>
-          <option value="IA">Iowa</option>
-          <option value="KS">Kansas</option>
-          <option value="KY">Kentucky</option>
-          <option value="LA">Louisiana</option>
-          <option value="ME">Maine</option>
-          <option value="MD">Maryland</option>
-          <option value="MA">Massachusetts</option>
-          <option value="MI">Michigan</option>
-          <option value="MN">Minnesota</option>
-          <option value="MS">Mississippi</option>
-          <option value="MO">Missouri</option>
-          <option value="MT">Montana</option>
-          <option value="NE">Nebraska</option>
-          <option value="NV">Nevada</option>
-          <option value="NH">New Hampshire</option>
-          <option value="NJ">New Jersey</option>
-          <option value="NM">New Mexico</option>
-          <option value="NY">New York</option>
-          <option value="NC">North Carolina</option>
-          <option value="ND">North Dakota</option>
-          <option value="OH">Ohio</option>
-          <option value="OK">Oklahoma</option>
-          <option value="OR">Oregon</option>
-          <option value="PA">Pennsylvania</option>
-          <option value="RI">Rhode Island</option>
-          <option value="SC">South Carolina</option>
-          <option value="SD">South Dakota</option>
-          <option value="TN">Tennessee</option>
-          <option value="TX">Texas</option>
-          <option value="UT">Utah</option>
-          <option value="VT">Vermont</option>
-          <option value="VA">Virginia</option>
-          <option value="WA">Washington</option>
-          <option value="WV">West Virginia</option>
-          <option value="WI">Wisconsin</option>
-          <option value="WY">Wyoming</option>
+        <label>Sex assigned at birth</label>
+        <Select {...register("sex")}>
+          <option value=""></option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="intersex">Intersex</option>
+          <option value="">Prefer not to say</option>
         </Select>
-        {errors.state && <p style={{ color: "red" }}>{errors.state.message}</p>}
+        {/* this pattern allows the component to control the display (XXX)-(XXX)-(XXXX) and then pass back the parsed value to hookform */}
+        <Controller
+          control={control}
+          name="phoneNumber"
+          render={({ field }) => <LabeledPhoneInput {...field} />}
+        />
+        {errors.phoneNumber && (
+          <p style={{ color: "red" }}>{errors.phoneNumber.message}</p>
+        )}
 
         <Button type="submit">Next</Button>
       </form>

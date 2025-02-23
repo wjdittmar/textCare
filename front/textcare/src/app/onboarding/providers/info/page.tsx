@@ -3,6 +3,7 @@
 import { Button } from "@/app/components/Button";
 import { Header } from "@/app/components/Header";
 export default function InfoPage() {
+  // TODO: prefetch providers
   return (
     <>
       <Header />

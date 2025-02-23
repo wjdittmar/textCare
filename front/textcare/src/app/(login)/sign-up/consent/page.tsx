@@ -22,10 +22,19 @@ export default function ConsentPage() {
     setIsSubmitting(true);
     setError("");
 
+    // TODO: use shared types with backend
     const payload = {
       name: `${formData.firstName} ${formData.lastName}`,
       email: username,
       password: formData.password,
+      address_line_one: formData.addressLineOne,
+      address_line_two: formData.addressLineTwo,
+      city: formData.city,
+      state: formData.state,
+      zip_code: formData.zipCode,
+      phone_number: formData.phoneNumber,
+      sex_at_birth: formData.sex,
+      birthday: formData.birthday,
     };
 
     try {

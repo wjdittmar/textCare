@@ -1,17 +1,24 @@
-import React, { useState } from "react";
+import React from "react";
 import { OptionButton } from "@/app/components/OptionButton";
 
-export const MultipleChoice = () => {
-  const options = ["Yes", "No", "I don't know"];
-  const [selectedOption, setSelectedOption] = useState(null);
+type MultipleChoiceProps = {
+  onSelect: (option: string) => void;
+};
 
-  const handleSelect = (option) => {
+export const MultipleChoice = ({ onSelect }: MultipleChoiceProps) => {
+  const options = ["Yes", "No", "I don't know"];
+  const [selectedOption, setSelectedOption] = React.useState<string | null>(
+    null,
+  );
+
+  const handleSelect = (option: string) => {
     setSelectedOption(option);
+    onSelect(option);
   };
 
   const styles = {
     display: "flex",
-    flexDirection: "column",
+    flexDirection: "column" as const,
     gap: "16px",
   };
 
@@ -22,7 +29,7 @@ export const MultipleChoice = () => {
           key={option}
           label={option}
           isSelected={selectedOption === option}
-          onSelect={handleSelect}
+          onSelect={() => handleSelect(option)}
         />
       ))}
     </div>

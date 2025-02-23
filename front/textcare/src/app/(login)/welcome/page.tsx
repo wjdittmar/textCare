@@ -1,26 +1,35 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { client } from "@/lib/queryClient";
-import { fetchProviders } from "@/app/context/ProvidersContext";
+import React from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/app/components/Input";
 import { useRouter } from "next/navigation";
 import { Button } from "@/app/components/Button";
 import { useAuth } from "@/app/context/AuthContext";
 import { baseApiUrl } from "@/lib/apiConfig";
 
-export default function Home() {
-  useEffect(() => {
-    client.prefetchQuery({
-      queryKey: ["providers"],
-      queryFn: fetchProviders,
-    });
-  }, []);
+const emailSchema = z.object({
+  email: z.string().email("Please enter a valid email address"),
+});
 
-  const [inputUsername, setInputUsername] = useState("");
+type EmailFormData = z.infer<typeof emailSchema>;
+
+export default function Home() {
   const { setUsername } = useAuth();
   const router = useRouter();
   const endpoint = `${baseApiUrl}/v1/users/exists`;
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm<EmailFormData>({
+    resolver: zodResolver(emailSchema),
+    mode: "onChange",
+  });
+
   const styles = {
     padding: "25px 0px",
     display: "flex",
@@ -33,35 +42,22 @@ export default function Home() {
     marginRight: "auto",
   };
 
-  const handleNextClick = async () => {
-    setUsername(inputUsername);
+  const onSubmit = async (data: EmailFormData) => {
+    setUsername(data.email);
 
     try {
       const response = await fetch(
-        `${endpoint}?email=${encodeURIComponent(inputUsername)}`,
+        `${endpoint}?email=${encodeURIComponent(data.email)}`,
       );
 
-      if (!response.ok) {
-        throw new Error("Failed to check user existence");
-      }
-
+      if (!response.ok) throw new Error("Failed to check user existence");
       const { exists } = await response.json();
 
-      if (exists) {
-        router.push("/sign-in");
-      } else {
-        router.push("/sign-up/account");
-      }
+      router.push(exists ? "/sign-in" : "/sign-up/account");
     } catch (error) {
       console.error("Error checking user existence:", error);
-
       router.push("/sign-up/account");
     }
-  };
-
-  const handleFormSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    handleNextClick();
   };
 
   return (
@@ -77,16 +73,19 @@ export default function Home() {
       <p>
         Chat with a licensed clinician from wherever you are, on your schedule.
       </p>
-      <form onSubmit={handleFormSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <label>Email address</label>
         <Input
-          placeholder="alice@curai.com"
-          value={inputUsername}
-          onChange={(e) => setInputUsername(e.target.value)}
+          placeholder="dexter@lab.com"
+          {...register("email")}
+          error={errors.email?.message}
         />
+        {errors.email && (
+          <p style={{ color: "red", marginTop: 4 }}>{errors.email.message}</p>
+        )}
+
         <Button
-          disabled={!inputUsername.trim()}
-          onClick={handleNextClick}
+          disabled={!isValid}
           style={{ marginTop: "auto", width: "100%" }}
           variant="primary"
           type="submit"

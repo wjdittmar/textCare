@@ -1,16 +1,17 @@
 "use client";
 
-import { useProvidersContext } from "../../../context/ProvidersContext";
 import { Card } from "../../../components/Card";
 import { Button } from "../../../components/Button";
 import { Header } from "../../../components/Header";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import Image from "next/image";
+import { useOnboarding } from "@/app/context/OnboardingContext";
+import { useProvidersQuery } from "@/lib/hooks";
 
 export default function ChooseProviderPage() {
-  const { providers, selectedProvider, setSelectedProvider, isLoading, error } =
-    useProvidersContext();
+  const { data: providers, isLoading, error } = useProvidersQuery();
+
+  const { selectedProvider, setSelectedProvider } = useOnboarding();
   const router = useRouter();
   const [isChoosing, setIsChoosing] = useState(false); // don't update UI if they select choose for me
 
@@ -32,7 +33,7 @@ export default function ChooseProviderPage() {
   }, [setSelectedProvider]);
 
   const chooseRandomProvider = () => {
-    if (providers.length > 0) {
+    if (providers && providers.length > 0) {
       const randomProvider =
         providers[Math.floor(Math.random() * providers.length)];
       setIsChoosing(true);
@@ -58,20 +59,21 @@ export default function ChooseProviderPage() {
         Choose a Doctor for Me
       </Button>
       <ul className="provider">
-        {providers.map((provider) => (
-          <Card
-            key={provider.id}
-            provider={provider}
-            isSelected={!isChoosing && selectedProvider?.id === provider.id} // Suppress updates during selection
-            onSelect={() => {
-              if (selectedProvider?.id !== provider.id) {
-                setSelectedProvider(provider);
-              } else {
-                setSelectedProvider(null);
-              }
-            }}
-          />
-        ))}
+        {providers &&
+          providers.map((provider) => (
+            <Card
+              key={provider.id}
+              provider={provider}
+              isSelected={!isChoosing && selectedProvider?.id === provider.id} // Suppress updates during selection
+              onSelect={() => {
+                if (selectedProvider?.id !== provider.id) {
+                  setSelectedProvider(provider);
+                } else {
+                  setSelectedProvider(null as Provider);
+                }
+              }}
+            />
+          ))}
       </ul>
       <div style={{ minHeight: "44px" }}>
         {selectedProvider && !isChoosing && (

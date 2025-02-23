@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/sha256"
 	"database/sql"
+	"encoding/json"
 	"errors"
 	"github.com/wjdittmar/textCare/back/internal/validator"
 	"golang.org/x/crypto/bcrypt"
@@ -15,14 +16,49 @@ var (
 )
 var AnonymousUser = &User{}
 
+func (u User) MarshalJSON() ([]byte, error) {
+	type Alias User
+	aux := struct {
+		Alias
+		SexAtBirth     *string `json:"sex_at_birth,omitempty"`
+		AddressLineTwo *string `json:"address_line_two,omitempty"`
+		Birthday       string  `json:"birthday"`
+		ProviderID     *int64  `json:"provider_id,omitempty"`
+	}{
+		Alias:    Alias(u),
+		Birthday: u.Birthday.Format("2006-01-02"),
+	}
+	if u.SexAtBirth.Valid {
+		aux.AddressLineTwo = &u.AddressLineTwo.String
+	}
+	if u.ProviderID.Valid {
+		aux.ProviderID = &u.ProviderID.Int64
+	}
+
+	return json.Marshal(aux)
+}
+
 type User struct {
-	ID         int64
-	CreatedAt  time.Time `json:"id"`
-	Name       string    `json:"name"`
-	Email      string    `json:"email"`
-	Password   password  `json:"-"`
-	Version    int       `json:"-"`
-	ProviderID int64     `json:"provider_id"`
+	ID         int64          `json:"id"`
+	CreatedAt  time.Time      `json:"-"`
+	Name       string         `json:"name"`
+	Email      string         `json:"email"`
+	SexAtBirth sql.NullString `json:"sex_at_birth"`
+	Password   password       `json:"-"`
+	Version    int            `json:"-"`
+	ProviderID sql.NullInt64  `json:"-"`
+
+	AddressLineOne string         `json:"address_line_one"`
+	AddressLineTwo sql.NullString `json:"address_line_two"`
+	City           string         `json:"city"`
+	State          string         `json:"state"`
+	ZipCode        string         `json:"zip_code"`
+
+	PhoneNumber string `json:"phone_number"`
+
+	Birthday time.Time `json:"birthday"`
+
+	HasCompletedOnboarding bool `json:"has_completed_onboarding"`
 }
 
 type password struct {
@@ -95,9 +131,9 @@ type UserModel struct {
 }
 
 func (u UserModel) Insert(user *User) error {
-	query := `INSERT INTO users (name, email, password_hash) VALUES ($1, $2, $3)
+	query := `INSERT INTO users (name, email, password_hash, address_line_one, address_line_two, city, state, zip_code, phone_number, birthday, sex_at_birth) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
 RETURNING id, created_at, version`
-	args := []interface{}{user.Name, user.Email, user.Password.hash}
+	args := []interface{}{user.Name, user.Email, user.Password.hash, user.AddressLineOne, user.AddressLineTwo, user.City, user.State, user.ZipCode, user.PhoneNumber, user.Birthday, user.SexAtBirth}
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 	err := u.DB.QueryRowContext(ctx, query, args...).Scan(&user.ID, &user.CreatedAt, &user.Version)
@@ -137,15 +173,47 @@ func (m UserModel) Get(id int64) (*User, error) {
 	if id < 1 {
 		return nil, ErrRecordNotFound
 	}
+
 	query := `
-SELECT users.id, users.created_at, users.name, users.email, users.version FROM users LEFT JOIN providers ON users.provider_id = providers.id
+SELECT
+    users.id,
+    users.created_at,
+    users.name,
+    users.email,
+    users.sex_at_birth,
+    users.provider_id,
+    users.address_line_one,
+    users.address_line_two,
+    users.city,
+    users.state,
+    users.zip_code,
+    users.phone_number,
+    users.birthday,
+users.has_completed_onboarding,
+    users.version
+FROM users
 WHERE users.id = $1`
 	var user User
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	err := m.DB.QueryRowContext(ctx, query, id).Scan(&user.ID,
-		&user.CreatedAt, &user.Name, &user.Email, &user.Version)
+	err := m.DB.QueryRowContext(ctx, query, id).Scan(
+		&user.ID,
+		&user.CreatedAt,
+		&user.Name,
+		&user.Email,
+		&user.SexAtBirth,
+		&user.ProviderID,
+		&user.AddressLineOne,
+		&user.AddressLineTwo,
+		&user.City,
+		&user.State,
+		&user.ZipCode,
+		&user.PhoneNumber,
+		&user.Birthday,
+		&user.HasCompletedOnboarding,
+		&user.Version,
+	)
 
 	if err != nil {
 		switch {
@@ -218,4 +286,23 @@ func (m *UserModel) ExistsByEmail(email string) (bool, error) {
 		return false, err
 	}
 	return exists, nil
+}
+
+func (m UserModel) MarkOnboardingComplete(userID int64) error {
+	query := `
+        UPDATE users
+        SET has_completed_onboarding = true, version = version + 1
+        WHERE id = $1
+        RETURNING version
+    `
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	var version int
+	err := m.DB.QueryRowContext(ctx, query, userID).Scan(&version)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
