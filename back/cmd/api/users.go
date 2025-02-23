@@ -128,49 +128,6 @@ func (app *application) getCurrentUser(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (app *application) updateProviderForUser(w http.ResponseWriter, r *http.Request) {
-	userContext := app.contextGetUser(r)
-
-	user, err := app.models.Users.Get(userContext.ID)
-
-	if err != nil {
-		app.errorHandler.ServerErrorResponse(w, r, err)
-	}
-
-	var input struct {
-		Name       *string `json:"name"`
-		Email      *string `json:"email"`
-		ProviderID *int64  `json:"provider_id"`
-	}
-
-	err = web.ReadJSON(w, r, &input)
-	if err != nil {
-		app.errorHandler.BadRequestResponse(w, r, err)
-		return
-	}
-
-	if input.Name != nil {
-		user.Name = *input.Name
-	}
-	if input.Email != nil {
-		user.Email = *input.Email
-	}
-	if input.ProviderID != nil {
-		user.ProviderID = *input.ProviderID
-	}
-
-	v := validator.New()
-	if data.ValidateReturnUser(v, user); !v.Valid() {
-		app.errorHandler.FailedValidationResponse(w, r, v.Errors)
-		return
-	}
-	err = app.models.Users.Update(user)
-	if err != nil {
-		app.errorHandler.ServerErrorResponse(w, r, err)
-		return
-	}
-}
-
 func (app *application) checkUserExistsHandler(w http.ResponseWriter, r *http.Request) {
 
 	email := r.URL.Query().Get("email")
@@ -221,7 +178,10 @@ func (app *application) completeProfileAndOnboarding(w http.ResponseWriter, r *h
 		user.Email = *input.Email
 	}
 	if input.ProviderID != nil {
-		user.ProviderID = *input.ProviderID
+		user.ProviderID = sql.NullInt64{
+			Int64: *input.ProviderID,
+			Valid: input.ProviderID != nil,
+		}
 	}
 
 	v := validator.New()

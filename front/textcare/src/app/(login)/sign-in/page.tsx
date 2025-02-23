@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/app/components/Button";
 import { Input } from "@/app/components/Input";
 import { baseApiUrl } from "@/lib/apiConfig";
+import { apiClient } from "@/lib/api";
 
 export default function SignInPage() {
   const router = useRouter();
@@ -56,10 +57,20 @@ export default function SignInPage() {
         }
         return response.json();
       })
-      .then((data) => {
+      .then(async (data) => {
         if (data.access_token) {
           localStorage.setItem("access_token", data.access_token);
-          router.push("/onboarding/providers/info");
+          const response = await apiClient(`${baseApiUrl}/v1/users/me`, {
+            method: "GET",
+          });
+          if (!response.ok) throw new Error("Failed to fetch user data");
+
+          const userData = await response.json();
+          if (userData.user.has_completed_onboarding) {
+            router.push("/home");
+          } else {
+            router.push("/onboarding/providers/info");
+          }
         }
       })
       .catch((error) => {

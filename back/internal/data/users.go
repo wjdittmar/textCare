@@ -23,12 +23,16 @@ func (u User) MarshalJSON() ([]byte, error) {
 		SexAtBirth     *string `json:"sex_at_birth,omitempty"`
 		AddressLineTwo *string `json:"address_line_two,omitempty"`
 		Birthday       string  `json:"birthday"`
+		ProviderID     *int64  `json:"provider_id,omitempty"`
 	}{
 		Alias:    Alias(u),
 		Birthday: u.Birthday.Format("2006-01-02"),
 	}
 	if u.SexAtBirth.Valid {
 		aux.AddressLineTwo = &u.AddressLineTwo.String
+	}
+	if u.ProviderID.Valid {
+		aux.ProviderID = &u.ProviderID.Int64
 	}
 
 	return json.Marshal(aux)
@@ -42,7 +46,7 @@ type User struct {
 	SexAtBirth sql.NullString `json:"sex_at_birth"`
 	Password   password       `json:"-"`
 	Version    int            `json:"-"`
-	ProviderID int64          `json:"-"`
+	ProviderID sql.NullInt64  `json:"-"`
 
 	AddressLineOne string         `json:"address_line_one"`
 	AddressLineTwo sql.NullString `json:"address_line_two"`
@@ -188,7 +192,6 @@ SELECT
 users.has_completed_onboarding,
     users.version
 FROM users
-LEFT JOIN providers ON users.provider_id = providers.id
 WHERE users.id = $1`
 	var user User
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
