@@ -1,6 +1,6 @@
 import React from "react";
 
-const ACTIVE_COLOR = "#0d5e52";
+const ACTIVE_COLOR = "#4CAF93";
 const DEFAULT_COLOR = "#3f3f3f";
 
 export const HomeIcon: React.FC<{ active?: boolean }> = ({ active }) => {

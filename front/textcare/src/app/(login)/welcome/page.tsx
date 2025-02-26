@@ -31,10 +31,11 @@ export default function Home() {
   });
 
   const styles = {
-    padding: "25px 0px",
+    width: "100%",
+  };
+  const imageDivStyle = {
     display: "flex",
-    flexDirection: "column",
-    minWidth: "500px",
+    alignItems: "center",
   };
 
   const imageStyle = {
@@ -62,13 +63,15 @@ export default function Home() {
 
   return (
     <div style={styles}>
-      <img
-        style={imageStyle}
-        src="/landing.png"
-        width="400px"
-        height="395px"
-        alt="Landing"
-      />
+      <div style={imageDivStyle}>
+        <img
+          style={imageStyle}
+          src="/landing.png"
+          width="400px"
+          height="395px"
+          alt="Landing"
+        />
+      </div>
       <h1>Virtual care, available now</h1>
       <p>
         Chat with a licensed clinician from wherever you are, on your schedule.

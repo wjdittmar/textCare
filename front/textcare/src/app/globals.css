@@ -6,9 +6,19 @@ body {
 
 body {
   color: #433534;
-  font-family: Lato, Arial, Helvetica, sans-serif;
+  font-family:
+    Inter,
+    -apple-system,
+    system-ui,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  line-height: 19px;
 }
 
 * {
@@ -27,7 +37,7 @@ a {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #fef3ea;
+  background-color: #fafafa;
   margin: 0;
   flex-direction: column;
 }
@@ -37,10 +47,9 @@ ul {
 }
 
 .centered-div {
-  width: 375px;
-  height: 812px;
-  border: 1px solid #ccc;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 768px;
+
   justify-content: center;
   display: flex;
   align-items: center;
