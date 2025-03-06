@@ -24,6 +24,7 @@ func (app *application) routes() http.Handler {
 	router.HandlerFunc(http.MethodPost, "/v1/tokens/authentication", app.createAuthenticationTokenHandler)
 	router.HandlerFunc(http.MethodPost, "/v1/tokens/refresh", app.refreshAuthenticationTokenHandler)
 	router.HandlerFunc(http.MethodGet, "/v1/cmt/search", app.getCMTHandler)
+	router.HandlerFunc(http.MethodGet, "/v1/medications/search", app.getMedicationsHandler)
 
 	rl := middleware.NewRateLimiter(
 		app.config.Limiter.RPS,

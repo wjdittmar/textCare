@@ -11,16 +11,31 @@ type CMT struct {
 	Module                string `json:"module"`
 }
 
+type Medication struct {
+	ID             int    `json:"id"`
+	RXCUI          string `json:"rxcui"`
+	MedicationName string `json:"medication_name"`
+	PreferredTerm  string `json:"preferred_term"`
+	TTY            string `json:"tty"`
+	Source         string `json:"source"`
+	Code           string `json:"code"`
+}
+
 type CMTModel struct {
+	DB *sql.DB
+}
+type MedicationsModel struct {
 	DB *sql.DB
 }
 
 type TerminologyModels struct {
-	CMT CMTModel
+	CMT         CMTModel
+	Medications MedicationsModel
 }
 
 func NewTerminologyModels(db *sql.DB) TerminologyModels {
 	return TerminologyModels{
-		CMT: CMTModel{DB: db},
+		CMT:         CMTModel{DB: db},
+		Medications: MedicationsModel{DB: db},
 	}
 }
