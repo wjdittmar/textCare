@@ -7,7 +7,7 @@ import (
 	_ "github.com/lib/pq"
 	"github.com/wjdittmar/textCare/back/internal/config"
 
-	"github.com/wjdittmar/textCare/back/cmd/terminology/internal/data"
+	"github.com/wjdittmar/textCare/back/cmd/terminology/internal/models"
 	"github.com/wjdittmar/textCare/back/internal/jsonlog"
 	"github.com/wjdittmar/textCare/back/internal/web"
 	"os"
@@ -20,7 +20,7 @@ const version = "1.0.0"
 type application struct {
 	config       config.Config
 	logger       *jsonlog.Logger
-	models       data.TerminologyModels
+	models       models.TerminologyModels
 	wg           sync.WaitGroup
 	errorHandler *web.ErrorHandler
 }
@@ -57,7 +57,7 @@ func main() {
 	app := &application{
 		config:       *cfg,
 		logger:       logger,
-		models:       data.NewTerminologyModels(db),
+		models:       models.NewTerminologyModels(db),
 		errorHandler: &web.ErrorHandler{Logger: logger},
 	}
 
