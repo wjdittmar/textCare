@@ -29,6 +29,17 @@ export function AutoComplete({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [debouncedQuery, setDebouncedQuery] = useState(query);
+  const containerStyles: React.CSSProperties = {
+    display: "flex",
+    flexDirection: "column",
+    flex: "1",
+  };
+  const resultsStyles: React.CSSProperties = {
+    flex: "1",
+    display: "flex",
+    flexDirection: "column",
+    borderRadius: "6px",
+  };
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -68,7 +79,7 @@ export function AutoComplete({
   }, [debouncedQuery, apiURL, queryLimit]);
 
   return (
-    <div className="autocomplete-container">
+    <div style={containerStyles}>
       <Input
         type="text"
         value={query}
@@ -79,7 +90,7 @@ export function AutoComplete({
       {isLoading && <div className="autocomplete-loading">Loading...</div>}
       {error && <div className="autocomplete-error">{error}</div>}
       {results.length > 0 && (
-        <ul className="autocomplete-results">
+        <ul style={resultsStyles}>
           {results.map((desc) => (
             <SelectableInput
               key={desc}

@@ -34,10 +34,10 @@ export default function SearchPage() {
 
       <Button
         disabled={selectedConditions.length === 0}
-        style={{ marginTop: "auto" }}
+        style={{ marginTop: "10px", flex: "0 0 6%" }}
         href="/onboarding/conditions/confirm"
       >
-        Continue ({selectedConditions.length} selected)
+        Continued ({selectedConditions.length} selected)
       </Button>
     </>
   );

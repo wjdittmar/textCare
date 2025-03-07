@@ -6,7 +6,13 @@ export const Header = ({
   backHref = "",
   currentStep = 1,
 }) => {
-  const backButtonStyle = {
+  const styles: React.CSSProperties = {
+    display: "flex",
+    flexDirection: "column",
+    flex: "0 0 8%",
+  };
+
+  const backButtonStyle: React.CSSProperties = {
     display: "block",
     alignItems: "center",
     textDecoration: "none",
@@ -28,7 +34,7 @@ export const Header = ({
   ];
 
   return (
-    <div style={{ marginBottom: "7px" }}>
+    <div style={styles}>
       {includeBack ? (
         <Link href={backHref} style={backButtonStyle}>
           <svg
