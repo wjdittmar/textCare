@@ -12,6 +12,7 @@ interface AutoCompleteProps {
   debounceDuration?: number;
   selectedConditions: string[];
   toggleCondition: (condition: string) => void;
+  parseResponse: (data: any) => any[];
 }
 
 export function AutoComplete({
@@ -21,6 +22,7 @@ export function AutoComplete({
   debounceDuration = 300,
   selectedConditions,
   toggleCondition,
+  parseResponse,
 }: AutoCompleteProps) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<string[]>([]);
@@ -53,16 +55,8 @@ export function AutoComplete({
           throw new Error("Failed to fetch data");
         }
         const data = await response.json();
-        if (data.cmtCodes) {
-          // TODO: better way to avoid hardcoding this?
-          setResults(
-            data.cmtCodes.map((item: any) =>
-              item.patient_friendly_name.toLowerCase(),
-            ),
-          );
-        } else {
-          setResults([]);
-        }
+
+        setResults(parseResponse(data));
       } catch (err: any) {
         setError(err.message);
       } finally {

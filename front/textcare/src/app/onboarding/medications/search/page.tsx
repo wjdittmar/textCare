@@ -8,7 +8,7 @@ import { Button } from "@/app/components/Button";
 import { baseApiUrl } from "@/lib/apiConfig";
 
 export default function SearchPage() {
-  const apiUrl = baseApiUrl + "/v1/cmt/search";
+  const apiUrl = baseApiUrl + "/v1/medications/search";
 
   const { selectedConditions, toggleCondition } = useOnboarding();
 
@@ -17,16 +17,17 @@ export default function SearchPage() {
       <Header
         currentStep={2}
         includeBack={true}
-        backHref="/onboarding/providers/confirm"
+        backHref="/onboarding/conditions/confirm"
       />
 
       <AutoComplete
         apiURL={apiUrl}
         selectedConditions={selectedConditions}
         toggleCondition={toggleCondition}
+        placeholder="Search medications..."
         parseResponse={(data) =>
-          data.cmtCodes.map((item: any) =>
-            item.patient_friendly_name.toLowerCase(),
+          data.medications.map((item: any) =>
+            item.medication_name.toLowerCase(),
           )
         }
       />
