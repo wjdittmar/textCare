@@ -25,7 +25,6 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
       border: "1px solid black",
       display: "block",
       width: "100%",
-      margin: "10px 0px",
       borderRadius: "4px",
       fontSize: "16px",
       outline: "none",
