@@ -10,6 +10,7 @@ import React, {
 import { SelectableInput } from "./SelectableInput";
 
 import { Input } from "./Input";
+import { DeletableList } from "./DeletableList";
 
 interface AutoCompleteProps {
   apiURL: string;
@@ -56,6 +57,7 @@ export const AutoComplete = forwardRef<
       display: "flex",
       flexDirection: "column",
       flex: "1",
+      gap: "10px",
     };
     const resultsStyles: React.CSSProperties = {
       borderRadius: "6px",
@@ -85,7 +87,6 @@ export const AutoComplete = forwardRef<
             throw new Error("Failed to fetch data");
           }
           const data = await response.json();
-
           setResults(parseResponse(data));
         } catch (err: any) {
           setError(err.message);
@@ -120,6 +121,7 @@ export const AutoComplete = forwardRef<
             </div>
           )}
         </div>
+        <DeletableList itemList={selectedConditions} />
       </div>
     );
   },

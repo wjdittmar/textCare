@@ -29,6 +29,7 @@ export default function SearchPage() {
             item.patient_friendly_name.toLowerCase(),
           )
         }
+        showOptions={true}
       />
 
       <Button
