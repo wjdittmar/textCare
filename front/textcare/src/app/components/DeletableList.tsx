@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { DeletableListItem } from "./DeletableListItem";
 
 interface DeletableListProps {
   itemList: string[];
+  onDelete: (condition: string) => void;
 }
 
 const styles: React.CSSProperties = {
@@ -13,14 +14,14 @@ const styles: React.CSSProperties = {
   borderRadius: "8px",
   boxShadow: "0 2px 6px rgba(0,0,0,0.05)",
 };
-export const DeletableList = ({ itemList }: DeletableListProps) => {
+export const DeletableList = ({ itemList, onDelete }: DeletableListProps) => {
   if (itemList.length === 0) {
     return null;
   }
   return (
     <ul style={styles}>
       {itemList.map((item) => (
-        <DeletableListItem key={item} item={item} />
+        <DeletableListItem key={item} item={item} handleDelete={onDelete} />
       ))}
     </ul>
   );

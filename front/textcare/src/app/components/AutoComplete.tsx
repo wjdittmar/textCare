@@ -121,7 +121,10 @@ export const AutoComplete = forwardRef<
             </div>
           )}
         </div>
-        <DeletableList itemList={selectedConditions} />
+        <DeletableList
+          itemList={selectedConditions}
+          onDelete={toggleCondition}
+        />
       </div>
     );
   },

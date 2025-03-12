@@ -3,7 +3,6 @@
 import React, { useRef } from "react";
 import { AutoComplete } from "@/app/components/AutoComplete";
 import { Header } from "@/app/components/Header";
-import { useOnboarding } from "@/app/context/OnboardingContext";
 import { Button } from "@/app/components/Button";
 import { baseApiUrl } from "@/lib/apiConfig";
 import { useEffect, useState } from "react";
@@ -11,24 +10,38 @@ import { useEffect, useState } from "react";
 export default function SearchPage() {
   const apiUrl = baseApiUrl + "/v1/medications/search";
 
-  const { selectedConditions, toggleCondition } = useOnboarding();
+  const [selectedConditions, setSelectedConditions] = useState<string[]>([]);
   const [showConditions, setShowConditions] = useState(true);
 
-  const refs = useRef(null);
+  const toggleCondition = (condition: string) => {
+    setSelectedConditions((prev) =>
+      prev.includes(condition)
+        ? prev.filter((c) => c !== condition)
+        : [...prev, condition],
+    );
+  };
+
+  const refs = useRef<{
+    inputRef: HTMLInputElement | null;
+    optionsRef: HTMLDivElement | null;
+  } | null>(null);
 
   useEffect(() => {
-    function handleClickOutside(event: React.ChangeEvent<MouseEvent>) {
-      console.log(event.target);
+    function handleClickOutside(event: MouseEvent) {
       if (refs.current) {
         const { inputRef, optionsRef } = refs.current;
         if (
           optionsRef &&
-          !optionsRef.contains(event.target) &&
+          !optionsRef.contains(event.target as Node) &&
           showConditions
         ) {
           setShowConditions(false);
         }
-        if (inputRef && inputRef.contains(event.target) && !showConditions) {
+        if (
+          inputRef &&
+          inputRef.contains(event.target as Node) &&
+          !showConditions
+        ) {
           setShowConditions(true);
         }
       }
@@ -53,9 +66,7 @@ export default function SearchPage() {
         toggleCondition={toggleCondition}
         placeholder="Search medications..."
         parseResponse={(data) =>
-          data.medications.map((item: any) =>
-            item.medication_name.toLowerCase(),
-          )
+          data.medications.map((item) => item.medication_name.toLowerCase())
         }
         ref={refs}
         showOptions={showConditions}

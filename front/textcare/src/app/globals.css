@@ -105,20 +105,6 @@ p.small {
   text-decoration-skip-ink: none;
 }
 
-button,
-a.buttonLink {
-  padding: 12px 24px 12px 24px;
-  gap: 10px;
-  border-radius: 24px;
-  background: #ffdecc;
-  border: 1px solid #f5b38e;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 16px;
-  font-weight: 700;
-}
-
 /* https://stackoverflow.com/questions/21968531/how-to-draw-a-checkmark-tick-using-css */
 
 #checkmark {
