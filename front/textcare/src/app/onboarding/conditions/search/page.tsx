@@ -22,8 +22,8 @@ export default function SearchPage() {
 
       <AutoComplete
         apiURL={apiUrl}
-        selectedConditions={selectedConditions}
-        toggleCondition={toggleCondition}
+        selectedItems={selectedConditions}
+        toggleItem={toggleCondition}
         parseResponse={(data) =>
           data.cmtCodes.map((item: any) =>
             item.patient_friendly_name.toLowerCase(),

@@ -6,20 +6,13 @@ import { Header } from "@/app/components/Header";
 import { Button } from "@/app/components/Button";
 import { baseApiUrl } from "@/lib/apiConfig";
 import { useEffect, useState } from "react";
+import { useOnboarding } from "@/app/context/OnboardingContext";
 
 export default function SearchPage() {
   const apiUrl = baseApiUrl + "/v1/medications/search";
 
-  const [selectedConditions, setSelectedConditions] = useState<string[]>([]);
-  const [showConditions, setShowConditions] = useState(true);
-
-  const toggleCondition = (condition: string) => {
-    setSelectedConditions((prev) =>
-      prev.includes(condition)
-        ? prev.filter((c) => c !== condition)
-        : [...prev, condition],
-    );
-  };
+  const { selectedMedications, toggleMedication } = useOnboarding();
+  const [showMedications, setShowMedications] = useState(true);
 
   const refs = useRef<{
     inputRef: HTMLInputElement | null;
@@ -33,16 +26,16 @@ export default function SearchPage() {
         if (
           optionsRef &&
           !optionsRef.contains(event.target as Node) &&
-          showConditions
+          showMedications
         ) {
-          setShowConditions(false);
+          setShowMedications(false);
         }
         if (
           inputRef &&
           inputRef.contains(event.target as Node) &&
-          !showConditions
+          !showMedications
         ) {
-          setShowConditions(true);
+          setShowMedications(true);
         }
       }
     }
@@ -50,7 +43,7 @@ export default function SearchPage() {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [showConditions]);
+  }, [showMedications]);
 
   return (
     <>
@@ -62,22 +55,22 @@ export default function SearchPage() {
 
       <AutoComplete
         apiURL={apiUrl}
-        selectedConditions={selectedConditions}
-        toggleCondition={toggleCondition}
+        selectedItems={selectedMedications}
+        toggleItem={toggleMedication}
         placeholder="Search medications..."
         parseResponse={(data) =>
           data.medications.map((item) => item.medication_name.toLowerCase())
         }
         ref={refs}
-        showOptions={showConditions}
+        showOptions={showMedications}
       />
 
       <Button
-        disabled={selectedConditions.length === 0}
+        disabled={selectedMedications.length === 0}
         style={{ marginTop: "10px", flex: "0 0 6%" }}
         href="/onboarding/conditions/confirm"
       >
-        Continued ({selectedConditions.length} selected)
+        Continued ({selectedMedications.length} selected)
       </Button>
     </>
   );

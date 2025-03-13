@@ -17,8 +17,8 @@ interface AutoCompleteProps {
   placeholder?: string;
   queryLimit?: number;
   debounceDuration?: number;
-  selectedConditions: string[];
-  toggleCondition: (condition: string) => void;
+  selectedItems: string[];
+  toggleItem: (item: string) => void;
   parseResponse: (data: any) => any[];
   showOptions: boolean;
 }
@@ -33,8 +33,8 @@ export const AutoComplete = forwardRef<
       placeholder = "Search ICD-10 codes...",
       queryLimit = 10,
       debounceDuration = 300,
-      selectedConditions,
-      toggleCondition,
+      selectedItems,
+      toggleItem,
       parseResponse,
       showOptions,
     },
@@ -84,11 +84,13 @@ export const AutoComplete = forwardRef<
             `${apiURL}?qs=${debouncedQuery}&limit=${queryLimit}`,
           );
           if (!response.ok) {
+            setResults();
             throw new Error("Failed to fetch data");
           }
           const data = await response.json();
           setResults(parseResponse(data));
         } catch (err: any) {
+          setResults([]);
           setError(err.message);
         }
       };
@@ -107,24 +109,21 @@ export const AutoComplete = forwardRef<
             className="autocomplete-input"
             ref={localInputRef}
           />
-          {error && <div className="autocomplete-error">{error}</div>}
+          {/* {error && <div className="autocomplete-error">{error}</div>} */}
           {results.length > 0 && showOptions && (
             <div style={resultsStyles} ref={localOptionsRef}>
               {results.map((desc) => (
                 <SelectableInput
                   key={desc}
                   text={desc}
-                  isSelected={selectedConditions.includes(desc)}
-                  onSelect={() => toggleCondition(desc)}
+                  isSelected={selectedItems.includes(desc)}
+                  onSelect={() => toggleItem(desc)}
                 />
               ))}
             </div>
           )}
         </div>
-        <DeletableList
-          itemList={selectedConditions}
-          onDelete={toggleCondition}
-        />
+        <DeletableList itemList={selectedItems} onDelete={toggleItem} />
       </div>
     );
   },

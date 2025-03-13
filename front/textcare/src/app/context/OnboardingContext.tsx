@@ -7,6 +7,9 @@ interface OnboardingContextType {
   selectedConditions: string[];
   toggleCondition: (condition: string) => void;
   setConditions: (conditions: string[]) => void;
+  selectedMedications: string[];
+  toggleMedication: (medication: string) => void;
+  setMedications: (medications: string[]) => void;
 
   selectedProvider: Provider;
   setSelectedProvider: (provider: Provider) => void;
@@ -18,6 +21,7 @@ const OnboardingContext = createContext<OnboardingContextType | undefined>(
 
 export const OnboardingProvider = ({ children }: { children: ReactNode }) => {
   const [selectedConditions, setSelectedConditions] = useState<string[]>([]);
+  const [selectedMedications, setSelectedMedications] = useState<string[]>([]);
   const [selectedProvider, setSelectedProvider] = useState({} as Provider);
 
   const toggleCondition = (condition: string) => {
@@ -32,6 +36,18 @@ export const OnboardingProvider = ({ children }: { children: ReactNode }) => {
     setSelectedConditions(conditions);
   };
 
+  const toggleMedication = (medication: string) => {
+    setSelectedMedications((prev) =>
+      prev.includes(medication)
+        ? prev.filter((c) => c !== medication)
+        : [...prev, medication],
+    );
+  };
+
+  const setMedications = (medications: string[]) => {
+    setSelectedMedications(medications);
+  };
+
   return (
     <OnboardingContext.Provider
       value={{
@@ -40,6 +56,9 @@ export const OnboardingProvider = ({ children }: { children: ReactNode }) => {
         setConditions,
         selectedProvider,
         setSelectedProvider,
+        selectedMedications,
+        toggleMedication,
+        setMedications,
       }}
     >
       {children}
