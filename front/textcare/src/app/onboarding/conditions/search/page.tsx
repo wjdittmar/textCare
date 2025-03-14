@@ -1,16 +1,25 @@
 "use client";
 
-import React from "react";
+import React, { useRef, useState } from "react";
 import { AutoComplete } from "@/app/components/AutoComplete";
 import { Header } from "@/app/components/Header";
 import { useOnboarding } from "@/app/context/OnboardingContext";
 import { Button } from "@/app/components/Button";
 import { baseApiUrl } from "@/lib/apiConfig";
+import { useAutoCompleteToggle } from "@/lib/hooks";
 
 export default function SearchPage() {
   const apiUrl = baseApiUrl + "/v1/cmt/search";
 
   const { selectedConditions, toggleCondition } = useOnboarding();
+  const [showConditions, setShowConditions] = useState(true);
+
+  const refs = useRef<{
+    inputRef: HTMLInputElement | null;
+    optionsRef: HTMLDivElement | null;
+  } | null>(null);
+
+  useAutoCompleteToggle(refs, setShowConditions);
 
   return (
     <>
@@ -29,7 +38,8 @@ export default function SearchPage() {
             item.patient_friendly_name.toLowerCase(),
           )
         }
-        showOptions={true}
+        ref={refs}
+        showOptions={showConditions}
       />
 
       <Button

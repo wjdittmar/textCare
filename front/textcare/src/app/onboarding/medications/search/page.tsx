@@ -1,11 +1,10 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { AutoComplete } from "@/app/components/AutoComplete";
 import { Header } from "@/app/components/Header";
 import { Button } from "@/app/components/Button";
 import { baseApiUrl } from "@/lib/apiConfig";
-import { useState } from "react";
 import { useOnboarding } from "@/app/context/OnboardingContext";
 import { useAutoCompleteToggle } from "@/lib/hooks";
 
