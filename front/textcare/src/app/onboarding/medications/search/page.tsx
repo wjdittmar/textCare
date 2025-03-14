@@ -7,11 +7,15 @@ import { Button } from "@/app/components/Button";
 import { baseApiUrl } from "@/lib/apiConfig";
 import { useOnboarding } from "@/app/context/OnboardingContext";
 import { useAutoCompleteToggle } from "@/lib/hooks";
-
+import { apiClient } from "@/lib/api";
+import { useRouter } from "next/navigation";
 export default function SearchPage() {
+  const router = useRouter();
+
   const apiUrl = baseApiUrl + "/v1/medications/search";
 
-  const { selectedMedications, toggleMedication } = useOnboarding();
+  const { selectedMedications, toggleMedication, selectedProvider } =
+    useOnboarding();
   const [showMedications, setShowMedications] = useState(true);
 
   const refs = useRef<{
@@ -20,6 +24,25 @@ export default function SearchPage() {
   } | null>(null);
 
   useAutoCompleteToggle(refs, setShowMedications);
+
+  const endpoint = `${baseApiUrl}/v1/users/me/completeProfileAndOnboarding`;
+
+  const handleNextClick = async () => {
+    try {
+      const response = await apiClient(endpoint, {
+        method: "POST",
+        body: JSON.stringify({ provider_id: Number(selectedProvider.id) }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to update PCP.");
+      }
+      router.push("/home");
+    } catch (err: any) {
+      console.error(err);
+    }
+  };
 
   return (
     <>
@@ -44,9 +67,10 @@ export default function SearchPage() {
       <Button
         disabled={selectedMedications.length === 0}
         style={{ marginTop: "10px", flex: "0 0 6%" }}
-        href="/onboarding/conditions/confirm"
+        onClick={handleNextClick}
+        variant="secondary"
       >
-        Continued ({selectedMedications.length} selected)
+        Continue
       </Button>
     </>
   );

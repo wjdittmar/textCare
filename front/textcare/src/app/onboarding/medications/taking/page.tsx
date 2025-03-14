@@ -24,10 +24,10 @@ export default function InfoPage() {
       <Header
         currentStep={2}
         includeBack={true}
-        backHref="/onboarding/conditions/confirm"
+        backHref="/onboarding/conditions/search"
       />
       <div className="sectionHeader">
-        <h3>Are you currently taking any medications??</h3>
+        <h3>Are you currently taking any medications?</h3>
       </div>
       <div>
         <MultipleChoice onSelect={setSelectedOption} />

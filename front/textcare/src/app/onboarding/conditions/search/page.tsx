@@ -45,7 +45,8 @@ export default function SearchPage() {
       <Button
         disabled={selectedConditions.length === 0}
         style={{ marginTop: "auto" }}
-        href="/onboarding/conditions/confirm"
+        href="/onboarding/medications/taking"
+        variant="secondary"
       >
         Continue ({selectedConditions.length} selected)
       </Button>

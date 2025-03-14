@@ -55,7 +55,7 @@ export default function ChooseProviderPage() {
           Choose yours from the options below.
         </p>
       </div>
-      <Button variant="primary" onClick={chooseRandomProvider}>
+      <Button variant="secondary" onClick={chooseRandomProvider}>
         Choose a Doctor for Me
       </Button>
       <ul className="provider">

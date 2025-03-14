@@ -24,7 +24,6 @@ export const Button = ({
     padding: "12px 24px",
     gap: "10px",
     borderRadius: "24px",
-    border: "1px solid #f5b38e",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -41,7 +40,7 @@ export const Button = ({
       color: "#433534",
     },
     secondary: {
-      backgroundColor: "#FF594D",
+      backgroundColor: "#0d5e52",
       color: "#F5F5F5",
     },
   };

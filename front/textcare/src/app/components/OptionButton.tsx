@@ -1,48 +1,34 @@
 import React from "react";
 
 export const OptionButton = ({ label, isSelected, onSelect }) => {
-  const divStyle = {
+  const buttonStyle = {
     display: "flex",
     alignItems: "center",
-    backgroundColor: isSelected ? "#FFDECC" : "#FFFFFF",
     borderRadius: "8px",
-    border: "1px solid #F5B38E",
-    paddingLeft: "10px",
+    border: "1px solid #121212",
+    padding: "12px 16px",
+    cursor: "pointer",
+    backgroundColor: isSelected ? "" : "#FFFFFF",
+    color: "#000",
+    fontWeight: 500,
+    width: "100%",
+    justifyContent: "flex-start",
   };
 
-  const buttonStyle = {
-    padding: "12px 16px",
-
-    cursor: "pointer",
-    backgroundColor: isSelected ? "#FFDECC" : "#FFFFFF",
-    color: "#000",
-    border: "none",
-    justifyContent: "start",
-    fontWeight: "500",
-    flex: "1",
+  const imgStyle = {
+    marginRight: "8px",
   };
 
   return (
-    <div style={divStyle}>
-      {isSelected && (
-        <img
-          height="24px"
-          width="24px"
-          src="/enabled_selected.png"
-          alt="selected"
-        />
-      )}
-      {!isSelected && (
-        <img
-          height="24px"
-          width="24px"
-          src="/enabled_unselected.png"
-          alt="selected"
-        />
-      )}
-      <button style={buttonStyle} onClick={() => onSelect(label)}>
-        {label}
-      </button>
-    </div>
+    <button style={buttonStyle} onClick={() => onSelect(label)}>
+      <img
+        style={imgStyle}
+        height="24"
+        width="24"
+        src={isSelected ? "/enabled_selected.png" : "/enabled_unselected.png"}
+        alt={isSelected ? "selected" : "unselected"}
+      />
+      {label}
+    </button>
   );
 };
