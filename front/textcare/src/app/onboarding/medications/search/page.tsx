@@ -5,8 +5,9 @@ import { AutoComplete } from "@/app/components/AutoComplete";
 import { Header } from "@/app/components/Header";
 import { Button } from "@/app/components/Button";
 import { baseApiUrl } from "@/lib/apiConfig";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useOnboarding } from "@/app/context/OnboardingContext";
+import { useAutoCompleteToggle } from "@/lib/hooks";
 
 export default function SearchPage() {
   const apiUrl = baseApiUrl + "/v1/medications/search";
@@ -19,31 +20,7 @@ export default function SearchPage() {
     optionsRef: HTMLDivElement | null;
   } | null>(null);
 
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (refs.current) {
-        const { inputRef, optionsRef } = refs.current;
-        if (
-          optionsRef &&
-          !optionsRef.contains(event.target as Node) &&
-          showMedications
-        ) {
-          setShowMedications(false);
-        }
-        if (
-          inputRef &&
-          inputRef.contains(event.target as Node) &&
-          !showMedications
-        ) {
-          setShowMedications(true);
-        }
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [showMedications]);
+  useAutoCompleteToggle(refs, setShowMedications);
 
   return (
     <>
